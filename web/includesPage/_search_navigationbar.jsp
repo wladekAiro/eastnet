@@ -6,7 +6,7 @@
             <div class="grid_9">
 
 
-                <input type="text" id="search" class="searchBox" placeholder="Quick search an item ..." autofocus="true"/>
+                <!--<input type="text" id="search" class="searchBox" placeholder="Quick search an item ..." autofocus="true"/>-->
 
             </div>
             <div class="grid_6" id="topNav">

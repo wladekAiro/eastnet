@@ -89,7 +89,7 @@ text-shadow: none;
 	}
 	
 #logo {
-	background:url(../images/logo/Logo.png);
+	background:url(../images/logo/Logo.jpg);
 	-webkit-transition:.3s all ease-in-out;
 	-moz-transition:.3s all ease-in-out;
 	background-repeat:no-repeat;
@@ -169,7 +169,7 @@ text-shadow: none;
 
 #banner {
 	background:#CCC;
-	background:url(../images/textures/linen.png);
+	background:url(../images/textures/bg_honeycomb.jpg);
 	height:335px;
 	box-shadow: 0px 0px 40px #000000;
 	}
@@ -281,7 +281,7 @@ text-shadow: none;
 
 #footer {
 	background:#CCC;
-	background:url(../images/textures/linen.png);
+	background:url(../images/textures/bg_honeycomb.jpg);
 	box-shadow: 0px 0px 40px #000000;
 	color:#FFF;
 	}

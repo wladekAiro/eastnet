@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
+        <title>Eastnat</title>
         <!-- Default Stylesheets -->
         <%@include file="includesPage/_stylesheets.jsp" %>
 
@@ -59,7 +59,7 @@
 
                     <li class="sliderImage" style="display: none; ">
 
-                        <img src="images/banner/b1.png" width="900" height="300" /> 
+                        <img src="images/banner/b1.jpg" width="900" height="300" /> 
 
                         <span class="top" style="display: none; ">
 
@@ -186,10 +186,10 @@
                       
                     </ul>
                 </div>
-                <div class="adv">
+<!--        //         <div class="adv">
                     <h2><br/>This is The Header of an Advertisement</h2>
                     <p>We offer Advertisement display here </p>
-                </div>
+                </div>-->
             </div>
 
 
