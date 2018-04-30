@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import helpers.*;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import user.user;
@@ -24,9 +26,8 @@ import user.user;
 public class registerServlet extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -56,8 +57,7 @@ public class registerServlet extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -71,8 +71,7 @@ public class registerServlet extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -91,8 +90,8 @@ public class registerServlet extends HttpServlet {
         boolean isRegistered = false;
 
         String messageUrl = "/message.jsp";
-        RequestDispatcher dispatchMessage =
-                request.getServletContext().getRequestDispatcher(messageUrl);
+        RequestDispatcher dispatchMessage
+                = request.getServletContext().getRequestDispatcher(messageUrl);
 
         email = request.getParameter("emailReg");
         pass = request.getParameter("passReg");
@@ -106,10 +105,12 @@ public class registerServlet extends HttpServlet {
 
         HttpSession userSession = request.getSession();
 
+        DB_Conn con = null;
+
         try {
-            DB_Conn con = new DB_Conn();
+            con = new DB_Conn();
             Connection c = con.getConnection();
-            if ((request.getParameter("emailReg") != null) || (request.getParameter("emailReg") != null)){
+            if ((request.getParameter("emailReg") != null)) {
                 if (isEmailValid) {
                     if (pass.length() > 7) {
                         if (pass.equals(passAgain)) {
@@ -133,7 +134,9 @@ public class registerServlet extends HttpServlet {
                                 user User = new user();
                                 User.setUserEmail(email);
                                 userSession.setAttribute("user", User);
-                                response.sendRedirect(request.getContextPath());
+                                request.setAttribute("message", "Welcome");
+                                request.setAttribute("messageDetail", "You have successfully registered with us");
+                                dispatchMessage.forward(request, response);
                             } else {
                                 isRegistered = false;
                                 out.println("You are not registered");
@@ -161,13 +164,12 @@ public class registerServlet extends HttpServlet {
                     messageDetail = "Please provide a valid email address";
                     out.print(" nOT Success!! email is wrong");
                 }
-            }
-            else {
+            } else {
                 isRegistered = false;
                 message = "Please enter values";
                 messageDetail = "Please provide an email address. Your account currently is not registered";
             }
-            
+
             if (isRegistered == false) {
                 request.setAttribute("message", message);
                 request.setAttribute("messageDetail", messageDetail);
@@ -192,6 +194,10 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
             response.sendError(404);
+        } finally {
+            if (con != null) {
+                con.closeConnection();
+            }
         }
     }
 

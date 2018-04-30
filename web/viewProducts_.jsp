@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
+        <title>Eastnat</title>
         <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
@@ -162,8 +162,8 @@
                     -->
                     
                     <div class="adv">
-                        <h2><br/>This is The Header of an Advertisement</h2>
-                        <p>We offer Advertisement display here </p>
+<!--                        <h2><br/>This is The Header of an Advertisement</h2>
+                        <p>We offer Advertisement display here </p>-->
                     </div>
                 </div>
             </div>
@@ -284,7 +284,7 @@ product-name	product_id	sub-category-name	category-name	company-name	price	summa
                         </div>
                         <div class="grid_9">
                             <div class="grid_5">
-                                <p id="info"><a href="product.jsp?id=<%=product_id%>"><h3><span class="blue"> <%=product_name %></span></h3></a>By <%= company_name+" "+ category_name %><br/><span class="red">Rs. <%= price %></span></p>
+                                <p id="info"><a href="product.jsp?id=<%=product_id%>"><h3><span class="blue"> <%=product_name %></span></h3></a>By <%= company_name+" "+ category_name %><br/><span class="red">Kshs. <%= price %></span></p>
                             </div>
                             <div class="grid_3 push_2">
                                 <p><%=sub_category_name %>  <a href="addToCart.jsp?id=<%= product_id %>" id="greenBtn">Add to cart</a></p><p>Will Be delivered in 3 Working days</p>
@@ -295,7 +295,7 @@ product-name	product_id	sub-category-name	category-name	company-name	price	summa
                                 }
                             rs.close();
                             st.close();
-                            c.close();
+                            con.closeConnection();
                         %>
 
                     </div>

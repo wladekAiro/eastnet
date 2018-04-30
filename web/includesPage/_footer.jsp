@@ -11,7 +11,7 @@
             </div>
             <div class="grid_3">
                 <ul>
-                    <li><strong>SaiKiran</strong></li>
+                    <li><strong>Eastnat</strong></li>
                     <li><a href="contact-support.jsp">Contact Us</a></li>
                     <li><a href="contact-support.jsp">About Us</a></li>
                     <li><a href="faq.jsp">Careers</a></li>
@@ -32,7 +32,7 @@
         </div>
         <div id="clear"></div>
         <div class="grid_16">	
-            <p>Copyrights &copy; 2012 SaiKiran BookStores - The Online Megastore</p>
+            <p>Copyrights &copy; 2018 Eastnat LTD - The Online Food store</p>
     </div>
 </div>
 </div>

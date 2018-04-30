@@ -17,199 +17,195 @@
         <script type="text/javascript" src="js/slider.js"></script>
 
 
-<script type="text/javascript" >
+        <script type="text/javascript" >
 
-    // This is the script for the banner slider
+            // This is the script for the banner slider
 
-    $(document).ready(function() {
-        $('#slider').s3Slider({
-            timeOut: 7000
-        });
-    });
-</script>
+            $(document).ready(function () {
+                $('#slider').s3Slider({
+                    timeOut: 7000
+                });
+            });
+        </script>
 
 
-<script type="text/javascript" src="js/myScript.js"></script>
+        <script type="text/javascript" src="js/myScript.js"></script>
 
-</head>
-<body>
+    </head>
+    <body>
 
         <%
-        if (session.getAttribute("user") == null ){// THen new user, show join now
-            %>
-            <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+            if (session.getAttribute("user") == null) {// THen new user, show join now
+        %>
+        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
         <%
-        }else {
-            %>
-            <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        } else {
+        %>
+        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
         <%
-        }
+            }
         %>
 
 
-    <%@include file="includesPage/_search_navigationbar.jsp" %>
+        <%@include file="includesPage/_search_navigationbar.jsp" %>
 
-    <%@include file="includesPage/_facebookJoin.jsp" %>
+        <%@include file="includesPage/_facebookJoin.jsp" %>
 
-    <div id = "banner">
-        <div class="container_16">
-            <div class="grid_16" style="padding-left: 20px; " id="slider">	
-                <ul id="sliderContent">		
-                    <!-- Duplicate this code for each image -->				
+        <div id = "banner">
+            <div class="container_16">
+                <div class="grid_16" style="padding-left: 20px; " id="slider">	
+                    <ul id="sliderContent">		
+                        <!-- Duplicate this code for each image -->				
 
-                    <li class="sliderImage" style="display: none; ">
+                        <li class="sliderImage" style="display: none; ">
 
-                        <img src="images/banner/b1.jpg" width="900" height="300" /> 
+                            <img src="images/banner/b1.jpg" width="900" height="300" /> 
 
-                        <span class="top" style="display: none; ">
+                            <span class="top" style="display: none; ">
 
-                            <strong>Fountain Pens...</strong>	
+                                <strong>Eastnat Limited ...</strong>	
 
-                            <br>From the International and Indian markets, we have the variety of the High Class fountain 
+                                <br>backed by a passion for all things natural, 
+                                food being the epicenter, powering a healthy community.
 
-                            pens. Available now for you to get your hands on.
+                            </span>
 
-                        </span>
+                        </li>  
+                        <li class="sliderImage" style="display: none; ">
 
-                    </li>  
-                    <li class="sliderImage" style="display: none; ">
+                            <img src="images/banner/b2.png" width="900" height="300" /> 
 
-                        <img src="images/banner/b2.png" width="900" height="300" /> 
+                            <span class="top" style="display: none; ">
 
-                        <span class="top" style="display: none; ">
+                                <strong>Natural honey ...</strong>				
 
-                            <strong>Books, Diaries...</strong>				
+                                <br> an Ayurvedic medicine over the years to cure colds,
+                                coughs, sore throat, skin inflammations and burns amongst etc.
+                                A natural modern cooking sauce, marinade or glaze. The natural substitute to maple syrup.
 
-                            <br>Text Books, Single Lines, Double Lines, Red 'n Blue Lines, Fullscape Books
+                            </span>
 
-                            Drawing Books, and all the paper you want to write all throughout to learn 
-
-                            Available now at your doorsteps* 
-
-
-
-                        </span>
-
-                    </li>  
+                        </li>  
 
 
 
-                    <li class="sliderImage" style="display: none; ">
+                        <li class="sliderImage" style="display: none; ">
 
-                        <img src="images/banner/b5.png" width="900" height="300" /> 
+                            <img src="images/banner/b5.png" width="900" height="300" /> 
 
-                        <span class="top" style="display: none; ">
+                            <span class="top" style="display: none; ">
 
-                            <strong>Kids Colors...</strong>				
+                                <strong>Kids Colors...</strong>				
 
-                            <br>Collection of Non-Toxic childrens colors available
+                                <br>Collection of Non-Toxic childrens colors available
 
-                            Let your child learn the art of painting at an early age 
+                                Let your child learn the art of painting at an early age 
 
-                            by having his hands on the colors available here... 
+                                by having his hands on the colors available here... 
 
-                        </span>
+                            </span>
 
-                    </li>  
+                        </li>  
 
-                    <li class="sliderImage" style="display: none; ">
+                        <li class="sliderImage" style="display: none; ">
 
-                        <img src="images/banner/b7.jpg" width="900" height="300" /> 
+                            <img src="images/banner/b7.jpg" width="900" height="300" /> 
 
-                        <span class="top" style="display: none; ">
+                            <span class="top" style="display: none; ">
 
-                            <strong>Graphic Novels...</strong>				
+                                <strong>Graphic Novels...</strong>				
 
-                            <br>The most amazing titles that you always wanted to get your hands onn.. 
+                                <br>The most amazing titles that you always wanted to get your hands onn.. 
 
-                            Now you have the opportunity to have them all in your personal library.
+                                Now you have the opportunity to have them all in your personal library.
 
-                            International as well as Indian titles of many authors available
+                                International as well as Indian titles of many authors available
 
-                        </span>
+                            </span>
 
-                    </li>   
-
-
-
-                    <li class="sliderImage" style="display: none; ">
-
-                        <img src="images/banner/b6.png" width="900" height="300" /> 
-
-                        <span class="top" style="display: none; ">
-
-                            <strong>Color World...</strong>				
-
-                            <br>A vast variety of different sets of colors including Oil-Pastels,
-
-                            Pencil Colors, Poster Colors, Acrylic Colors and many more...
-
-                        </span>
-
-                    </li>   
-
-                    <div class="clear sliderImage"></div>  
-
-                </ul>
-            </div>
-        </div>
-    </div>
+                        </li>   
 
 
 
-    <div class="container_16">
-        <div id = "contents">
-            <!-- LeftSide -->
+                        <li class="sliderImage" style="display: none; ">
 
+                            <img src="images/banner/b6.png" width="900" height="300" /> 
 
-<%
-    Connection c = new DB_Conn().getConnection();
-    Statement st = c.createStatement();
-    String getCategory = "SELECT * FROM  `category`  ";
-    
-    ResultSet rs = st.executeQuery(getCategory);
-    
-%>
-            <div id="leftside" class="grid_3">
-                <div>
-                    <ul id="leftsideNav">
-                        <li><a href="#"><strong>Categories</strong></a></li>
-                        
-                        <%
-                        while (rs.next()){
-                            String category = rs.getString ("category_name");
-                            %>
-                            <li><a href="viewProducts_.jsp"><%= category %></a></li>
-                        <%
-                        }
-                        %>
-                      
+                            <span class="top" style="display: none; ">
+
+                                <strong>Color World...</strong>				
+
+                                <br>A vast variety of different sets of colors including Oil-Pastels,
+
+                                Pencil Colors, Poster Colors, Acrylic Colors and many more...
+
+                            </span>
+
+                        </li>   
+
+                        <div class="clear sliderImage"></div>  
+
                     </ul>
                 </div>
-<!--        //         <div class="adv">
-                    <h2><br/>This is The Header of an Advertisement</h2>
-                    <p>We offer Advertisement display here </p>
-                </div>-->
+            </div>
+        </div>
+
+
+
+        <div class="container_16">
+            <div id = "contents">
+                <!-- LeftSide -->
+
+
+                <%    DB_Conn db_conn = new DB_Conn();
+                    Connection c = db_conn.getConnection();
+                    Statement st = c.createStatement();
+                    String getCategory = "SELECT * FROM  `category`  ";
+
+                    ResultSet rs = st.executeQuery(getCategory);
+
+                %>
+                <div id="leftside" class="grid_3">
+                    <div>
+                        <ul id="leftsideNav">
+                            <li><a href="#"><strong>Categories</strong></a></li>
+
+                            <%                            while (rs.next()) {
+                                    String category = rs.getString("category_name");
+                            %>
+                            <li><a href="viewProducts_.jsp"><%= category%></a></li>
+                                <%
+                                    }
+
+                                    db_conn.closeConnection();
+                                %>
+
+                        </ul>
+                    </div>
+                    <!--        //         <div class="adv">
+                                        <h2><br/>This is The Header of an Advertisement</h2>
+                                        <p>We offer Advertisement display here </p>
+                                    </div>-->
+                </div>
+
+
             </div>
 
+            <!-- Middle -->
+            <div id="middle"class="grid_13">
+                <jsp:include page="includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
+                </div>
+                <!--The Middle Content Div Closing -->
+            </div>
+            <!--The Center Content Div Closing -->
 
-        </div>
-
-        <!-- Middle -->
-        <div id="middle"class="grid_13">
-            <jsp:include page="includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
-        </div>
-        <!--The Middle Content Div Closing -->
-    </div>
-    <!--The Center Content Div Closing -->
-
-    <jsp:include page="includesPage/_footer.jsp"></jsp:include>
+        <jsp:include page="includesPage/_footer.jsp"></jsp:include>
 
 
 
 
 
-</body>
+    </body>
 </html>
 
 

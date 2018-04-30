@@ -97,11 +97,12 @@ public class loginServlet extends HttpServlet {
         RequestDispatcher dispatchMessage =
                  request.getServletContext().getRequestDispatcher(messageUrl);
         
+        DB_Conn con = null;
+        
         try {
-            
             pass = SecureSHA1.getSHA1(pass);
             out.println("email " + email + " pass " + pass);
-            DB_Conn con = new DB_Conn();
+            con = new DB_Conn();
             Connection c = con.getConnection();
             String sqlGetUsers = "SELECT  `email` ,  "
                     + "`pass` FROM  `user`; ";
@@ -162,6 +163,10 @@ public class loginServlet extends HttpServlet {
         } catch (Exception e) {
             out.println(" Problem in the process execution...");
             //response.sendError(404);
+        }finally{
+            if(con != null){
+                con.closeConnection();
+            }
         }
     }
 

@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>SaiKiran BookStores</title>
+    <title>Eastnat</title>
     <link rel="shortcut icon" href="images/logo/ico.ico"/>
     <link rel="stylesheet" type="text/css" href="css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="css/text.css"/>
@@ -40,14 +40,14 @@
 
     <%
         if (session.getAttribute("user") == null) {// THen new user, show join now
-%>
+    %>
     <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
     <%        } else {
     %>
     <jsp:include page="includesPage/_logout.jsp"></jsp:include>
     <%            }
-        
-        if (session.getAttribute("admin")== null){
+
+        if (session.getAttribute("admin") == null) {
             response.sendRedirect("admin_.jsp");
         }
     %>
@@ -61,8 +61,8 @@
                 <h1 class="grid_15">Manage Product Information</h1><hr/>
 
             </div>
-            <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
-                
+        <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
+
         <%--
         SELECT * 
         FROM  `products` p
@@ -71,10 +71,9 @@
         WHERE p.`product_id` = 2
         --%>
         <%
-
             Connection c = new DB_Conn().getConnection();
             Statement st = c.createStatement();
-            
+
             //Fetch the (PID) Product ID 
             String productId = request.getParameter("pid");
             if (request.getParameter("pid") == null || request.getParameter("pid") == "" || request.getParameter("pid") == "null") {
@@ -86,135 +85,134 @@
                         + " ORDER BY `product_qty` ASC ";
                 Statement st1 = c.createStatement();
                 ResultSet rs = st1.executeQuery(sqlFetchItems.toString());
-%>
-            <div id="middle"class="grid_13">
-                 <div class="grid_13" id="whiteBox">
-                     
-                        <style>
-                            p {
-                                margin: 10px 0px;
-                            }
-                        </style>
-                    <div class="ProductHeading">
-                        <div class="grid_12">
-                            <h1 class="grid_8">
-                                    Choose a Product to <span class="blue">Edit</span>
-                                </h1>
-                            
-                            <script type="text/javascript">
-                                $(document).ready(function(){
-                                    $('#sortBy').change(function (){
-                                        var sortBy = $('#sortBy').attr('value');
-                                        if (sortBy != ""){
-                                            //alert(" "+$('#sortBy').attr('value'));
-                                            $.get('admin_manageProduct_1.jsp', {sortBy : sortBy}, function (data){
-                                                //alert(data);
-                                                
-                                                $('#productContent').fadeOut(200, function (){
+        %>
+        <div id="middle"class="grid_13">
+            <div class="grid_13" id="whiteBox">
+
+                <style>
+                    p {
+                        margin: 10px 0px;
+                    }
+                </style>
+                <div class="ProductHeading">
+                    <div class="grid_12">
+                        <h1 class="grid_8">
+                            Choose a Product to <span class="blue">Edit</span>
+                        </h1>
+
+                        <script type="text/javascript">
+                            $(document).ready(function () {
+                                $('#sortBy').change(function () {
+                                    var sortBy = $('#sortBy').attr('value');
+                                    if (sortBy != "") {
+                                        //alert(" "+$('#sortBy').attr('value'));
+                                        $.get('admin_manageProduct_1.jsp', {sortBy: sortBy}, function (data) {
+                                            //alert(data);
+
+                                            $('#productContent').fadeOut(200, function () {
                                                 $('#productContent').html("");
-                                                    $('#productContent').fadeIn(200);
-                                                    $('#productContent').html(data);
-                                                });
+                                                $('#productContent').fadeIn(200);
+                                                $('#productContent').html(data);
                                             });
-                                        }
-                                    });
+                                        });
+                                    }
                                 });
-                            </script>
+                            });
+                        </script>
+                        <div class="grid_2">
+                            <select id="sortBy" style="margin:  -2px;">
+                                <option value="qa">Sort By Quantity Low to High</option>
+                                <option  value="qd">Sort By Quantity High to Low</option>
+                                <option value="pa">Sort By Price Low to High</option>
+                                <option  value="pd">Sort By Price High to Low</option>
+                                <option  value="ha">Sort By Hits Low to High</option>
+                                <option  value="hd">Sort By Hits High to Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="grid_12 productListing">
+                    <div class="clear"></div>
+                    <div id="productContent">
+                        <%
+                            while (rs.next()) {
+                                /*
+                                 product-name	product_id	sub-category-name	category-name	company-name	price	summary	image-id	image-name*/
+                                String product_id = rs.getString("product_id");
+
+                                String product_name = rs.getString("product-name");
+
+                                String sub_category_name = rs.getString("sub-category-name");
+
+                                String category_name = rs.getString("category-name");
+
+                                String company_name = rs.getString("company-name");
+
+                                String price = rs.getString("price");
+
+                                String summary = rs.getString("summary");
+
+                                int qty = rs.getInt("product_qty");
+
+                                String hits = rs.getString("hits");
+
+                                String image_name = rs.getString("image-name");
+                                /*
+                                 out.println("<br/>"+product_id+
+                                 "<br/>"+product_name+
+                                 "<br/>"+sub_category_name+
+                                 "<br/>"+category_name+
+                                 "<br/>"+company_name+
+                                 "<br/>"+price+
+                                 "<br/>"+summary+
+                                 "<br/>"+image_name);
+                                 */
+                                String alert = "";
+                                if (qty < 5) {
+                                    alert = "alert";
+                                }
+                        %>
+                        <div class="clear"></div>
+
+                        <div class="grid_13 <%= alert%>">
                             <div class="grid_2">
-                                <select id="sortBy" style="margin:  -2px;">
-                                    <option value="qa">Sort By Quantity Low to High</option>
-                                    <option  value="qd">Sort By Quantity High to Low</option>
-                                    <option value="pa">Sort By Price Low to High</option>
-                                    <option  value="pd">Sort By Price High to Low</option>
-                                    <option  value="ha">Sort By Hits Low to High</option>
-                                    <option  value="hd">Sort By Hits High to Low</option>
-                                </select>
+                                <a href="admin_manageProduct.jsp?pid=<%=product_id%>"><img src="<%= image_name%>" /></a>
+                            </div>
+                            <div class="grid_6">
+                                <p id="info"><a href="admin_manageProduct.jsp?pid=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Rs. <%= price%></span></p>
+                                <p style="display: inline;">Views <span class="blue"><%= hits%></span></p>
+
+                            </div>
+                            <div class="grid_4">
+                                <p><%=sub_category_name%></p>
+                                <div class="grid_3" style="display: inline;">
+                                    <h1 style="display: inline;"><%= qty%></h1> <a href="admin_manageProduct.jsp?pid=<%= product_id%>" id="greenBtn" style="display: inline;">Edit Product</a> 
+                                </div>
+                                <p>Quantity</p>
                             </div>
                         </div>
-                        
-                    </div>
-                     <div class="grid_12 productListing">
                         <div class="clear"></div>
-                            <div id="productContent">
-            <%
-                while (rs.next()) {
-                    /*
-                     product-name	product_id	sub-category-name	category-name	company-name	price	summary	image-id	image-name*/
-                    String product_id = rs.getString("product_id");
-
-                    String product_name = rs.getString("product-name");
-
-                    String sub_category_name = rs.getString("sub-category-name");
-
-                    String category_name = rs.getString("category-name");
-
-                    String company_name = rs.getString("company-name");
-
-                    String price = rs.getString("price");
-
-                    String summary = rs.getString("summary");
-
-                    int qty = rs.getInt("product_qty");
-
-                    String hits = rs.getString("hits");
-
-                    String image_name = rs.getString("image-name");
-                    /*
-                     out.println("<br/>"+product_id+
-                     "<br/>"+product_name+
-                     "<br/>"+sub_category_name+
-                     "<br/>"+category_name+
-                     "<br/>"+company_name+
-                     "<br/>"+price+
-                     "<br/>"+summary+
-                     "<br/>"+image_name);
-                     */
-                    String alert="";
-                    if (qty<5){
-                           alert = "alert";
-                    }
-        %>
-        <div class="clear"></div>
-        
-        <div class="grid_13 <%= alert %>">
-        <div class="grid_2">
-            <a href="admin_manageProduct.jsp?pid=<%=product_id%>"><img src="<%= image_name%>" /></a>
-        </div>
-            <div class="grid_6">
-                <p id="info"><a href="admin_manageProduct.jsp?pid=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Rs. <%= price%></span></p>
-                <p style="display: inline;">Views <span class="blue"><%= hits %></span></p>
-                
-            </div>
-            <div class="grid_4">
-                <p><%=sub_category_name%></p>
-                <div class="grid_3" style="display: inline;">
-                    <h1 style="display: inline;"><%= qty %></h1> <a href="admin_manageProduct.jsp?pid=<%= product_id%>" id="greenBtn" style="display: inline;">Edit Product</a> 
+                        <%
+                            }
+                        %>
+                    </div>
                 </div>
-                <p>Quantity</p>
             </div>
         </div>
-        <div class="clear"></div>
-        <%
-            }
-        %>
-                     </div>
-                 </div>
-               </div>
-            </div>
         <%
         } else {
-                
+
             String sqlFetchProductInfo = "SELECT * "
                     + "FROM  `products` p "
                     + "INNER JOIN  `images` i "
                     + "USING (  `product-name` ) "
-                    + "WHERE p.`product_id` = '"+productId+"' ";
-            
+                    + "WHERE p.`product_id` = '" + productId + "' ";
+
             String company = "", productName = "", searchTags = "",
                     category = "", subCategory = "",
                     quantity = "", price = "",
                     image_id, summary = "", imageName = "";
-
 
             ArrayList<String> productImages = new ArrayList<String>();
             ArrayList<String> productImagesId = new ArrayList<String>();
@@ -239,7 +237,8 @@
                 productImages.add(imageName);
                 productImagesId.add(image_id);
             }
-            
+
+            c.close();
             session.setAttribute("productId", productId);
             session.setAttribute("productName", productName);
         %>
@@ -275,7 +274,7 @@
                     <div class="clear"></div><br/>
                     <div class="grid_2">
                         Product Quantity in Stock<%
-                        session.setAttribute("quantity", quantity);
+                            session.setAttribute("quantity", quantity);
                         %>
                     </div>
                     <div class="grid_5">
@@ -317,22 +316,22 @@
                 -moz-transition:.3s all ease-in-out;
             }
         </style>
-        
+
         <script type="text/javascript">
-            $(document).ready(function (){
-                $('.imageGallery').css('opacity','0.4');
-                $('.imageGallery').mouseover(function (){
+            $(document).ready(function () {
+                $('.imageGallery').css('opacity', '0.4');
+                $('.imageGallery').mouseover(function () {
                     //      fadeTo (speed, opacity, callback)
-                    $(this).fadeTo(100,     1,      function (){
+                    $(this).fadeTo(100, 1, function () {
                         $('.imageGallery').not(this).fadeTo(100, 0.4);
-                        $('.imageGallery').css('-webkit-transition','.3s all ease-in-out');
-                        $('.imageGallery').css('-moz-transition','.3s all ease-in-out');
+                        $('.imageGallery').css('-webkit-transition', '.3s all ease-in-out');
+                        $('.imageGallery').css('-moz-transition', '.3s all ease-in-out');
                     })
                 });
-                $('.imageGallery').mouseout(function (){
-                    $('.imageGallery').css('opacity','0.4');
+                $('.imageGallery').mouseout(function () {
+                    $('.imageGallery').css('opacity', '0.4');
                 });
-            });         
+            });
         </script>
         <div class="grid_16" id="whiteBox">
             <br/>
@@ -343,25 +342,25 @@
             <hr/>
 
             <%
-            if (productImagesId.size() == 1){
-                //Dont delete the product Image
-                //Deletion will result into void of join syntax 
-                //which then lead to the No display of product from the list
-            
-    %>
-            
-                <img class="imageGallery" src="<%= productImages.get(0)%>"/>
-            
+                if (productImagesId.size() == 1) {
+                    //Dont delete the product Image
+                    //Deletion will result into void of join syntax 
+                    //which then lead to the No display of product from the list
+
+            %>
+
+            <img class="imageGallery" src="<%= productImages.get(0)%>"/>
+
             <%
-                }else {
-                            for (int i = 0; i < productImagesId.size(); i++) {
-                        %>
-                        <a href="admin_deleteImage.jsp?iid=<%= productImagesId.get(i)%>">
-                            <img class="imageGallery" src="<%= productImages.get(i)%>"/>
-                        </a>
-                        <%
+            } else {
+                for (int i = 0; i < productImagesId.size(); i++) {
+            %>
+            <a href="admin_deleteImage.jsp?iid=<%= productImagesId.get(i)%>">
+                <img class="imageGallery" src="<%= productImages.get(i)%>"/>
+            </a>
+            <%
                         }
-                
+
                     }
                 }
             %>

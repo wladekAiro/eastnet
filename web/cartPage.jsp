@@ -86,13 +86,13 @@
                         Assassins Creed III
                     </div>
                     <div class="grid_2">
-                        Rs. 999
+                        Kshs. 999
                     </div>
                     <div class="grid_1">
                          x1
                     </div>
                     <div class="grid_2">
-                         Rs. 2098
+                         Kshs. 2098
                     </div>
             
                     <div class="grid_5">
@@ -100,26 +100,26 @@
                     </div>
             
                     <div class="grid_2">
-                        Rs. 1024
+                        Kshs. 1024
                     </div>
                     <div class="grid_1">
                          x2
                     </div>
                     <div class="grid_2">
-                         Rs. 67890
+                         Kshs. 67890
                     </div>
             
                     <div class="grid_5">
                         Sherlock holmes
                     </div>
                     <div class="grid_2">
-                        Rs. 104
+                        Kshs. 104
                     </div>
                     <div class="grid_1">
                          x1
                     </div>
                     <div class="grid_2">
-                         Rs. 6789
+                         Kshs. 6789
                     </div>
                     <br/>
                     
@@ -128,7 +128,7 @@
                     </div>
             
                     <div class="grid_3 push_3">
-                        Rs 20345
+                        Kshs 20345
                     </div>
                     <div class="clear"></div>
                     

@@ -19,7 +19,7 @@
         <link rel="stylesheet" type="text/css" href="css/960_16.css"/>
         <link rel="stylesheet" type="text/css" href="css/product.css"  />
         <link rel="stylesheet" type="text/css" href="css/styles.css"/>
-        
+
         <script src="js/jquery-1.7.2.min.js"></script>
         <script src="js/myScript.js"></script>
     </head>
@@ -28,7 +28,7 @@
 
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
-%>
+        %>
         <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
         <%        } else {
         %>
@@ -42,17 +42,17 @@
         <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
         <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
         <jsp:useBean class="admin.administrator" scope="session" id="admins"></jsp:useBean>
-        <div class="container_16">
+            <div class="container_16">
 
-            <div class="grid_16" style="padding: 10px;" id="whiteBox">
+                <div class="grid_16" style="padding: 10px;" id="whiteBox">
 
-                <br/>    
-                <div class="grid_15 ">
-                    <h1>Administrator Settings </h1>
+                    <br/>    
+                    <div class="grid_15 ">
+                        <h1>Administrator Settings </h1>
+                    </div>
+                    <hr/>
                 </div>
-                <hr/>
-            </div>
-            <div class="clear"></div>
+                <div class="clear"></div>
 
             <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
             <%
@@ -103,8 +103,8 @@
                 </div>
 
                 <script type="text/javascript">
-                    $(document).ready(function (){
-                                        
+                    $(document).ready(function () {
+
                     })
                 </script>       
                 <br/>    
@@ -117,8 +117,8 @@
                     String sqlFetchCategory = "SELECT * FROM  `category` ";
                     String sqlFetchSubCategory = "SELECT * FROM  `sub-category` ORDER BY `category_name` ";
                     ResultSet rs;
-                    
-                    
+
+
                 %>
 
 
@@ -132,24 +132,22 @@
                             <input type="submit" value="Delete Marked Company" id="buy"/>
                         </div>
                         <br/><div class="clear"></div>
-                    <%
-                    
-                        rs = st.executeQuery(sqlFetchCompany);
-                        while (rs.next())  {
-                            String companyId = rs.getString("company-id");
-                            String company = rs.getString("company-name");
-                            %>
-                            <div class="grid_4">
-                                <a  style="display:inline;"><%= company %></a> 
-                            </div>
-                            <div class="grid_3">
-                               <input style="display:inline;" type ="checkbox" name="company" value="<%= companyId %>" />
-                            </div>
-                            
-                            <br/>
-                    <%
-                        }
-                    %>
+                        <%                        rs = st.executeQuery(sqlFetchCompany);
+                            while (rs.next()) {
+                                String companyId = rs.getString("company-id");
+                                String company = rs.getString("company-name");
+                        %>
+                        <div class="grid_4">
+                            <a  style="display:inline;"><%= company%></a> 
+                        </div>
+                        <div class="grid_3">
+                            <input style="display:inline;" type ="checkbox" name="company" value="<%= companyId%>" />
+                        </div>
+
+                        <br/>
+                        <%
+                            }
+                        %>
                     </form>
                     <br/><br/><br/></div>  
 
@@ -160,29 +158,28 @@
                 <hr/>
                 <div class="grid_9 push_1 ">
                     <form method="post" action="removeCategory">
-                            <div class="grid_4 push_2">
-                                <input type="submit" value="Delete Marked Category" id="buy"/>
-                            </div>
-                            <br/><div class="clear"></div>
+                        <div class="grid_4 push_2">
+                            <input type="submit" value="Delete Marked Category" id="buy"/>
+                        </div>
+                        <br/><div class="clear"></div>
                         <%
-                        
                             rs = st.executeQuery(sqlFetchCategory);
-                            while (rs.next())  {
+                            while (rs.next()) {
                                 String categoryId = rs.getString("category_id");
                                 String categoryName = rs.getString("category_name");
-                                %>
-                                <div class="grid_4">
-                                    <a  style="display:inline;"><%= categoryName %></a> 
-                                </div>
-                                <div class="grid_3">
-                                   <input style="display:inline;" type ="checkbox" name="category" value="<%= categoryId %>" />
-                                </div>
-                                <br/>
+                        %>
+                        <div class="grid_4">
+                            <a  style="display:inline;"><%= categoryName%></a> 
+                        </div>
+                        <div class="grid_3">
+                            <input style="display:inline;" type ="checkbox" name="category" value="<%= categoryId%>" />
+                        </div>
+                        <br/>
                         <%
                             }
                         %>
-                        </form>
-                        <br/><br/><br/>
+                    </form>
+                    <br/><br/><br/>
                 </div>
                 <br/>    
                 <div class="grid_13 ">
@@ -195,30 +192,30 @@
                             <input type="submit" value="Delete Marked Sub-Category" id="buy"/>
                         </div>
                         <br/><div class="clear"></div>
-                    <%
-                    
-                        rs = st.executeQuery(sqlFetchSubCategory);
-                        while (rs.next())  {
-                            /*subcategory_id	sub-category_name category_name*/
-                            String subCatId = rs.getString("subcategory_id");
-                            String category_name = rs.getString("category_name");
-                            String subCatName = rs.getString("sub-category_name");
-                            %>
-                            <div class="grid_4">
-                                <a  style="display:inline;"><%= subCatName %></a> >>
-                                <a  style="display:inline;"><%= category_name %></a> 
-                            </div>
-                            <div class="grid_3">
-                               <input style="display:inline;" type ="checkbox" name="subCategory" value="<%= subCatId %>" />
-                            </div>
-                            
-                            <br/>
-                    <%
-                        }
-                    %>
+                        <%
+                            rs = st.executeQuery(sqlFetchSubCategory);
+                            while (rs.next()) {
+                                /*subcategory_id	sub-category_name category_name*/
+                                String subCatId = rs.getString("subcategory_id");
+                                String category_name = rs.getString("category_name");
+                                String subCatName = rs.getString("sub-category_name");
+                        %>
+                        <div class="grid_4">
+                            <a  style="display:inline;"><%= subCatName%></a> >>
+                            <a  style="display:inline;"><%= category_name%></a> 
+                        </div>
+                        <div class="grid_3">
+                            <input style="display:inline;" type ="checkbox" name="subCategory" value="<%= subCatId%>" />
+                        </div>
+
+                        <br/>
+                        <%
+                            }
+                            c.close();
+                        %>
                     </form>
                     <br/><br/><br/></div>  
- 
+
 
             </div>
         </div>

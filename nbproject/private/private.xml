@@ -4,9 +4,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/web/register_success.jsp</file>
             <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/src/java/loginRegister/registerServlet.java</file>
-            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/web/admin_changeProductInfo.jsp</file>
-            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/src/java/database/DB_Conn.java</file>
+            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/web/includesPage/mainHeaders/topMostViewedProducts_4.jsp</file>
+            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/src/java/loginRegister/loginServlet.java</file>
+            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/web/index.jsp</file>
+            <file>file:/Users/wladekairo/Documents/projects/zangu/web/saikiranBookstoreApp/web/product.jsp</file>
         </group>
     </open-files>
 </project-private>

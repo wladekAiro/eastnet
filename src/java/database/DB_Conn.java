@@ -5,6 +5,8 @@
 package database;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /*
  *
  * @author Chirag
@@ -43,5 +45,15 @@ public class DB_Conn {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    
+    public void closeConnection(){
+        try {
+            if(!con.isClosed()){
+                con.close();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DB_Conn.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

@@ -34,39 +34,15 @@
         if (session.getAttribute("user") == null ){// THen new user, show join now
             %>
             <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
-        <%
-        }else {
-            %>
-            <jsp:include page="includesPage/_logout.jsp"></jsp:include>
-        <%
         }
         %>
 
-        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
-        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
-
         <div class="container_16">
             <div class="grid_13 push_2" id="whiteBox" style="padding:10px 0px 10px 0px;">
-                <h1 class="push_4" style="padding: 10px;" >Administrator Login</h1>    
-                <hr/> <br/><div class="grid_9 push_2" style="padding:10px;">
-                        <form method="post" action="admin_login">
-                            <div class="grid_2">
-                                Email
-                            </div>
-                            <div class="grid_5">
-                                <input type="text" name="email" placeholder="xyz@xyz.com" />
-                            </div>
-                            <div class="clear"></div><br/>
-                            
-                            <div class="grid_2">
-                                Password 
-                            </div>
-                            <div class="grid_5">
-                                <input type="password" name="pass" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" /><br/><br/> 
-                                <input id="greenBtn" type="submit" value="Login"/>
-                            </div>
-                            <div class="clear"></div><br/>
-                        </form>
+                <h1 class="push_4" style="padding: 10px;" >Success</h1>    
+                <hr/> <br/>
+                <div class="grid_9 push_2" style="padding:10px;">
+                        <strong>Welcome, you have successfully registered with us.</strong>
                     </div>
                 </div>
         </div>

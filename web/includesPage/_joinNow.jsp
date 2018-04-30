@@ -2,7 +2,7 @@
 <div id = "topWrapper">
     <div class="container_16">
         <div class="grid_16">
-            <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/icon.png" /></a>
+            <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/eastnat_logo.png" /></a>
             </div>
             <div class="grid_6" id="top">
                 <ul>
@@ -70,7 +70,7 @@
                                 <label>Email</label>
                             </td>
                             <td>
-                                <label><input type="email" name="emailReg" placeholder="john_lee@xyz.com" required/><br/></label>
+                                <label><input type="email" name="emailReg" placeholder="user_abc@xyz.com" required/><br/></label>
                             </td>
                         </tr>
                         <tr>

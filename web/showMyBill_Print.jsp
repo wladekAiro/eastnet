@@ -110,7 +110,7 @@
         <div id = "topWrapper" style="box-shadow: 0px 10px 10px #555;">
             <div class="container_16">
                 <div class="grid_16">
-                    <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/icon.png" /></a>
+                    <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/eastnat_logo.png" /></a>
                     </div>
                 </div>
             </div>
