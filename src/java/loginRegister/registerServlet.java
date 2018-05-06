@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import helpers.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 import user.user;
+import utils.PasswordHash;
 
 /**
  *
@@ -114,17 +115,19 @@ public class registerServlet extends HttpServlet {
                 if (isEmailValid) {
                     if (pass.length() > 7) {
                         if (pass.equals(passAgain)) {
-                            // then the user is registered and a session is 
+                            // then the user is registered and a session is
+
+                            String hashedPassword = PasswordHash.createHash(pass);
 
                             String sql = "INSERT INTO `user` "
                                     + "(`user_id` ,`email` ,`pass` ,`registeredOn`) "
-                                    + "VALUES (NULL ,  ?, SHA1(  ? ) , NOW( )); ";
+                                    + "VALUES (NULL ,  ?, ?, NOW( )); ";
 
                             PreparedStatement psmt = c.prepareStatement(sql);
 
                             psmt.setString(1, email);
 
-                            psmt.setString(2, pass);
+                            psmt.setString(2, hashedPassword);
 
                             int i = psmt.executeUpdate();
 
@@ -185,7 +188,50 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-        } catch (Exception ex) {
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            messageDetail = ex.getMessage();
+            message = "There was a problem in registering your account please do retry again later...";
+            out.print(" nOT Success!!" + ex);
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+            response.sendError(404);
+        } catch (ClassNotFoundException ex) {
+            messageDetail = ex.getMessage();
+            message = "There was a problem in registering your account please do retry again later...";
+            out.print(" nOT Success!!" + ex);
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+            response.sendError(404);
+        } catch (NoSuchAlgorithmException ex) {
+            messageDetail = ex.getMessage();
+            message = "There was a problem in registering your account please do retry again later...";
+            out.print(" nOT Success!!" + ex);
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+            response.sendError(404);
+        } catch (InvalidKeySpecException ex) {
+            ex.printStackTrace();
+            messageDetail = ex.getMessage();
+            message = "There was a problem in registering your account please do retry again later...";
+            out.print(" nOT Success!!" + ex);
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+            response.sendError(404);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            messageDetail = ex.getMessage();
+            message = "There was a problem in registering your account please do retry again later...";
+            out.print(" nOT Success!!" + ex);
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+            response.sendError(404);
+        } catch (ServletException ex) {
             ex.printStackTrace();
             messageDetail = ex.getMessage();
             message = "There was a problem in registering your account please do retry again later...";

@@ -9,6 +9,8 @@ import database.DB_Conn;
 import helpers.SecureSHA1;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import user.user;
+import utils.PasswordHash;
 
 /**
  *
@@ -28,9 +31,8 @@ import user.user;
 public class admin_login extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -45,21 +47,20 @@ public class admin_login extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet admin_login</title>");            
+            out.println("<title>Servlet admin_login</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet admin_login at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -69,12 +70,11 @@ public class admin_login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.sendRedirect("admin_.jsp");
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -92,79 +92,97 @@ public class admin_login extends HttpServlet {
         PrintWriter out = response.getWriter();
         email = request.getParameter("email");
         pass = request.getParameter("pass");
-        String message, messageDetail;
-        message = "";
-        messageDetail = "";
-        
+        String message, messageDetail = null;
+
         String messageUrl = "/message.jsp";
-        RequestDispatcher dispatchMessage =
-                 request.getServletContext().getRequestDispatcher(messageUrl);
-        
+        RequestDispatcher dispatchMessage
+                = request.getServletContext().getRequestDispatcher(messageUrl);
+
         try {
             pass = SecureSHA1.getSHA1(pass);
             //out.println("email " + email + " pass " + pass);
             DB_Conn con = new DB_Conn();
             Connection c = con.getConnection();
-            String sqlGetUsers = "SELECT * FROM  `administrators` ;";
+            String sqlGetUser = "SELECT * FROM  `administrators` where `email'='" + email + "';";
 
-            PreparedStatement st = c.prepareStatement(sqlGetUsers);
+            PreparedStatement st = c.prepareStatement(sqlGetUser);
 
             ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                db_email = rs.getString("email");
-                db_pass = rs.getString("password");
+            if (rs.next()) {
 
-                if (email.equals(db_email)) {
+                db_pass = rs.getString("password");
+                db_email = rs.getString("email");
+
+                if (PasswordHash.validatePassword(pass, db_pass)) {
                     message = "Your email-id exists with us!";
                     //you exist with us
-                    if (pass.equals(db_pass)) {
-                        isLoggedIn = true;
-                        //user exists and password is matching
-                        //out.print("You are logged in");
-                        user User = new user();
-                        administrator Administrator = new administrator();
-                        Administrator.setAdmin_email(db_email);
-                        User.setUserEmail(email);
-                        userSession.setAttribute("user", User);
-                        userSession.setAttribute("admin", Administrator);
-                        response.sendRedirect(request.getContextPath());
-                      }
-                    else {
-                        isLoggedIn = false;
-                        // user exsts but wrong passwotd ask to CHANGE THE PASSWORD
-                        message = "Wrong Password...!";
-                        messageDetail = "Password does not match with the password during registeration... Please re-login with correct password";
-                        //out.println("wrong password Change the password now <a href = 'changeMyPassword.jsp'>Change</a>");
-                        break;
-                    }
-                }
-                else {
-                    //or there no such email YOu do not exist with us Create an account now!!
-                    //out.println(" no such email Register an account now!");
-                    message = "Not an Administrator";
-                    messageDetail = "You are currently not an Administrator!";
+                    isLoggedIn = true;
+                    //user exists and password is matching
+                    //out.print("You are logged in");
+                    user User = new user();
+                    administrator Administrator = new administrator();
+                    Administrator.setAdmin_email(db_email);
+                    User.setUserEmail(email);
+                    userSession.setAttribute("user", User);
+                    userSession.setAttribute("admin", Administrator);
+                    response.sendRedirect(request.getContextPath());
+                } else {
                     isLoggedIn = false;
+                    // user exsts but wrong passwotd ask to CHANGE THE PASSWORD
+                    message = "Log in failed...!";
+                    messageDetail = "Wrong username or password";
+                    //out.println("wrong password Change the password now <a href = 'changeMyPassword.jsp'>Change</a>");
                 }
+            } else {
+                message = "Log in failed...!";
+                messageDetail = "Wrong username or password";
             }
-            
-            if (isLoggedIn == false){
+
+            if (isLoggedIn == false) {
                 request.setAttribute("message", message);
                 request.setAttribute("messageDetail", messageDetail);
                 dispatchMessage.forward(request, response);
             }
-        } 
-        catch (SQLException e) {
+        } catch (SQLException e) {
             message = "Error in the Login process";
-                    messageDetail = "There was an error in the process of login Please try after some time!";
-                    
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             //dispatchMessage.forward(request, response);
-        } catch (Exception e) {
-           message = "Error in the Login process";
-                    messageDetail = "There was an error in the process of login Please try after some time!";
-                  
+        } catch (IOException e) {
+            message = "Error in the Login process";
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            //dispatchMessage.forward(request, response);
+        } catch (ClassNotFoundException e) {
+            message = "Error in the Login process";
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            //dispatchMessage.forward(request, response);
+        } catch (NoSuchAlgorithmException e) {
+            message = "Error in the Login process";
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            //dispatchMessage.forward(request, response);
+        } catch (InvalidKeySpecException e) {
+            message = "Error in the Login process";
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            //dispatchMessage.forward(request, response);
+        } catch (ServletException e) {
+            message = "Error in the Login process";
+            messageDetail = "There was an error in the process of login Please try after some time!";
+
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             //dispatchMessage.forward(request, response);

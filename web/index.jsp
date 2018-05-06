@@ -160,7 +160,7 @@
                 <%    DB_Conn db_conn = new DB_Conn();
                     Connection c = db_conn.getConnection();
                     Statement st = c.createStatement();
-                    String getCategory = "SELECT * FROM  `category`  ";
+                    String getCategory = "SELECT * FROM  category  ";
 
                     ResultSet rs = st.executeQuery(getCategory);
 

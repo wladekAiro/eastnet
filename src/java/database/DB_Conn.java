@@ -12,39 +12,14 @@ import java.util.logging.Logger;
  * @author Chirag
  */
 public class DB_Conn {
-
-    private String database="eastnet", username = "root", password = "";
+    
     private Connection con;
     
     public Connection getConnection() throws SQLException, ClassNotFoundException  {
-        Class.forName("com.mysql.jdbc.Driver"); 
-        con=DriverManager.getConnection("jdbc:mysql://localhost:3306/"+database+"",""+username+"",""+password+""); 
+        Class.forName("org.postgresql.Driver"); 
+        con=DriverManager.getConnection("jdbc:postgresql://localhost:5432/easnat", "postgres","postgres"); 
        // stm=con.createStatement(); 
         return con;
-    }
-
-    public String getDatabase() {
-        return database;
-    }
-
-    public void setDatabase(String database) {
-        this.database = database;
-    }
-    
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
     
     public void closeConnection(){

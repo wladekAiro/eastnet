@@ -31,13 +31,13 @@
     <div class="clear"></div>
     <%
         String sqlTopMostProds = "SELECT * "
-                + " FROM  `products` p"
-                + " INNER JOIN  `images` i"
-                + " USING (  `product-name` ) "
-                + "WHERE `product_qty` > 5 "
-                + " GROUP BY  `product-name` "
-                + " ORDER BY  `hits` DESC "
-                + " LIMIT 0,16 ";
+                + " FROM  products p"
+                + " INNER JOIN  images i"
+                + " ON p.id=i.product_id "
+                + "WHERE p.product_qty > 5 "
+                + " GROUP BY  p.product_name "
+                + " ORDER BY  p.hits DESC "
+                + " LIMIT 16 ";
 
         DB_Conn db_conn = new DB_Conn();
         Connection c = db_conn.getConnection();
@@ -49,12 +49,12 @@
         while (rs.next()) {
 
             price = rs.getString("price");
-            imageName = rs.getString("image-name");
+            imageName = rs.getString("image_name");
             productId = rs.getString("product_id");
-            name = rs.getString("product-name");
-            subCategory = rs.getString("sub-category-name");
-            category = rs.getString("category-name");
-            company = rs.getString("company-name");
+            name = rs.getString("product_name");
+            subCategory = rs.getString("sub_category_name");
+            category = rs.getString("category_name");
+            company = rs.getString("company_name");
     %>
     <div id="productList" class="grid_3 prodGrid"> 
         <a href="product.jsp?id=<%= productId%>"><img src="<%= imageName%>" /></a>

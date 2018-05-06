@@ -78,9 +78,9 @@
                     <%
                         String category, subcategory;
                         StringBuffer sql = new StringBuffer();
-                        sql.append("SELECT * FROM  `products` p "
-                                        + "INNER JOIN  `images` i "
-                                        + "USING (  `product-name` ) ");
+                        sql.append("SELECT * FROM  products p "
+                                        + "INNER JOIN  images i "
+                                        + "USING (  product_name ) ");
                         
                         category = "";
                         subcategory = "";
@@ -191,7 +191,7 @@ WHERE  `category-name` =  'Games'
 AND  `sub-category-name` =  'Action-Adventure-Game'
 GROUP BY  `product-name` */
                                 
-                                sql.append(" WHERE  `category-name` =  '"+category+"' ");
+                                sql.append(" WHERE  category_name =  '"+category+"' ");
                                 %>
                                     <div class="grid_4 ">
                                         <a id="greenBtn" href="removeProductFilter.jsp?cat=<%= category %>">Category : <%= category %> [x]</a>

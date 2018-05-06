@@ -7,10 +7,6 @@
 -- Server version: 5.5.24
 -- PHP Version: 5.3.10-1ubuntu3.2
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -26,43 +22,120 @@ SET time_zone = "+00:00";
 -- Table structure for table `administrators`
 --
 
-CREATE TABLE IF NOT EXISTS `administrators` (
-  `admin_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`admin_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+-- CREATING TABLES 
 
+CREATE TABLE IF NOT EXISTS administrators (
+  id serial primary key,
+  email varchar(45) NOT NULL UNIQUE,
+  password varchar(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS category (
+  id serial primary key,
+  category_name varchar(30) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS sub_category (
+  id serial primary key,
+  sub_category_name varchar(30) NOT NULL,
+  category_id bigint NOT NULL REFERENCES category(id),
+  category_name varchar(30) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product_company (
+  id serial primary key,
+  company_name varchar(40) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id serial primary key,
+  product_name varchar(60) NOT NULL UNIQUE,
+  product_id bigint,
+  sub_category_name varchar(40) NOT NULL,
+  sub_category_id bigint NOT NULL REFERENCES sub_category(id),
+  category_name varchar(40) NOT NULL,
+  company_name varchar(40) NOT NULL,
+  price numeric(10,2) NOT NULL,
+  summary text,
+  tags varchar(255) NOT NULL,
+  product_qty bigint NOT NULL,
+  last_updated timestamp without time zone NOT NULL,
+  hits bigint NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id serial primary key,
+  email varchar(50) NOT NULL UNIQUE,
+  password varchar(255) NOT NULL,
+  registered_on timestamp without time zone NOT NULL,
+  user_name varchar(50) NOT NULL UNIQUE,
+  user_role varchar(15) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id serial primary key,
+  user_id bigint NOT NULL REFERENCES users(id),
+  status varchar(15) NOT NULL,
+  shippers_name varchar(30) NOT NULL,
+  address varchar(120) NOT NULL,
+  mobile_number varchar(10) NOT NULL,
+  shippers_email varchar(45) NOT NULL,
+  ordered_On timestamp without time zone NOT NULL,
+  total_order_price numeric(10,2) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS images (
+  id serial primary key,
+  image_name varchar(255) NOT NULL,
+  product_name varchar(255) NOT NULL,
+  product_id bigint NOT NULL REFERENCES products(id)
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+  id serial primary key,
+  product_id bigint NOT NULL REFERENCES products(id),
+  product_name varchar(250) NOT NULL,
+  price float NOT NULL,
+  purchase_date timestamp without time zone NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS sales (
+  id serial primary key,
+  order_id bigint NOT NULL REFERENCES orders(id),
+  product_id bigint NOT NULL REFERENCES products(id),
+  product_name varchar(255) NOT NULL,
+  product_price numeric(10,2) NOT NULL,
+  product_quantity bigint NOT NULL,
+  sold_on timestamp without time zone NOT NULL,
+  user_id bigint NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS user_details (
+  id serial primary key,
+  user_id bigint NOT NULL REFERENCES users(id),
+  user_name varchar(30) NOT NULL UNIQUE,
+  mobile_no varchar(10) NOT NULL UNIQUE,
+  address varchar(100) NOT NULL,
+  gender varchar(10) NOT NULL,
+  user_image text NOT NULL
+);
+
+
+-- DUMPING DATA
 --
 -- Dumping data for table `administrators`
 --
 
-INSERT INTO `administrators` (`admin_id`, `email`, `password`) VALUES
-(1, 'dead.night7@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441'),
-(2, 'ehab@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441'),
-(3, 'dead.niggght7@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441'),
-(4, 'mohd.norawala@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441'),
-(5, 'gujar@rajasthan.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441');
+INSERT INTO administrators (id, email, password) VALUES
+(1, 'dead.night7@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441');
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `category`
---
-
-CREATE TABLE IF NOT EXISTS `category` (
-  `category_id` int(255) unsigned NOT NULL AUTO_INCREMENT,
-  `category_name` varchar(30) NOT NULL,
-  PRIMARY KEY (`category_id`),
-  UNIQUE KEY `category_name` (`category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `category_name`) VALUES
+INSERT INTO categories (id, category_name) VALUES
 (1, 'Games'),
 (2, 'Books'),
 (3, 'Movies'),
@@ -74,21 +147,11 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 --
 -- Table structure for table `expenses`
 --
-
-CREATE TABLE IF NOT EXISTS `expenses` (
-  `expenses_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `product_id` int(11) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `price` float NOT NULL,
-  `purchase_date` datetime NOT NULL,
-  PRIMARY KEY (`expenses_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
-
 --
 -- Dumping data for table `expenses`
 --
 
-INSERT INTO `expenses` (`expenses_id`, `product_id`, `product_name`, `price`, `purchase_date`) VALUES
+INSERT INTO expenses (id, product_id, product_name, price, purchase_date) VALUES
 (1, 1, 'Assassins Creed', 0, '2012-12-11 14:58:00'),
 (2, 18, 'Sherlock Holmes', 0, '2012-12-11 14:58:36'),
 (3, 18, 'Sherlock Holmes', 0, '2012-12-11 14:59:35'),
@@ -125,22 +188,10 @@ INSERT INTO `expenses` (`expenses_id`, `product_id`, `product_name`, `price`, `p
 -- --------------------------------------------------------
 
 --
--- Table structure for table `images`
---
-
-CREATE TABLE IF NOT EXISTS `images` (
-  `image-id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `image-name` varchar(255) NOT NULL,
-  `product-name` varchar(255) NOT NULL,
-  PRIMARY KEY (`image-id`),
-  UNIQUE KEY `image-name` (`image-name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=143 ;
-
---
 -- Dumping data for table `images`
 --
 
-INSERT INTO `images` (`image-id`, `image-name`, `product-name`) VALUES
+INSERT INTO images (id, image_name, product_name) VALUES
 (1, 'uploads/66795616grand-theft-auto-vice-city-400x400-imad9tdseyzn2ygf.jpeg', 'Grand theft Auto Vice City'),
 (2, 'uploads/582003697gta-vice-city-400x400-imadfgu8qc5xmt4h.jpeg', 'Grand theft Auto Vice City'),
 (6, 'uploads/675975633gta-iv-400x400-imad89f2pggtrfhk.jpeg', 'Grand Theft Auto IV'),
@@ -262,27 +313,10 @@ INSERT INTO `images` (`image-id`, `image-name`, `product-name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
---
-
-CREATE TABLE IF NOT EXISTS `order` (
-  `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `status` enum('pending','approved','delivered') NOT NULL,
-  `shippers_name` varchar(30) NOT NULL,
-  `address` varchar(120) NOT NULL,
-  `mobile_number` varchar(10) NOT NULL,
-  `shippers_email` varchar(45) NOT NULL,
-  `ordered_On` datetime NOT NULL,
-  `total_order_price` double(10,2) unsigned NOT NULL,
-  PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
-
---
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`order_id`, `user_id`, `status`, `shippers_name`, `address`, `mobile_number`, `shippers_email`, `ordered_On`, `total_order_price`) VALUES
+INSERT INTO `order` (id, user_id, status, shippers_name, address, mobile_number, shippers_email, ordered_On, total_order_price) VALUES
 (1, 1, 'delivered', 'Chirag Pandit', 'B-10, 102 SilverPark, Mira Bhyendar Road, Mira Road east', '9004300', 'dead.night7@gmail.com', '2012-12-15 01:03:41', 1450.00),
 (2, 13, 'delivered', 'Ehab Nakhwa', 'B-10/201, Silverpark, Mira Bhyendar Road Mira Road East', '9004300630', 'ehabbantai@gmail.com', '2012-12-18 10:15:04', 2110.00),
 (3, 13, 'delivered', 'Ehab Nakhwa', 'B-10/201, Silverpark, Mira Bhyendar Road Mira Road East', '9004300630', 'ehabbantai@gmail.com', '2012-12-18 10:21:39', 1750.00),
@@ -309,22 +343,10 @@ INSERT INTO `order` (`order_id`, `user_id`, `status`, `shippers_name`, `address`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `product-company`
---
-
-CREATE TABLE IF NOT EXISTS `product-company` (
-  `company-id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `company-name` varchar(40) NOT NULL,
-  PRIMARY KEY (`company-id`),
-  UNIQUE KEY `company-name` (`company-name`),
-  UNIQUE KEY `company-name_2` (`company-name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
-
---
 -- Dumping data for table `product-company`
 --
 
-INSERT INTO `product-company` (`company-id`, `company-name`) VALUES
+INSERT INTO product_company (id, company_name) VALUES
 (1, 'Rockstar'),
 (2, 'Ubisoft'),
 (3, 'Eidos'),
@@ -349,30 +371,10 @@ INSERT INTO `product-company` (`company-id`, `company-name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `products`
---
-
-CREATE TABLE IF NOT EXISTS `products` (
-  `product_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `product-name` varchar(60) NOT NULL,
-  `sub-category-name` varchar(40) NOT NULL,
-  `category-name` varchar(40) NOT NULL,
-  `company-name` varchar(40) NOT NULL,
-  `price` double(10,2) unsigned NOT NULL,
-  `summary` text,
-  `tags` varchar(255) NOT NULL,
-  `product_qty` int(11) unsigned NOT NULL,
-  `lastUpdated` datetime NOT NULL,
-  `hits` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`product_id`),
-  UNIQUE KEY `product-name` (`product-name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
-
---
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `category-name`, `company-name`, `price`, `summary`, `tags`, `product_qty`, `lastUpdated`, `hits`) VALUES
+INSERT INTO products (id, product_name, sub-category_name, category_name, company_name, price, summary, tags, product_qty, lastUpdated, hits) VALUES
 (1, 'Grand theft Auto Vice City', 'Sandbox', 'Games', 'Rockstar', 250.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Grand theft Auto Vice City', 19, '2012-12-14 23:16:58', 3),
 (2, 'Grand Theft Auto IV', 'Sandbox', 'Games', 'Rockstar', 460.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Grand Theft Auto IV', 19, '2012-12-14 23:19:49', 11),
 (3, 'Assassins Creed III', 'Adventure', 'Games', 'Ubisoft', 600.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Assassins Creed III', 25, '2013-01-06 16:52:48', 51),
@@ -387,7 +389,7 @@ INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `cate
 (14, 'Call Of Duty - Black Ops', 'First Person', 'Games', 'Activision', 300.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Call Of Duty - Black Ops', 24, '2012-12-14 23:49:25', 9),
 (13, 'Battlefield Bad Company II', 'First Person', 'Games', 'EA Electronic Arts', 300.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Battlefield Bad Company II', 19, '2012-12-14 23:47:29', 4),
 (15, 'Hitman Absolution', 'First Person', 'Games', 'Squarc Enix', 200.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Hitman Absolution', 20, '2012-12-14 23:52:26', 0);
-INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `category-name`, `company-name`, `price`, `summary`, `tags`, `product_qty`, `lastUpdated`, `hits`) VALUES
+INSERT INTO products (id, product_name, sub_category_name, category_name, company_name, price, summary, tags, product_qty, lastUpdated, hits) VALUES
 (16, 'Fifa Football 2013', 'Sports', 'Games', 'EA Electronic Arts', 300.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Fifa Football 2013', 27, '2012-12-14 23:55:32', 1),
 (17, 'Angry Birds', 'Puzzle', 'Games', 'Rovio', 50.00, '<div>\r\n    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n</div>\r\n<div>\r\n    Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dicet risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n</div>\r\n<div>\r\n    Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n</div>\r\n<div>\r\n    Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n</div>\r\n<div>\r\n    Aliquam vehicula sem ut pede. Cras purus lectus, egestas eu, vehicula at, imperdiet sed, nibh. Morbi consectetuer luctus felis. Donec vitae nisi. Aliquam tincidunt feugiat elit. Duis sed elit ut turpis ullamcorper feugiat. Praesent pretium, mauris sed fermentum hendrerit, nulla lorem iaculis magna, pulvinar scelerisque urna tellus a justo. Suspendisse pulvinar massa in metus. Duis quis quam. Proin justo. Curabitur ac sapien. Nam erat. Praesent ut quam.\r\n</div>', 'Angry Birds Seasons', 20, '2012-12-14 23:59:17', 20),
 (18, 'Complete Reference J2EE', 'Academic', 'Books', 'Dreggone', 100.00, '  \r\n                        <div>\r\n                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n                        </div>\r\n                        <div>\r\n                            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n                        </div>\r\n                        <div>\r\n                            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n                        </div>\r\n                        <div>\r\n                            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n                        </div>\r\n', 'Complete Reference J2EE', 40, '2012-12-15 01:17:14', 6),
@@ -403,7 +405,7 @@ INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `cate
 (28, 'HP Mini 8GB Pen Drive', 'Storage', 'Computers', 'HP', 360.00, '        <div>\r\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </div>\r\n        <div>\r\n            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n        </div>\r\n        <div>\r\n            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n        </div>\r\n        <div>\r\n            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n        </div>\r\n', 'HP Mini 8GB Pen Drive', 34, '2012-12-18 10:55:20', 1),
 (29, 'Sandisk 8GB Pendrive', 'Storage', 'Computers', 'Sandisk', 360.00, '        <div>\r\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </div>\r\n        <div>\r\n            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n        </div>\r\n        <div>\r\n            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n        </div>\r\n        <div>\r\n            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n        </div>\r\n', 'Sandisk 8GB Pendrive', 20, '2012-12-18 10:57:12', 0),
 (30, 'Transend 4GB Pendrive', 'Storage', 'Computers', 'Transend', 200.00, '        <div>\r\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </div>\r\n        <div>\r\n            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n        </div>\r\n        <div>\r\n            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n        </div>\r\n        <div>\r\n            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n        </div>\r\n', 'Transend 4GB Pendrive', 20, '2012-12-18 10:59:10', 1);
-INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `category-name`, `company-name`, `price`, `summary`, `tags`, `product_qty`, `lastUpdated`, `hits`) VALUES
+INSERT INTO products (product_id, product_name, sub_category_name, category_name, company_name, price, summary, tags, product_qty, lastUpdated, hits) VALUES
 (31, 'Dell External Storage 500GB', 'Storage', 'Computers', 'Dell', 5000.00, '        <div>\r\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </div>\r\n        <div>\r\n            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n        </div>\r\n        <div>\r\n            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n        </div>\r\n        <div>\r\n            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n        </div>\r\n', 'Dell External Storage 500GB', 19, '2012-12-18 11:01:33', 1),
 (32, 'Sennheiser Gaming Headphones', 'Sound', 'Computers', 'Sennheiser', 3000.00, '        <div>\r\n            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n        </div>\r\n        <div>\r\n            Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n        </div>\r\n        <div>\r\n            Fusce convallis, mauris imperdiet gravida bibendum, nisl turpis suscipit mauris, sed placerat ipsum urna sed risus. In convallis tellus a mauris. Curabitur non elit ut libero tristique sodales. Mauris a lacus. Donec mattis semper leo. In hac habitasse platea dictumst. Vivamus facilisis diam at odio. Mauris dictum, nisi eget consequat elementum, lacus ligula molestie metus, non feugiat orci magna ac sem. Donec turpis. Donec vitae metus. Morbi tristique neque eu mauris. Quisque gravida ipsum non sapien. Proin turpis lacus, scelerisque vitae, elementum at, lobortis ac, quam. Aliquam dictum eleifend risus. In hac habitasse platea dictumst. Etiam sit amet diam. Suspendisse odio. Suspendisse nunc. In semper bibendum libero.\r\n        </div>\r\n        <div>\r\n            Proin nonummy, lacus eget pulvinar lacinia, pede felis dignissim leo, vitae tristique magna lacus sit amet eros. Nullam ornare. Praesent odio ligula, dapibus sed, tincidunt eget, dictum ac, nibh. Nam quis lacus. Nunc eleifend molestie velit. Morbi lobortis quam eu velit. Donec euismod vestibulum massa. Donec non lectus. Aliquam commodo lacus sit amet nulla. Cras dignissim elit et augue. Nullam non diam. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In hac habitasse platea dictumst. Aenean vestibulum. Sed lobortis elit quis lectus. Nunc sed lacus at augue bibendum dapibus.\r\n        </div>\r\n', 'Sennheiser Gaming Headphones', 19, '2012-12-18 11:03:37', 4),
 (33, 'Philips Jogs Headsets ', 'Sound', 'Computers', 'Philips', 700.00, '<p>\r\n                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n                    </p>\r\n                    <p>\r\n                        Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi. Aenean magna nisl, mollis quis, molestie eu, feugiat in, orci. In hac habitasse platea dictumst.\r\n                    </p>', 'Philips Jogs Headsets ', 19, '2012-12-18 11:06:09', 8),
@@ -418,26 +420,10 @@ INSERT INTO `products` (`product_id`, `product-name`, `sub-category-name`, `cate
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sales`
---
-
-CREATE TABLE IF NOT EXISTS `sales` (
-  `sales_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `order_id` int(10) unsigned NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `product_name` varchar(255) NOT NULL,
-  `product_price` double(10,2) NOT NULL,
-  `product_quantity` int(10) unsigned NOT NULL,
-  `sold_on` datetime NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`sales_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=60 ;
-
---
 -- Dumping data for table `sales`
 --
 
-INSERT INTO `sales` (`sales_id`, `order_id`, `product_id`, `product_name`, `product_price`, `product_quantity`, `sold_on`, `user_id`) VALUES
+INSERT INTO sales (id, order_id, product_id, product_name, product_price, product_quantity, sold_on, user_id) VALUES
 (1, 1, 3, 'Assassins Creed III', 600.00, 1, '2012-12-15 01:03:41', 1),
 (2, 1, 6, 'The Amazing Spiderman (Game)', 300.00, 1, '2012-12-15 01:03:41', 1),
 (3, 1, 10, 'Need For Speed Most Wanted 2012', 550.00, 1, '2012-12-15 01:03:41', 1),
@@ -499,22 +485,10 @@ INSERT INTO `sales` (`sales_id`, `order_id`, `product_id`, `product_name`, `prod
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sub-category`
---
-
-CREATE TABLE IF NOT EXISTS `sub-category` (
-  `subcategory_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `sub-category_name` varchar(30) NOT NULL,
-  `category_name` varchar(30) NOT NULL,
-  PRIMARY KEY (`subcategory_id`),
-  UNIQUE KEY `sub-category_name` (`sub-category_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
-
---
 -- Dumping data for table `sub-category`
 --
 
-INSERT INTO `sub-category` (`subcategory_id`, `sub-category_name`, `category_name`) VALUES
+INSERT INTO sub_category (id, sub_category_name, category_name) VALUES
 (1, 'Sandbox', 'Games'),
 (2, 'Adventure', 'Games'),
 (3, 'Action', 'Games'),
@@ -529,85 +503,6 @@ INSERT INTO `sub-category` (`subcategory_id`, `sub-category_name`, `category_nam
 (12, 'Colors', 'Stationaries'),
 (13, 'Pens', 'Stationaries');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `pass` varchar(40) NOT NULL,
-  `registeredOn` datetime NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`user_id`, `email`, `pass`, `registeredOn`) VALUES
-(1, 'dead.night7@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-11-05 12:21:06'),
-(2, 'shobha1234@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-11-11 20:32:15'),
-(3, 'chirag@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', '2012-11-11 20:42:39'),
-(4, 'shobha12345@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', '2012-11-17 19:34:22'),
-(5, 'ehab@ehab.com', '5fa339bbbb1eeaced3b52e54f44576aaf0d77d96', '2012-11-23 07:54:43'),
-(6, 'mohd@gmail.com', '5fa339bbbb1eeaced3b52e54f44576aaf0d77d96', '2012-11-23 08:04:45'),
-(9, 'ehab@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-11-25 18:47:48'),
-(8, 'hp@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-11-25 17:26:31'),
-(10, 'mohd.norawala@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-01 22:02:32'),
-(11, 'gujar@rajasthan.com', '5fa339bbbb1eeaced3b52e54f44576aaf0d77d96', '2012-12-10 04:10:12'),
-(12, 'test@fgtr.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-10 05:21:03'),
-(13, 'ehabbantai@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-18 10:13:36'),
-(14, 'ehabnakhwa123@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-18 13:00:36'),
-(15, 'ashu_singh22@ymail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-22 22:47:44'),
-(16, 'rj@rj.com', '7c222fb2927d828af22f592134e8932480637c0d', '2012-12-22 23:42:58'),
-(17, 'rj@gh.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2012-12-22 23:46:57'),
-(18, 'akriti1592@yahoo.com', '4b77844fe45dbadd6479f7c80e80f7fc77fa3b78', '2012-12-26 15:33:44'),
-(19, 'rahulrah@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2013-01-02 16:08:53'),
-(20, 'khushal.sharma567@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', '2013-01-02 16:38:18'),
-(21, 'kamble.rohit145@gmail.com', 'aa78ad0da64200e5c5ec39156e772924d30129a9', '2013-01-15 20:02:09'),
-(22, 'sohil@gmail.com', 'f7c3bc1d808e04732adf679965ccc34ca7ae3441', '2013-01-22 17:05:04');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user-details`
---
-
-CREATE TABLE IF NOT EXISTS `user-details` (
-  `userDetail_Id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `username` varchar(30) NOT NULL,
-  `mobile_no` varchar(10) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `gender` enum('male','female') NOT NULL,
-  `userImage` text NOT NULL,
-  PRIMARY KEY (`userDetail_Id`),
-  UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
-
---
--- Dumping data for table `user-details`
---
-
-INSERT INTO `user-details` (`userDetail_Id`, `user_id`, `username`, `mobile_no`, `address`, `gender`, `userImage`) VALUES
-(3, 1, 'Chirag Pandit', '9004300', 'B-10, 102 SilverPark, Mira Bhyendar Road, Mira Road east', 'male', ''),
-(5, 2, 'jjyhjyfht', 'ytfjfyj', 'fyjgfjyfj', 'female', 'fyjtfhjtfhdt'),
-(6, 4, 'Shobha Pandit', '9004300647', 'ghfdgfgghfdgfgghfdgfgghfdgfg', 'female', ''),
-(9, 6, 'Mohammed Noor', '1234567890', 'dvfvrfvgsvadssavsv', 'male', ''),
-(11, 8, 'Harsh', '9004300630', 'B-10 /201', 'male', ''),
-(12, 10, 'Mohd Norawala', '9004300630', 'rfsvrfsvrfsvrfsvrfsvrfsvrfsvrfsvrfsvrfsvrfsvrfsv', 'male', ''),
-(13, 11, 'Gujar Mal Thakkar', '9004300630', 'thyrnhthyrnhthyrnhthyrnhthyrnh', 'male', ''),
-(14, 12, 'Chirag Pandit', '9004300630', 'B-10/102, Silver Park, Mira Bhyendar Road, Mira Road East', 'male', ''),
-(15, 13, 'Ehab Nakhwa', '9004300630', 'B-10/201, Silverpark, Mira Bhyendar Road Mira Road East', 'male', ''),
-(16, 14, 'Ehab Nakhwa', '9004300630', 'B-10/102, Silver Park, Mira Bhyendar Road, Mira Road East', 'male', ''),
-(17, 19, 'Rahul Jain', '9004300630', 'B-202/SilverTower Park, mitra road e', 'male', ''),
-(18, 20, 'khushal', '8003332312', '15 d blocc sec 9 savina udaipur\r\n', 'male', ''),
-(19, 21, 'rohit kamble', '9503355701', 'b0101  sarmati lokgram kalyan (e)', 'male', ''),
-(20, 22, 'Sohil Shaikh', '8003332312', 'fgfhghgjghgfhgfh', 'male', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

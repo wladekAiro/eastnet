@@ -72,7 +72,7 @@ public class _logoutServlet extends HttpServlet {
         //processRequest(request, response);
         HttpSession session = request.getSession();
         session.invalidate();
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect("/index.jsp");
     }
 
     /**

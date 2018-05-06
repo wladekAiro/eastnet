@@ -186,7 +186,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>admin_login</servlet-name>
-        <url-pattern>/admin_login</url-pattern>
+        <url-pattern>/admin</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>addProductServlet</servlet-name>
