@@ -160,17 +160,17 @@ INNER JOIN  `sales` s
 USING (  `order_id` ) 
 WHERE o.`user_id` =4
                              */
-                            String sql = "SELECT  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` "
-                                    + " FROM  `order` o "
-                                    + " INNER JOIN  `sales` s "
-                                    + " USING (  `order_id` ) "
-                                    + " WHERE o.`user_id` = " + uid + " "
-                                    + " ORDER BY `order_id` DESC ";
+                            String sql = "SELECT  o.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
+                                    + " FROM  orders o "
+                                    + " INNER JOIN  sales s "
+                                    + " ON o.id=s.order_id "
+                                    + " WHERE o.user_id = ? "
+                                    + " ORDER BY o.id DESC ";
 
                             Connection c = new DB_Conn().getConnection();
 
-                            PreparedStatement psmt
-                                    = c.prepareStatement(sql);
+                            PreparedStatement psmt = c.prepareStatement(sql);
+                            psmt.setInt(1, uid);
 
                             ResultSet rs = psmt.executeQuery();
 
@@ -184,7 +184,7 @@ WHERE o.`user_id` =4
                             Time sold_on_time;
 
                             while (rs.next()) {
-                                newOrder = rs.getInt("order_id");
+                                newOrder = rs.getInt("id");
                                 product_name = rs.getString("product_name");
                                 product_price = rs.getDouble("product_price");
                                 product_quantity = rs.getInt("product_quantity");

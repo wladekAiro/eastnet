@@ -105,15 +105,17 @@ public class loginServlet extends HttpServlet {
             out.println("email " + email + " pass " + pass);
             con = new DB_Conn();
             Connection c = con.getConnection();
-            String sqlGetUsers = "SELECT * FROM  `user` where `email`='" + email + "'; ";
+            String sqlGetUsers = "SELECT * FROM  users where email = ? OR user_name = ?";
 
             PreparedStatement st = c.prepareStatement(sqlGetUsers);
+            st.setString(1, email);
+            st.setString(2, email);
 
             ResultSet rs = st.executeQuery();
 
             if (rs.next()) {
                 db_email = rs.getString("email");
-                db_pass = rs.getString("pass");
+                db_pass = rs.getString("password");
 
                 if (PasswordHash.validatePassword(pass, db_pass)) {
                     message = "Your email-id exists with us!";

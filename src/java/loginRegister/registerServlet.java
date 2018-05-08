@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import helpers.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.sql.Connection;
 import java.sql.*;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
+import models.enums.UserRole;
 import user.user;
 import utils.PasswordHash;
 
@@ -119,15 +121,23 @@ public class registerServlet extends HttpServlet {
 
                             String hashedPassword = PasswordHash.createHash(pass);
 
-                            String sql = "INSERT INTO `user` "
-                                    + "(`user_id` ,`email` ,`pass` ,`registeredOn`) "
-                                    + "VALUES (NULL ,  ?, ?, NOW( )); ";
+                            String sql = "INSERT INTO users "
+                                    + "(email , password ,registered_on , user_name , user_role) "
+                                    + "VALUES ( ?, ?, ?, ?, ?); ";
 
                             PreparedStatement psmt = c.prepareStatement(sql);
 
                             psmt.setString(1, email);
 
                             psmt.setString(2, hashedPassword);
+                            
+                            Date now = new Date(new java.util.Date().getTime());
+                            
+                            psmt.setDate(3, now);
+                            
+                            psmt.setString(4, email);
+                            
+                            psmt.setString(5, UserRole.USER.name());
 
                             int i = psmt.executeUpdate();
 
@@ -196,7 +206,7 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-            response.sendError(404);
+//            response.sendError(404);
         } catch (ClassNotFoundException ex) {
             messageDetail = ex.getMessage();
             message = "There was a problem in registering your account please do retry again later...";
@@ -204,7 +214,7 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-            response.sendError(404);
+//            response.sendError(404);
         } catch (NoSuchAlgorithmException ex) {
             messageDetail = ex.getMessage();
             message = "There was a problem in registering your account please do retry again later...";
@@ -212,7 +222,7 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-            response.sendError(404);
+//            response.sendError(404);
         } catch (InvalidKeySpecException ex) {
             ex.printStackTrace();
             messageDetail = ex.getMessage();
@@ -230,7 +240,7 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-            response.sendError(404);
+//            response.sendError(404);
         } catch (ServletException ex) {
             ex.printStackTrace();
             messageDetail = ex.getMessage();
@@ -239,7 +249,7 @@ public class registerServlet extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             dispatchMessage.forward(request, response);
-            response.sendError(404);
+//            response.sendError(404);
         } finally {
             if (con != null) {
                 con.closeConnection();

@@ -51,13 +51,13 @@ public class user {
     }
     
     public int findUserId (String email) throws SQLException, ClassNotFoundException{
-        String sqlGetUserId = "SELECT  `user_id` FROM  `user` WHERE  `email` =  ?";
+        String sqlGetUserId = "SELECT  id FROM  users WHERE  email =  ?";
         c= new DB_Conn().getConnection();
         PreparedStatement psmt  = c.prepareStatement(sqlGetUserId);
         psmt.setString(1, email);
         ResultSet executeQuery = psmt.executeQuery();
         executeQuery.next();
-        userId = executeQuery.getInt("user_id");
+        userId = executeQuery.getInt("id");
         return userId;
     }
     
@@ -66,7 +66,7 @@ public class user {
         
         String fetchSql;
         boolean fetched;
-        fetchSql = "SELECT * FROM  `user-details` WHERE  `user_id` =? ;";
+        fetchSql = "SELECT * FROM  user_details WHERE  user_id =? ;";
         c = new DB_Conn() .getConnection();
         
         PreparedStatement psmt = c.prepareStatement(fetchSql);
@@ -78,7 +78,7 @@ public class user {
             username = executeQuery.getString("username"); 
             address = executeQuery.getString("address");
             gender = executeQuery.getString("gender");
-            userImage = executeQuery.getString("userImage");
+            userImage = executeQuery.getString("user_image");
             mobileNum = executeQuery.getString("mobile_no");
             fetched = true;
         }else {
