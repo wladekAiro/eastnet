@@ -80,6 +80,14 @@
         <servlet-name>removeCategory</servlet-name>
         <servlet-class>product.removeCategory</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AdminPerfomanceServlet</servlet-name>
+        <servlet-class>servlets.admin.AdminPerfomanceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminPerfomanceServlet</servlet-name>
+        <url-pattern>/admin_perfomance</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
         <url-pattern>/login</url-pattern>

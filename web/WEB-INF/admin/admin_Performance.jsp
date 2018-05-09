@@ -52,11 +52,11 @@
         <%
         if (session.getAttribute("user") == null ){// THen new user, show join now
             %>
-            <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+            <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%
         }else {
             %>
-            <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+            <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%
         }
         
@@ -64,8 +64,8 @@
             response.sendRedirect("admin_.jsp");
         }
         %>
-        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
-        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_search_navigationbar.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_facebookJoin.jsp"></jsp:include>
 
         <div class="container_16">
 
@@ -74,21 +74,21 @@
                     
                     <%
                     
-                        String sqlPending = "SELECT COUNT(  `status` ) as pending"
-+ " FROM  `order` "
-+ " WHERE  `status` =  'pending'";
+                        String sqlPending = "SELECT COUNT(  status ) as pending"
++ " FROM  orders "
++ " WHERE  status =  'pending'";
                         
-                        String sqlApproved = "SELECT COUNT(  `status` ) as approved "
-+ " FROM  `order` "
-+ " WHERE  `status` =  'approved' ";
+                        String sqlApproved = "SELECT COUNT(  status ) as approved "
++ " FROM  orders "
++ " WHERE  status =  'approved' ";
                         
-                        String sqlQuantity = "SELECT COUNT(  `product-name` ) as qty"
-+" FROM  `products` "
-+" WHERE  `product_qty` <5 ";
+                        String sqlQuantity = "SELECT COUNT(  id ) as qty"
++" FROM  products "
++" WHERE  product_qty <5 ";
                         
-                       sqlQuantity = "SELECT COUNT(  `product-name` ) AS qty"
-+" FROM  `products` "
-+" WHERE  `product_qty` <5";
+                       sqlQuantity = "SELECT COUNT(  id ) AS qty"
++" FROM  products "
++" WHERE  product_qty <5";
                         
                         Connection c = new DB_Conn().getConnection();
                         Statement st = c.createStatement();
@@ -133,15 +133,15 @@
                 <script type="text/javascript" src="js/gclibrary/core.js"></script>
                 <script type="text/javascript" src="js/gclibrary/core1.js"></script>
                 
-                <jsp:include page="includesPage/gChartings/gChart_ComboLine.jsp"></jsp:include>
+                <jsp:include page="/includesPage/gChartings/gChart_ComboLine.jsp"></jsp:include>
                 
-                <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
+                <jsp:include page="/includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
                 <div class="grid_13">
-                <jsp:include page="includesPage/gChartings/gCharts_pieChartItemsSoldByCategory.jsp"></jsp:include>
-                <jsp:include page="includesPage/gChartings/gCharts_pieChartItemsViewedByCategory.jsp"></jsp:include>
+                <jsp:include page="/includesPage/gChartings/gCharts_pieChartItemsSoldByCategory.jsp"></jsp:include>
+                <jsp:include page="/includesPage/gChartings/gCharts_pieChartItemsViewedByCategory.jsp"></jsp:include>
                 </div>
-                <jsp:include page="includesPage/gChartings/gCharts_top10ProductsSold.jsp"></jsp:include>
-                <jsp:include page="includesPage/gChartings/gCharts_top10Products_viewed.jsp"></jsp:include>
+                <jsp:include page="/includesPage/gChartings/gCharts_top10ProductsSold.jsp"></jsp:include>
+                <jsp:include page="/includesPage/gChartings/gCharts_top10Products_viewed.jsp"></jsp:include>
                 
         </div>
         

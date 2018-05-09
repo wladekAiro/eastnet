@@ -17,7 +17,7 @@ public class DB_Conn {
     
     public Connection getConnection() throws SQLException, ClassNotFoundException  {
         Class.forName("org.postgresql.Driver"); 
-        con=DriverManager.getConnection("jdbc:postgresql://localhost:5432/easnat", "postgres","postgres"); 
+        con=DriverManager.getConnection("jdbc:postgresql://localhost:5432/eastnat", "postgres","postgres"); 
        // stm=con.createStatement(); 
         return con;
     }

@@ -6,7 +6,6 @@ package loginRegister;
 
 import admin.administrator;
 import database.DB_Conn;
-import helpers.SecureSHA1;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.enums.UserRole;
 import user.user;
 import utils.PasswordHash;
 
@@ -41,21 +41,8 @@ public class admin_login extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet admin_login</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet admin_login at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {
-            out.close();
-        }
+//        response.sendRedirect("/WEB-INF/admin/admin_.jsp");
+        request.getRequestDispatcher("/WEB-INF/admin/admin_.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -70,7 +57,7 @@ public class admin_login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.sendRedirect("admin_.jsp");
+        processRequest(request, response);
     }
 
     /**
@@ -98,14 +85,16 @@ public class admin_login extends HttpServlet {
         RequestDispatcher dispatchMessage
                 = request.getServletContext().getRequestDispatcher(messageUrl);
 
+        DB_Conn con = new DB_Conn();
+
         try {
-            pass = SecureSHA1.getSHA1(pass);
             //out.println("email " + email + " pass " + pass);
-            DB_Conn con = new DB_Conn();
             Connection c = con.getConnection();
-            String sqlGetUser = "SELECT * FROM  `administrators` where `email'='" + email + "';";
+            String sqlGetUser = "SELECT * FROM  users where email = ? AND user_role = ?";
 
             PreparedStatement st = c.prepareStatement(sqlGetUser);
+            st.setString(1, email);
+            st.setString(2, UserRole.ADMIN.name());
 
             ResultSet rs = st.executeQuery();
 
@@ -126,7 +115,9 @@ public class admin_login extends HttpServlet {
                     User.setUserEmail(email);
                     userSession.setAttribute("user", User);
                     userSession.setAttribute("admin", Administrator);
-                    response.sendRedirect(request.getContextPath());
+                    response.sendRedirect("/admin_perfomance");
+//                    RequestDispatcher rd = request.getRequestDispatcher("/admin_perfomance");
+//                    rd.forward(request, response);
                 } else {
                     isLoggedIn = false;
                     // user exsts but wrong passwotd ask to CHANGE THE PASSWORD
@@ -186,6 +177,8 @@ public class admin_login extends HttpServlet {
             request.setAttribute("message", message);
             request.setAttribute("messageDetail", messageDetail);
             //dispatchMessage.forward(request, response);
+        } finally {
+            con.closeConnection();
         }
     }
 
