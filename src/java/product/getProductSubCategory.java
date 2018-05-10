@@ -8,6 +8,7 @@ import database.DB_Conn;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -72,17 +73,18 @@ public class getProductSubCategory extends HttpServlet {
             //processRequest(request, response);
             String category = request.getParameter ("category");
             Connection c = new DB_Conn().getConnection();
-            Statement st = c. createStatement();
+            String selectQuery = "SELECT * FROM  sub_category WHERE  category_name = ?";
+            PreparedStatement st = c.prepareStatement(selectQuery);
+            st.setString(1, category);
+            
             /*
              SELECT * 
             FROM  `sub-category` 
             WHERE  `category_name` =  'Books'
              */
-            ResultSet executeQuery = st.executeQuery("SELECT * " +
-                                                " FROM  `sub-category` " +
-                                                " WHERE  `category_name` =  '"+category+"' ");
+            ResultSet executeQuery = st.executeQuery();
             while (executeQuery.next()){
-                String subCategory = executeQuery.getString("sub-category_name");
+                String subCategory = executeQuery.getString("sub_category_name");
                 out.print("<option value='"+subCategory+"'>"+subCategory+"</option>");
             }
             

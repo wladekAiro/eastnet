@@ -90,10 +90,12 @@ public class addCompany extends HttpServlet {
                 Connection con;
                 DB_Conn conn = new DB_Conn();
                 con = conn.getConnection();
-                String sqlInsertCompany = "INSERT INTO  `saikiran enterprises`.`product-company` (`company-id` ,`company-name`)VALUES (NULL ,  '"+companyName+"');";  
+                String sqlInsertCompany = "INSERT INTO  product_company (company_name) VALUES(?)";  
                 //String sqlInsertProduct = "INSERT INTO  `saikiran enterprises`.`category` (`category_id` ,`category_name`)VALUES (NULL ,  '"+companyName+"'); ";
-                Statement st = con.createStatement();
-                int rows = st.executeUpdate(sqlInsertCompany);
+                PreparedStatement st = con.prepareStatement(sqlInsertCompany);
+                st.setString(1, companyName);
+                
+                int rows = st.executeUpdate();
                 
                 if (rows != 1){
                     out.println("Company not inserted");
@@ -102,7 +104,6 @@ public class addCompany extends HttpServlet {
                 }
                 st.close();
                 con.close();
-                
             } 
             
             catch (SQLSyntaxErrorException ex){
@@ -113,9 +114,11 @@ public class addCompany extends HttpServlet {
             }
             
             catch (SQLException ex) {
-                out.println("There was a problem in Connectiong DB <br/> Exception has occoured "+ex);
+                ex.printStackTrace();
+                out.println("There was a problem in Connectiong DB <br/> Exception has occoured ");
             } catch (ClassNotFoundException ex) {
-                out.println("Application Cannot find the Class <br/> Exception has occoured "+ex);
+                ex.printStackTrace();
+                out.println("Application Cannot find the Class <br/> Exception has occoured ");
             }
         }
         

@@ -109,7 +109,7 @@
         }
         
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
 

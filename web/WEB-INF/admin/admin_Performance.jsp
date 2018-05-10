@@ -61,7 +61,7 @@
         }
         
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
         <jsp:include page="/includesPage/_search_navigationbar.jsp"></jsp:include>

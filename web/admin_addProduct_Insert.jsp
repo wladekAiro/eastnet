@@ -93,21 +93,20 @@ NULL ,  '2',  'Ayinga Movie ',  '123456', NOW( )
         */
                 String insertQuery = ""
                         + "INSERT INTO  "
-                        + "`saikiran enterprises`.`products` "
-                        + "(`product_id` ,"
-                        + "`product-name` ,"
-                        + "`sub-category-name` ,"
-                        + "`category-name` ,"
-                        + "`company-name` ,"
-                        + "`price` ,"
-                        + "`summary`, "
-                        + "`tags`, "
-                        + "`product_qty`, "
-                        + "`lastUpdated`, "
-                        + "`hits` ) "
+                        + "products "
+                        + "(product-name ,"
+                        + "sub_category_name ,"
+                        + "category_name ,"
+                        + "company_name ,"
+                        + "price ,"
+                        + "summary, "
+                        + "tags, "
+                        + "product_qty, "
+                        + "lastUpdated, "
+                        + "hits) "
                         + "VALUES "
                         + ""
-                        + "(NULL ,  "
+                        + "( "
                         + "'"+productBean.getName() +"',  "
                         + "'"+productBean.getSubcategory()+"',  "
                         + "'"+productBean.getCategory()+"',  "
@@ -124,35 +123,23 @@ NULL ,  '2',  'Ayinga Movie ',  '123456', NOW( )
             Connection c = new DB_Conn().getConnection();
             Statement st = c.createStatement();
             st.execute(insertQuery);
-                ResultSet executeQuery = st.executeQuery("SELECT  `product_id` "
-                                                         + " FROM  `products` "
-                                                         + " WHERE  `product-name` =  '"+productBean.getName() +"'");
-                    String ProductId = "";
+                ResultSet executeQuery = st.executeQuery("SELECT id "
+                                                         + " FROM products "
+                                                         + " WHERE product_name = '"+productBean.getName() +"'");
+                    int ProductId = 0;
                     while (executeQuery.next()){
-                        ProductId = executeQuery.getString("product_id");
+                        ProductId = executeQuery.getInt("id");
                     }
                     session.setAttribute("productName", productBean.getName());
                     session.setAttribute("productId", ProductId);
-                    
-                    
                 
-                ResultSet executeQueryFetchPid = st.executeQuery("SELECT  `product_id` "
-                                                        +" FROM  `products` "
-                                                        + " WHERE  `product-name` =  '"+productBean.getName() +"' ");
-                int pid = 0;
-                while (executeQueryFetchPid.next()){
-                     pid = executeQueryFetchPid.getInt("product_id");
-                 }
-                
-                st.executeUpdate(" INSERT INTO  `saikiran enterprises`.`expenses` ("
-                            +"`expenses_id` ,"
+                st.executeUpdate(" INSERT INTO expenses ("
                             +"`product_id` ,"
                             +"`product_name` ,"
                             +"`price` ,"
                             +"`purchase_date`"
                             +")"
-                            +"VALUES ("
-                            +"NULL ,  '"+pid+"',  '"+productBean.getName()+"',  '"+(quantity*price)+"', NOW( )"
+                            +"VALUES ('"+ProductId+"',  '"+productBean.getName()+"',  '"+(quantity*price)+"', NOW( )"
                             +" );  ");
                     response.sendRedirect("productInsertImages.jsp");
                 }catch(NumberFormatException e) {

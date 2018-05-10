@@ -42,7 +42,13 @@ public class admin_login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        response.sendRedirect("/WEB-INF/admin/admin_.jsp");
-        request.getRequestDispatcher("/WEB-INF/admin/admin_.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute("admin") != null) {
+            request.getRequestDispatcher("/admin_perfomance").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/admin/admin_.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

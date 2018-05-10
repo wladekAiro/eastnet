@@ -135,7 +135,7 @@
                 Statement st = con.createStatement();
                 //String sql_getCategory = "SELECT  `category_name` FROM  `category`; ";
                 //String sql_getSubCategory = "SELECT  `sub-category_name` FROM  `sub-category`;";
-                String sql_getCompany = "SELECT  `company-name` FROM  `product-company`;";
+                String sql_getCompany = "SELECT  id,company_name FROM  product_company";
             %>
             
             
@@ -159,10 +159,11 @@
                             <%
                                 ResultSet company = st.executeQuery(sql_getCompany);
                                 while (company.next()) {
-                                    String companyName = company.getString("company-name");
+                                    String companyName = company.getString("company_name");
+                                    String companyId = company.getString("id");
                             %>
 
-                            <option value="<%= companyName%>"><%= companyName%></option>
+                            <option value="<%= companyId%>"><%= companyName%></option>
 
                             <%
                                 }

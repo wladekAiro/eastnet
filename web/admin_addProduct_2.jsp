@@ -107,7 +107,7 @@
         <%            }
         
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
 
@@ -154,12 +154,11 @@
     DB_Conn conn = new DB_Conn();
     Connection con = conn.getConnection();
     Statement st = con.createStatement();
-    String sql_getCategory = "SELECT  `category_name` FROM  `category`; ";
-    String sql_getSubCategory = "SELECT  `sub-category_name` FROM  `sub-category`;";
+    String sql_getCategory = "SELECT  id,category_name FROM  category; ";
+    String sql_getSubCategory = "SELECT  id,sub_category_name FROM sub_category;";
     //String sql_getCompany = "SELECT  `company-name` FROM  `product-company`;";
 
-    if (productBean.getCompany() == null || 
-            productBean.getCompany()  == ""){
+    if (productBean.getCompany() == null || productBean.getCompany()  == ""){
         response.sendRedirect("admin_addProduct_1.jsp");
     }
 %>
@@ -183,8 +182,9 @@
                                             ResultSet rs = st.executeQuery(sql_getCategory);
                                             while (rs.next()) {
                                                 String category = rs.getString("category_name");
+                                                int categoryId = rs.getInt("id");
                                         %>
-                                        <option value="<%= category%>"><%= category%></option>
+                                        <option value="<%= categoryId%>"><%= category%></option>
                                         <%
                                             }
                                         %>
@@ -200,7 +200,7 @@
                     </div>
                     <div class="clear"></div><br/>
                     <div class="grid_2">
-                        <h3>Add Sub-Category</h3>
+                        <h3>Add Category</h3>
                     </div>
                     <div class="grid_5">
                         <input id="categoryName" type="text" name= "categoryName" tabindex="1" placeholder="eg. Games, Movies, Books"/>
@@ -214,7 +214,7 @@
                     </div>
                     <div class="clear"></div>
                     <div class="grid_2">
-                        <h3>Select Category</h3>
+                        <h3>Select Sub-Category</h3>
                     </div>
                     <div class="grid_5">
                         <select id="selectMenuSubCategory" name="subCategory">
@@ -224,10 +224,11 @@
                                                 ResultSet subCategory = st.executeQuery(sql_getSubCategory);
 
                                                 while (subCategory.next()) {
-                                                    String subCat = subCategory.getString("sub-category_name");
+                                                    String subCat = subCategory.getString("sub_category_name");
+                                                    int subCategoryId = subCategory.getInt("id");
                                             %>
 
-                                            <option value="<%= subCat%>"><%= subCat%></option>
+                                            <option value="<%= subCategoryId%>"><%= subCat%></option>
 
                                             <%
                                                 }

@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS product_company (
 CREATE TABLE IF NOT EXISTS products (
   id serial primary key,
   product_name varchar(60) NOT NULL UNIQUE,
-  product_id bigint,
+  category_id bigint NOT NULL REFERENCES category(id),
   sub_category_name varchar(40) NOT NULL,
   sub_category_id bigint NOT NULL REFERENCES sub_category(id),
   category_name varchar(40) NOT NULL,
