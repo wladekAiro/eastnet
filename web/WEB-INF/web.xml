@@ -84,6 +84,18 @@
         <servlet-name>AdminPerfomanceServlet</servlet-name>
         <servlet-class>servlets.admin.AdminPerfomanceServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <servlet-class>product.FileUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageProducts</servlet-name>
+        <servlet-class>product.ManageProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>servlets.ProductsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminPerfomanceServlet</servlet-name>
         <url-pattern>/admin_perfomance</url-pattern>
@@ -215,6 +227,18 @@
     <servlet-mapping>
         <servlet-name>removeCategory</servlet-name>
         <url-pattern>/removeCategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <url-pattern>/uploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageProducts</servlet-name>
+        <url-pattern>/admin_manage_products</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
