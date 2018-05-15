@@ -40,7 +40,7 @@
         }
         
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
 
@@ -93,7 +93,9 @@ DELETE FROM `images` WHERE `product-name` = 'Assasssins Book';# 1 row affected.
 
                         <div class="grid_13 push_1">
                             <div class="grid_5">
-                                <a href="admin_deleteProduct.jsp?pid=<%= session.getAttribute("productId")  %>&del=y" id="buy">Yes Delete it Right Away</a>
+                                <form action="/admin_manage_products?pid=<%= session.getAttribute("productId")  %>" method="DELETE">
+                                    <input type="submit" name="Yes Delete it Right Away"/>
+                                </form>
                             </div>
                             <div class="grid_5">
                                 <a href="admin_manageProduct.jsp?pid=<%= session.getAttribute("productId")  %>" id="buy">No, Cancel Deletion</a>

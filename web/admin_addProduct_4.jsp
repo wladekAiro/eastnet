@@ -202,16 +202,18 @@
                 <form method="post" action="admin_addProduct_controller.jsp">
                     <input type="hidden" name="company" value="<%= productBean.getCompany() %>"/>
                     <input type="hidden" name="category" value="<%= productBean.getCategory() %>"/>
+                    <input type="hidden" name="categoryId" value="<%= productBean.getCategoryId() %>"/>
                     <input type="hidden" name="subCategory" value="<%= productBean.getSubcategory() %>"/>
+                    <input type="hidden" name="subcategoryId" value="<%= productBean.getSubcategoryId() %>"/>
                     <input type="hidden" name="productName" value="<%= productBean.getName() %>"/>
                     <input type="hidden" name="tags" value="<%= productBean.getTags() %>"/>
                     <input type="hidden" name="page" value="admin_addProduct_Insert.jsp"/>
 
                     <div class="grid_4">
-                        <h3>Product Price : Rs. </h3>
+                        <h3>Product Price : Kshs. </h3>
                     </div>
                     <div class="grid_5">
-                        <input id="price" type="number" name= "price" min="1" placeholder="eg.Rs 7899/-" required/><br/>
+                        <input id="price" type="number" name= "price" min="1" placeholder="eg.Kshs 7899/-" required/><br/>
                        
                     </div>
                     <div class="clear"></div><br/>

@@ -50,7 +50,7 @@ ArrayList<String> categoryArr = new ArrayList<String>();
 categoryArr.clear();
 //out.print("data.addRows([");
 while (rs.next()) {
-String category = rs.getString("category-name");
+String category = rs.getString("category_name");
 int sales = rs.getInt("hits");
 categoryArr.add(category);
 salesArr.add(sales);

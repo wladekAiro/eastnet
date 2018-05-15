@@ -45,10 +45,10 @@ public class loginServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet loginServlet</title>");
+            out.println("<title>Error</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet loginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h> INVALID REQUEST</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {
@@ -105,7 +105,7 @@ public class loginServlet extends HttpServlet {
             out.println("email " + email + " pass " + pass);
             con = new DB_Conn();
             Connection c = con.getConnection();
-            String sqlGetUsers = "SELECT * FROM  users where email = ? OR user_name = ?";
+            String sqlGetUsers = "SELECT * FROM  users where email = ? OR user_name = ? AND ROLE = 'USER'";
 
             PreparedStatement st = c.prepareStatement(sqlGetUsers);
             st.setString(1, email);
@@ -126,7 +126,7 @@ public class loginServlet extends HttpServlet {
                     user User = new user();
                     User.setUserEmail(db_email);
                     userSession.setAttribute("user", User);
-                    response.sendRedirect(request.getContextPath() + "/index.jsp");
+                    response.sendRedirect(request.getContextPath() + "/");
 
                 } else {
                     isLoggedIn = false;

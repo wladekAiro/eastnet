@@ -9,6 +9,17 @@ package product;
  * @author chirag
  */
 public class productBean {
+    
+    private String company;
+    private String category;
+    private int categoryId;
+    private String subcategory;
+    private int subcategoryId;
+    private String name;
+    private String price;
+    private String quantity;
+    private String tags;
+    private String summary;
 
     public String getCompany() {
         return company;
@@ -74,12 +85,20 @@ public class productBean {
     public void setSummary(String summary) {
         this.summary = summary;
     }
-    private String company;
-    private String category;
-    private String subcategory;
-    private String name;
-    private String price;
-    private String quantity;
-    private String tags;
-    private String summary;
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getSubcategoryId() {
+        return subcategoryId;
+    }
+
+    public void setSubcategoryId(int subcategoryId) {
+        this.subcategoryId = subcategoryId;
+    }
 }

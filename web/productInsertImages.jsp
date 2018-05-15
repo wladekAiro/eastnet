@@ -89,7 +89,7 @@
                         %>
                     </p>
 
-                    <form method="post" action="uploadImage.jsp" name="upform" enctype="multipart/form-data">
+                    <form method="post" action="/uploadFile" name="upform" enctype="multipart/form-data">
 
                         <img class="push_1" id="targetPrev" alt="your image" />
                         <table width="60%" border="0" cellspacing="1" cellpadding="1" align="center" class="style1">
@@ -98,7 +98,7 @@
                             </tr>
                             <tr>
                                 <td align="left">
-                                    <input type="file" onchange="readURL(this);"  name="uploadfile" size="50">
+                                    <input id="uploadfile" type="file" onchange="readURL(this);"  name="uploadfile" size="50">
                                 </td>
                             </tr>
                             <tr>

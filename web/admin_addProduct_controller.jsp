@@ -133,17 +133,16 @@
                 
                 
                 
-                <jsp:useBean class="product.productBean" scope="session" id="productBean"></jsp:useBean>
-                <jsp:setProperty name="productBean" property="company" value="${param.company}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="category" value="${param.category}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="subcategory" value="${param.subCategory}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="name" value="${param.productName}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="tags" value="${param.tags}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="price" value="${param.price}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="quantity" value="${param.productQty}"></jsp:setProperty>     
-                <jsp:setProperty name="productBean" property="summary" value="${param.summary}"></jsp:setProperty>     
+                <jsp:useBean class="product.productBean" scope="session" id="productBean"/>
+                <jsp:setProperty name="productBean" property="company" value="${param.company}"/>    
+                <jsp:setProperty name="productBean" property="category" value="${param.category}"/>     
+                <jsp:setProperty name="productBean" property="subcategory" value="${param.subCategory}"/>
+                <jsp:setProperty name="productBean" property="name" value="${param.productName}"/>     
+                <jsp:setProperty name="productBean" property="tags" value="${param.tags}"/>     
+                <jsp:setProperty name="productBean" property="price" value="${param.price}"/>     
+                <jsp:setProperty name="productBean" property="quantity" value="${param.productQty}"/>     
+                <jsp:setProperty name="productBean" property="summary" value="${param.summary}"/>     
 
-                
                 <div class="grid_13"  style="padding: 10px 0px;" id="whiteBox">
                     <div class="grid_13">
                         <br/><h1>Add Product Controller</h1><hr/>

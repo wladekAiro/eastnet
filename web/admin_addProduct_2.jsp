@@ -182,9 +182,8 @@
                                             ResultSet rs = st.executeQuery(sql_getCategory);
                                             while (rs.next()) {
                                                 String category = rs.getString("category_name");
-                                                int categoryId = rs.getInt("id");
                                         %>
-                                        <option value="<%= categoryId%>"><%= category%></option>
+                                        <option value="<%= category%>"><%= category%></option>
                                         <%
                                             }
                                         %>
@@ -225,10 +224,9 @@
 
                                                 while (subCategory.next()) {
                                                     String subCat = subCategory.getString("sub_category_name");
-                                                    int subCategoryId = subCategory.getInt("id");
                                             %>
 
-                                            <option value="<%= subCategoryId%>"><%= subCat%></option>
+                                            <option value="<%= subCat%>"><%= subCat%></option>
 
                                             <%
                                                 }

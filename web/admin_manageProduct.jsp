@@ -48,7 +48,7 @@
     <%            }
 
         if (session.getAttribute("admin") == null) {
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
     %>
 
@@ -78,11 +78,11 @@
             String productId = request.getParameter("pid");
             if (request.getParameter("pid") == null || request.getParameter("pid") == "" || request.getParameter("pid") == "null") {
 
-                String sqlFetchItems = "SELECT * FROM  `products` p "
-                        + "INNER JOIN  `images` i "
-                        + "USING (  `product-name` ) "
-                        + "GROUP BY  `product-name` "
-                        + " ORDER BY `product_qty` ASC ";
+                String sqlFetchItems = "SELECT * FROM  products p "
+                        + "INNER JOIN  images i ON "
+                        + " p.id=i.product_id "
+                        + " GROUP BY p.id,i.id "
+                        + " ORDER BY p.product_qty ASC ";
                 Statement st1 = c.createStatement();
                 ResultSet rs = st1.executeQuery(sqlFetchItems.toString());
         %>
@@ -139,15 +139,15 @@
                             while (rs.next()) {
                                 /*
                                  product-name	product_id	sub-category-name	category-name	company-name	price	summary	image-id	image-name*/
-                                String product_id = rs.getString("product_id");
+                                String product_id = rs.getString("id");
 
-                                String product_name = rs.getString("product-name");
+                                String product_name = rs.getString("product_name");
 
-                                String sub_category_name = rs.getString("sub-category-name");
+                                String sub_category_name = rs.getString("sub_category_name");
 
-                                String category_name = rs.getString("category-name");
+                                String category_name = rs.getString("category_name");
 
-                                String company_name = rs.getString("company-name");
+                                String company_name = rs.getString("company_name");
 
                                 String price = rs.getString("price");
 
@@ -157,7 +157,7 @@
 
                                 String hits = rs.getString("hits");
 
-                                String image_name = rs.getString("image-name");
+                                String image_name = rs.getString("image_name");
                                 /*
                                  out.println("<br/>"+product_id+
                                  "<br/>"+product_name+
@@ -203,11 +203,12 @@
         <%
         } else {
 
-            String sqlFetchProductInfo = "SELECT * "
-                    + "FROM  `products` p "
-                    + "INNER JOIN  `images` i "
-                    + "USING (  `product-name` ) "
-                    + "WHERE p.`product_id` = '" + productId + "' ";
+            String sqlFetchProductInfo = "SELECT p.id AS id,p.company_name,p.product_name,p.tags,"
+                    + "p.category_name,p.sub_category_name,p.product_qty,p.price,p.summary,i.image_name,i.id AS image_id "
+                    + "FROM  products p "
+                    + "INNER JOIN  images i "
+                    + " ON p.id=i.product_id "
+                    + "WHERE p.id = '" + productId + "' ";
 
             String company = "", productName = "", searchTags = "",
                     category = "", subCategory = "",
@@ -223,16 +224,16 @@
 
             while (rs.next()) {
 
-                company = rs.getString("company-name");
-                productName = rs.getString("product-name");
+                company = rs.getString("company_name");
+                productName = rs.getString("product_name");
                 searchTags = rs.getString("tags");
-                category = rs.getString("category-name");
-                subCategory = rs.getString("sub-category-name");
+                category = rs.getString("category_name");
+                subCategory = rs.getString("sub_category_name");
                 quantity = rs.getString("product_qty");
                 price = rs.getString("price");
                 summary = rs.getString("summary");
-                imageName = rs.getString("image-name");
-                image_id = rs.getString("image-id");
+                imageName = rs.getString("image_name");
+                image_id = rs.getString("image_id");
 
                 productImages.add(imageName);
                 productImagesId.add(image_id);
@@ -250,7 +251,7 @@
                     <h3 style="padding: 10px; "><%=category%> > <%=subCategory%></h3>
                 </div>
                 <div class="grid_5">
-                    <a href="admin_deleteProduct.jsp?pid=<%= productId%>" id="greenBtn">[x] Delete this Item</a>
+                    <a href="/admin_manage_products?del=true&pid=<%= productId%>" id="greenBtn">[x] Delete this Item</a>
                 </div><!--
                 <div class="grid_5">
                     <h3  style="padding: 10px; float: right;" class="red">Selling Meter : 956</h3>
