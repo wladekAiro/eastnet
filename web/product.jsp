@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
+        <title>Easnat</title>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
 
         <link rel="stylesheet" type="text/css" href="css/reset.css"/>
@@ -48,7 +48,8 @@
 
                 Statement st = con.createStatement();
 
-                String getProductQuery = "SELECT * FROM  `products` p INNER JOIN  `images` i USING (  `product-name` ) WHERE  `product_id` =" + id + " GROUP BY  `product-name` ";
+                String getProductQuery = "SELECT *  "
+                        + "FROM (SELECT distinct ON (product_id) * FROM images WHERE product_id =" + id + ") AS i INNER JOIN products p ON p.id=i.product_id";
                 ResultSet rs = st.executeQuery(getProductQuery);
 
                 rs.next();
@@ -58,19 +59,19 @@
 
                 int product_hits = rs.getInt("hits");
 
-                String product_name = rs.getString("product-name");
+                String product_name = rs.getString("product_name");
 
-                String sub_category_name = rs.getString("sub-category-name");
+                String sub_category_name = rs.getString("sub_category_name");
 
-                String category_name = rs.getString("category-name");
+                String category_name = rs.getString("category_name");
 
-                String company_name = rs.getString("company-name");
+                String company_name = rs.getString("company_name");
 
                 String price = rs.getString("price");
 
                 String summary = rs.getString("summary");
 
-                String image_name = rs.getString("image-name");
+                String image_name = rs.getString("image_name");
 
         %>
 
@@ -151,7 +152,7 @@
                         <div class="clear"></div>
 
                         <%
-                            String getImages = "SELECT  `image-name` FROM  `products` INNER JOIN  `images` USING (  `product-name` ) WHERE  `product_id` =" + product_id + "";
+                            String getImages = "SELECT i.image_name FROM  images i INNER JOIN products p ON i.product_id=p.id WHERE i.product_id =" + product_id + "";
 
                             rs.close();
 
@@ -161,7 +162,7 @@
                             // GET THE REST OF THE PRODUCT IMAGES
                             while (rs.next()) {
 
-                                image_name = rs.getString("image-name");
+                                image_name = rs.getString("image_name");
 
                         %>
 
@@ -172,9 +173,9 @@
 
                         <%
                                 }
-                                st.execute("UPDATE  `products` "
-                                        + " SET  `hits` =  '" + (product_hits + 1) + "' "
-                                        + " WHERE  `products`.`product_id` =" + product_id + " ");
+                                st.execute("UPDATE  products "
+                                        + " SET  hits =  '" + (product_hits + 1) + "' "
+                                        + " WHERE products.id =" + product_id + "");
                                 st.close();
                                 c.closeConnection();
 

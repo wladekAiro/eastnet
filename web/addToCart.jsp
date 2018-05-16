@@ -4,8 +4,8 @@
     Author     : chirag
 --%>
 
+<%@page import="user.User"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="user.user"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -53,7 +53,7 @@
         </style>
     </head>
     <body>
-        <jsp:useBean id="cart" scope="session" class="cart.cart"></jsp:useBean>
+        <jsp:useBean id="cart" scope="session" class="service.CartServlce"></jsp:useBean>
 
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
@@ -75,10 +75,10 @@
                     <h1 class="push_2" style="padding:10px 00px">Products In your Cart</h1>
 
                     <%
-                        user User = new user();
+                        User user = new User();
                         session.getAttribute("user");
                         //out.println(session.getAttribute("user"));
-                        User = (user) session.getAttribute("user");
+                        user = (User) session.getAttribute("user");
                         if (session.getAttribute("user") == null) {
                     %>
                     <h3 class="showForm" id="loginBtn" style="padding:10px 00px">Please Login before buying...</h3>
@@ -138,13 +138,13 @@
                             <%=productNames.get(i)%>
                         </div>
                         <div class="grid_2">
-                            Rs. <%=productPrices.get(i)%>
+                            Kshs. <%=productPrices.get(i)%>
                         </div>
                         <div class="grid_1">
                             x<%=Qty.get(i)%>
                         </div>
                         <div class="grid_2">
-                            Rs. <%= Qty.get(i) * productPrices.get(i)%>
+                            Kshs. <%= Qty.get(i) * productPrices.get(i)%>
                         </div>
 
                         <%
@@ -160,7 +160,7 @@
                         </div>
 
                         <div class="grid_3 push_3">
-                            Rs <%= Math.ceil(cart.getTotalPriceOfCart()) %>
+                            Kshs <%= Math.ceil(cart.getTotalPriceOfCart()) %>
                         </div>
                         <div class="clear"></div>
 

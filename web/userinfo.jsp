@@ -4,15 +4,15 @@
     Author     : chirag
 --%>
 
-<%@page import="cart.cart"%>
-<%@page import="user.user"%>
+<%@page import="service.CartServlce"%>
+<%@page import="user.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -85,15 +85,15 @@
         <%
             }
 
-            user User;
+            User user;
             String printName = null;
             if ((session.getAttribute("user") == null)) {
                 response.sendRedirect("index.jsp");
             } else {
-                User = (user) session.getAttribute("user");
-                String email = User.getUserEmail();
-                String userName = User.getUsername();
-                int uid = User.getUserId();
+                user = (User) session.getAttribute("user");
+                String email = user.getUserEmail();
+                String userName = user.getUsername();
+                int uid = user.getUserId();
 
                 if (userName == null) {
                     printName = email;
@@ -297,7 +297,7 @@ WHERE o.`user_id` =4
                     <h1 style ="padding: 10px 0px 10px 0px;">User Account</h1>  
 
                     <%
-                        if (User.getUsername() == null) {
+                        if (user.getUsername() == null) {
                     %>
                     <form method="post" action="addUserDetalsServlet">
                         <div class="grid_3">
@@ -348,7 +348,7 @@ WHERE o.`user_id` =4
                             Name
                         </div>
                         <div class="grid_5">
-                            <input type="text" name="username" value="<%= User.getUsername()%>" required/>
+                            <input type="text" name="username" value="<%= user.getUsername()%>" required/>
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
@@ -358,7 +358,7 @@ WHERE o.`user_id` =4
                             <select name="gender" required>
 
                                 <%
-                                    if (User.getGender().equals("male")) {
+                                    if (user.getGender().equals("male")) {
                                 %>
                                 <option value="male" selected>Male</option>
                                 <option value="female">Female</option>
@@ -376,14 +376,14 @@ WHERE o.`user_id` =4
                             Mobile No
                         </div>
                         <div class="grid_5">
-                            <input type="text" name="mobileNum"  value="<%= User.getMobileNum()%>" required/>
+                            <input type="text" name="mobileNum"  value="<%= user.getMobileNum()%>" required/>
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
                             Address
                         </div>
                         <div class="grid_5">
-                            <textarea name="address" required><%= User.getAddress()%></textarea>
+                            <textarea name="address" required><%= user.getAddress()%></textarea>
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
@@ -415,7 +415,7 @@ WHERE o.`user_id` =4
                             Email 
                         </div>
                         <div class="grid_5">
-                            <input type="text" name="email" value="<%= User.getUserEmail()%>" disabled/>
+                            <input type="text" name="email" value="<%= user.getUserEmail()%>" disabled/>
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">

@@ -16,7 +16,7 @@ import java.util.Scanner;
  *
  * @author chirag
  */
-public class product {
+public class ProductService {
 
     private int productId; 
     private ArrayList<String> category = new ArrayList<String>();
@@ -118,7 +118,7 @@ public class product {
     }
     
     public static void main (String args []) throws SQLException, ClassNotFoundException{
-        product p = new product();
+        ProductService p = new ProductService();
         ArrayList<String> company1 = p.getCompany();
         ArrayList<String> category1 = p.getCategory();
         ArrayList<String> subcategory1 = p.getSubcategory("Computers");

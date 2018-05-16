@@ -4,7 +4,7 @@
  */
 package product;
 
-import service.CartServlet;
+import service.CartServlce;
 import database.DB_Conn;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -78,12 +78,12 @@ public class buyItems extends HttpServlet {
         doPost(request, response);
         /*
          HttpSession session = request.getSession();
-         if (!(session.getAttribute("User") == null) && !(session.getAttribute("CartServlet") == null)) {
+         if (!(session.getAttribute("User") == null) && !(session.getAttribute("CartServlce") == null)) {
 
          User User;
          User = (User) session.getAttribute("User");
-         CartServlet Cart;
-         Cart = (CartServlet) session.getAttribute("CartServlet");
+         CartServlce Cart;
+         Cart = (CartServlce) session.getAttribute("CartServlce");
 
          PrintWriter out = response.getWriter();
          try {
@@ -138,8 +138,8 @@ public class buyItems extends HttpServlet {
         HttpSession session = request.getSession();
         User User;
         User = (User) session.getAttribute("user");
-        CartServlet Cart;
-        Cart = (CartServlet) session.getAttribute("cart");
+        CartServlce Cart;
+        Cart = (CartServlce) session.getAttribute("cart");
         
         name = request.getParameter("name");
         age = request.getParameter("age");

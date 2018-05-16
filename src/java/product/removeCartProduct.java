@@ -4,7 +4,7 @@
  */
 package product;
 
-import service.CartServlet;
+import service.CartServlce;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -75,8 +75,8 @@ public class removeCartProduct extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.println ("Id of the product "+id );
             HttpSession session = request.getSession();
-            CartServlet cart;
-            cart = (CartServlet) session.getAttribute("cart");
+            CartServlce cart;
+            cart = (CartServlce) session.getAttribute("cart");
             
             response.setContentType("text/html;charset=UTF-8");
                     out.println("<br/>Total value price of the cart " + cart.getTotalPriceOfCart());

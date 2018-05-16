@@ -4,13 +4,13 @@
     Author     : chirag
 --%>
 
-<%@page import="user.user"%>
+<%@page import="user.User"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -55,13 +55,13 @@
         <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
 
         <%
-            user User;
+            User user;
             String email=null;
            if ((session.getAttribute("user")==null)){
                //response.sendRedirect("index.jsp");
            }else {
-               User = (user)session.getAttribute("user");
-               email = User.getUserEmail();
+               user = (User)session.getAttribute("user");
+               email = user.getUserEmail();
         %>
         <div class="container_16">
             <div class="grid_16" id="whiteBox" style="padding: 10px;">
@@ -100,7 +100,7 @@
                     </form>
                 </div>
                 <%
-               if (User.getAddress() != null && User.getMobileNum() != null && User.getUserEmail() != null && User.getUsername() != null){
+               if (user.getAddress() != null && user.getMobileNum() != null && user.getUserEmail() != null && user.getUsername() != null){
                    %>
                    <div class="grid_7 shippingAddress" id="useInfo">
                     <h1> <strong></strong>This is my Shipping Address</h1> <br/>
@@ -108,20 +108,20 @@
                             Name
                         </div>
                         <div class="grid_5">
-                            <span id ="userName"><%= User.getUsername() %></span>
+                            <span id ="userName"><%= user.getUsername() %></span>
                         </div>
                         <div class="clear"></div>
                         <div class="grid_1">
                             Mobile
                         </div>
                         <div class="grid_5">
-                            <span id ="mobile"><%= User.getMobileNum() %></span>
+                            <span id ="mobile"><%= user.getMobileNum() %></span>
                         </div>
                         <div class="grid_1">
                             Address
                         </div>
                         <div class="grid_5">
-                            <span id ="useAddress"><%= User.getAddress() %></span> 
+                            <span id ="useAddress"><%= user.getAddress() %></span> 
                         </div>
                         <div class="clear"></div>
                     </div>

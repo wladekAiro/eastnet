@@ -9,7 +9,7 @@
         margin-right: 3px;
     }
 </style>
-<jsp:useBean id="cart" scope="session" class="service.CartServlet"  ></jsp:useBean>
+<jsp:useBean id="cart" scope="session" class="service.CartServlce"  ></jsp:useBean>
 <%
     ArrayList<Integer> Qty = new ArrayList();
     Qty = cart.getQty();

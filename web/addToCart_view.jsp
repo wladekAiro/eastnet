@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
-<%@page import="user.user"%>
+<%@page import="user.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -53,7 +53,7 @@
         </style>
     </head>
     <body>
-        <jsp:useBean id="cart" scope="session" class="cart.cart"/>
+        <jsp:useBean id="cart" scope="session" class="service.CartServlce"/>
 
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
@@ -75,10 +75,10 @@
                     <h1 class="push_2" style="padding:10px 00px">Products In your Cart</h1>
 
                     <%
-                        user User = new user();
+                        User user = new User();
                         session.getAttribute("user");
                         //out.println(session.getAttribute("user"));
-                        User = (user) session.getAttribute("user");
+                        user = (User) session.getAttribute("user");
                         if (session.getAttribute("user") == null) {
                     %>
                     <h3 class="showForm" id="loginBtn" style="padding:10px 00px">Please Login before buying...</h3>

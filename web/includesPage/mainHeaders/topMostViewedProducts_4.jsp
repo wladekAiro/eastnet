@@ -30,14 +30,13 @@
     </a>
     <div class="clear"></div>
     <%
-        String sqlTopMostProds = "SELECT p.id as product_id,p.price,i.image_name,p.product_name,"
-                + "p.sub_category_name,p.category_name,p.company_name "
-                + " FROM  products p"
-                + " INNER JOIN  images i"
+        String sqlTopMostProds = "SELECT * "
+                + " FROM (SELECT distinct ON (product_id) * FROM images) AS i"
+                + " INNER JOIN products p"
                 + " ON p.id=i.product_id "
-                + "WHERE p.product_qty > 5 "
-                + " GROUP BY  p.id, i.id "
-                + " ORDER BY  p.hits DESC "
+                + " WHERE p.product_qty > 5 "
+                + " ORDER BY p.hits DESC "
+                + " OFFSET 0"
                 + " LIMIT 16 ";
 
         DB_Conn db_conn = new DB_Conn();

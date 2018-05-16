@@ -17,7 +17,7 @@ import java.util.Scanner;
  *
  * @author chirag
  */
-public class CartServlet {
+public class CartServlce {
 
     public ArrayList<Integer> id = new ArrayList();
     public ArrayList<String> productCategory = new ArrayList();
@@ -154,7 +154,7 @@ public class CartServlet {
             double p = t_prices.get(i);
             sum += p;
         }
-        //System.out.println("Sum of your CartServlet is "+ sum);
+        //System.out.println("Sum of your CartServlce is "+ sum);
         return sum;
     }
 
@@ -237,7 +237,7 @@ public class CartServlet {
 
     public static void main(String args[]) throws SQLException, ClassNotFoundException {
         try {
-            CartServlet c = new CartServlet();
+            CartServlce c = new CartServlce();
             Scanner sc = new Scanner(System.in);
             /*
              do {

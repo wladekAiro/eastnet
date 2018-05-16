@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -77,8 +77,8 @@
 
                     <%                        String category, subcategory;
                         StringBuffer sql = new StringBuffer();
-                        sql.append("SELECT * FROM  products p "
-                                + "INNER JOIN  images i "
+                        sql.append("SELECT * FROM (SELECT distinct ON (product_id) * FROM images) AS i "
+                                + " INNER JOIN  products p "
                                 + " ON p.id=i.product_id ");
 
                         category = "";
@@ -191,7 +191,7 @@ WHERE  `category-name` =  'Games'
 AND  `sub-category-name` =  'Action-Adventure-Game'
 GROUP BY  `product-name` */
 
-                                sql.append(" WHERE  category_name =  '" + category + "' ");
+                                sql.append(" WHERE  p.category_name =  '" + category + "' ");
                         %>
                         <div class="grid_4 ">
                             <a id="greenBtn" href="removeProductFilter.jsp?cat=<%= category%>">Category : <%= category%> [x]</a>
@@ -202,7 +202,7 @@ GROUP BY  `product-name` */
 
                         <%                                        if (session.getAttribute("scat") != null) {
                                 subcategory = (String) session.getAttribute("scat");
-                                sql.append(" AND  sub_category_name =  '" + subcategory + "' ");
+                                sql.append(" AND p.sub_category_name =  '" + subcategory + "' ");
                         %>
                         <div class="grid_4 ">
                             <a id="greenBtn" href="removeProductFilter.jsp?scat=<%= subcategory%>">Sub-Category : <%= subcategory%> [x]</a>
@@ -243,7 +243,6 @@ GROUP BY  `product-name` */
                             } else {
 
                                 sql.append(" AND p.product_qty > 0  "
-                                        + " GROUP BY  p.id,i.id "
                                         + " ORDER BY  hits DESC  ");
                                 //out.print("Not Equals "+sql.toString());
                                 rs = st.executeQuery(sql.toString());
