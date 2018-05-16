@@ -4,6 +4,7 @@
     Author     : chirag
 --%>
 
+<%@page import="product.ProductBean"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -73,6 +74,8 @@
         <%
             Connection c = new DB_Conn().getConnection();
             Statement st = c.createStatement();
+            
+            ArrayList<ProductBean> products = (ArrayList<ProductBean>) request.getAttribute("products");
 
             //Fetch the (PID) Product ID 
             String productId = request.getParameter("pid");
@@ -158,16 +161,7 @@
                                 String hits = rs.getString("hits");
 
                                 String image_name = rs.getString("image_name");
-                                /*
-                                 out.println("<br/>"+product_id+
-                                 "<br/>"+product_name+
-                                 "<br/>"+sub_category_name+
-                                 "<br/>"+category_name+
-                                 "<br/>"+company_name+
-                                 "<br/>"+price+
-                                 "<br/>"+summary+
-                                 "<br/>"+image_name);
-                                 */
+                                
                                 String alert = "";
                                 if (qty < 5) {
                                     alert = "alert";

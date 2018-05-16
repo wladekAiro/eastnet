@@ -4,7 +4,7 @@
  */
 package product;
 
-import cart.cart;
+import service.CartServlet;
 import database.DB_Conn;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import user.user;
+import user.User;
 
 /**
  *
@@ -78,16 +78,16 @@ public class buyItems extends HttpServlet {
         doPost(request, response);
         /*
          HttpSession session = request.getSession();
-         if (!(session.getAttribute("user") == null) && !(session.getAttribute("cart") == null)) {
+         if (!(session.getAttribute("User") == null) && !(session.getAttribute("CartServlet") == null)) {
 
-         user User;
-         User = (user) session.getAttribute("user");
-         cart Cart;
-         Cart = (cart) session.getAttribute("cart");
+         User User;
+         User = (User) session.getAttribute("User");
+         CartServlet Cart;
+         Cart = (CartServlet) session.getAttribute("CartServlet");
 
          PrintWriter out = response.getWriter();
          try {
-         out.println("you user :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart());
+         out.println("you User :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart());
 
 
          } catch (SQLException ex) {
@@ -136,10 +136,10 @@ public class buyItems extends HttpServlet {
         int order_id;
         Connection c = null;
         HttpSession session = request.getSession();
-        user User;
-        User = (user) session.getAttribute("user");
-        cart Cart;
-        Cart = (cart) session.getAttribute("cart");
+        User User;
+        User = (User) session.getAttribute("user");
+        CartServlet Cart;
+        Cart = (CartServlet) session.getAttribute("cart");
         
         name = request.getParameter("name");
         age = request.getParameter("age");
@@ -181,7 +181,7 @@ public class buyItems extends HttpServlet {
                     PreparedStatement preparedSQL1 =
                             c.prepareStatement(insertOrder);
                     
-                    preparedSQL1.setInt(1, User.getUserId()); // user iD
+                    preparedSQL1.setInt(1, User.getUserId()); // User iD
 
                     preparedSQL1.setString(2, name); //`shippers_name` 
 
@@ -211,12 +211,12 @@ public class buyItems extends HttpServlet {
                         ResultSet executeQueryGetOrderId = st.executeQuery(getLatestOrderId);
                         executeQueryGetOrderId.next();
 
-                        //Here we get the latest order id for the current user
+                        //Here we get the latest order id for the current User
                         order_id = executeQueryGetOrderId.getInt("order_id");
                         
                         executeQueryGetOrderId.close();
 
-                        //out.println("you user :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart() + "gffdgfgvgedfrggfdre and order id of " + order_id);
+                        //out.println("you User :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart() + "gffdgfgvgedfrggfdre and order id of " + order_id);
 
                         ArrayList<String> productCategorys = Cart.getProductCategorys();
                         ArrayList<String> productNames = Cart.getProductNames();

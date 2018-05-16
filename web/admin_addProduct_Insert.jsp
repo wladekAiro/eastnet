@@ -21,7 +21,7 @@
     </head>
     <body>
 
-        <jsp:useBean class="product.productBean" scope="session" id="productBean"></jsp:useBean>
+        <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
 
         <%
             if (productBean.getCompany() == null

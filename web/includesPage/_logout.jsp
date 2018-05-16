@@ -1,7 +1,7 @@
 
+<%@page import="user.User"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="user.user"%>
 <style type="text/css">
     .backRed {
         background: #CC0000;
@@ -9,7 +9,7 @@
         margin-right: 3px;
     }
 </style>
-<jsp:useBean id="cart" scope="session" class="cart.cart"  ></jsp:useBean>
+<jsp:useBean id="cart" scope="session" class="service.CartServlet"  ></jsp:useBean>
 <%
     ArrayList<Integer> Qty = new ArrayList();
     Qty = cart.getQty();
@@ -20,10 +20,10 @@
     
         
     
-    user User = (user) session.getAttribute("user");
-    String email = User.getUserEmail();
-    String userName = User.getUsername();
-    int uid = User.getUserId();
+    User user = (User) session.getAttribute("user");
+    String email = user.getUserEmail();
+    String userName = user.getUsername();
+    int uid = user.getUserId();
     
     String printName;
     if (userName == null){
@@ -36,7 +36,7 @@
    <div id = "topWrapper">
         <div class="container_16">
                 <div class="grid_16">
-                        <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/eastnat_logo.png" /></a>
+                        <div id="logo" class="grid_6"> <a href="/"><img src="images/logo/eastnat_logo.png" /></a>
                         </div>
                         <div class="grid_9" id="top">
                             <ul>

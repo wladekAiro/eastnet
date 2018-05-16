@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="product.ProductBean" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -94,7 +94,7 @@
         <%            }
         
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
 
@@ -128,7 +128,7 @@
          <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
                   
 
-         <jsp:useBean class="product.productBean" scope="session" id="productBean"></jsp:useBean>
+         <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
          
             
 <%

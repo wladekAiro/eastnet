@@ -38,7 +38,7 @@
     </servlet>
     <servlet>
         <servlet-name>_logoutServlet</servlet-name>
-        <servlet-class>loginRegister._logoutServlet</servlet-class>
+        <servlet-class>accountServlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewProductFilterServlet</servlet-name>
@@ -46,7 +46,7 @@
     </servlet>
     <servlet>
         <servlet-name>changeMyPass</servlet-name>
-        <servlet-class>loginRegister.changeMyPass</servlet-class>
+        <servlet-class>accountServlets.ChangeMyPwdServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getProductSubCategory</servlet-name>
@@ -58,7 +58,7 @@
     </servlet>
     <servlet>
         <servlet-name>admin_login</servlet-name>
-        <servlet-class>loginRegister.admin_login</servlet-class>
+        <servlet-class>accountServlets.AdminLoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>addProductServlet</servlet-name>
@@ -66,7 +66,7 @@
     </servlet>
     <servlet>
         <servlet-name>addAnAdministrator</servlet-name>
-        <servlet-class>admin.addAnAdministrator</servlet-class>
+        <servlet-class>servlets.admin.AddAdministratorServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>removeCompany</servlet-name>
@@ -90,11 +90,15 @@
     </servlet>
     <servlet>
         <servlet-name>ManageProducts</servlet-name>
-        <servlet-class>product.ManageProducts</servlet-class>
+        <servlet-class>servlets.admin.ManageProducts</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductsServlet</servlet-name>
         <servlet-class>servlets.ProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddUserDetailsServlet</servlet-name>
+        <servlet-class>user.AddUserDetailsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AdminPerfomanceServlet</servlet-name>
@@ -142,15 +146,15 @@
     </servlet>
     <servlet>
         <servlet-name>loginServlet</servlet-name>
-        <servlet-class>loginRegister.loginServlet</servlet-class>
+        <servlet-class>accountServlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>registerServlet</servlet-name>
-        <servlet-class>loginRegister.registerServlet</servlet-class>
+        <servlet-class>accountServlets.RegisterServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>changeMyPassword</servlet-name>
-        <servlet-class>loginRegister.changeMyPassword</servlet-class>
+        <servlet-class>accountServlets.changeMyPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>removeCartProduct</servlet-name>
@@ -158,7 +162,7 @@
     </servlet>
     <servlet>
         <servlet-name>getCompanyNames</servlet-name>
-        <servlet-class>product.addProductPack.getCompanyNames</servlet-class>
+        <servlet-class>product.addProductPack.GetCompanyNames</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>addToCart</servlet-name>
@@ -239,6 +243,10 @@
     <servlet-mapping>
         <servlet-name>ProductsServlet</servlet-name>
         <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddUserDetailsServlet</servlet-name>
+        <url-pattern>/add_user_details</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

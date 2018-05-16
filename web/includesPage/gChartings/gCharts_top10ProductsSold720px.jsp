@@ -21,7 +21,7 @@ ORDER BY solds DESC
      */
 
 
-    String top10products = "SELECT COUNT(product_name * product_quantity) AS solds,  product_name "
+    String top10products = "SELECT COUNT(product_price * product_quantity) AS solds,  product_name "
             + " FROM  sales "
             + " GROUP BY  product_name "
             + " ORDER BY solds DESC "

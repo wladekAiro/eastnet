@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="product.ProductBean" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -36,7 +36,7 @@
         <%
         }
         if (session.getAttribute("admin")== null){
-            response.sendRedirect("admin_.jsp");
+            response.sendRedirect("/admin");
         }
         %>
 
@@ -121,15 +121,15 @@
                              ORDER BY  `order_id` DESC 
                              */
                             String sql = "\n"
-                                    + "SELECT `order_id` , `product_name` , \n"
-                                    + " `product_price` , `product_quantity` , \n"
-                                    + " `sold_on` , `mobile_number` , \n"
-                                    + " `address` , `shippers_name` \n"
-                                    + "FROM `order` o\n"
-                                    + "INNER JOIN `sales` s\n"
-                                    + "USING ( `order_id` )"
-                                    + " WHERE `status` = 'approved' \n"
-                                    + "ORDER BY `order_id` ";
+                                    + "SELECT o.id AS order_id , s.product_name , "
+                                    + " s.product_price , s.product_quantity ,"
+                                    + " s.sold_on , o.mobile_number ,"
+                                    + " o.address , o.shippers_name "
+                                    + " FROM orders o "
+                                    + "INNER JOIN sales s "
+                                    + " ON o.id=s.order_id "
+                                    + " WHERE o.status = 'approved' "
+                                    + " ORDER BY o.id DESC";
 
                             Connection c = new database.DB_Conn().getConnection();
 

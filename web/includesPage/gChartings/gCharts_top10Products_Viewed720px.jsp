@@ -30,7 +30,7 @@
 
     ResultSet rs = st.executeQuery(top10products);
     while (rs.next()) {
-        product.add(rs.getString("product-name"));
+        product.add(rs.getString("product_name"));
         hits.add(rs.getInt("hits"));
     }
 %>

@@ -2,15 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package product;
+package accountServlets;
 
-import service.CartServlet;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,9 +14,9 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Chirag
+ * @author chirag
  */
-public class removeCartProduct extends HttpServlet {
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,20 +33,27 @@ public class removeCartProduct extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /*
-             * TODO output your page here. You may use following sample code.
-             */
+            /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet removeCartProduct</title>");            
+            out.println("<title>Servlet _logoutServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet removeCartProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet _logoutServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
             out.close();
         }
+        /*catch (Exception e) {
+            //out.println(" Problem in the process execution...");
+            message = "An Error occoured during the process of login";
+            messageDetail = "We are extremely sorry to have this but we had an error during your process of login please do try after some time,";
+                   
+            request.setAttribute("message", message);
+            request.setAttribute("messageDetail", messageDetail);
+            dispatchMessage.forward(request, response);
+        }*/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -67,44 +69,10 @@ public class removeCartProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            //processRequest(request, response);
-            response.setContentType("text/html");
-            String id =  request.getParameter("id");
-            int intId = Integer.parseInt(id);
-            PrintWriter out = response.getWriter();
-            out.println ("Id of the product "+id );
-            HttpSession session = request.getSession();
-            CartServlet cart;
-            cart = (CartServlet) session.getAttribute("cart");
-            
-            response.setContentType("text/html;charset=UTF-8");
-                    out.println("<br/>Total value price of the cart " + cart.getTotalPriceOfCart());
-                    ArrayList<String> productNames = new ArrayList();
-                    ArrayList<Double> productPrices = new ArrayList();
-                    ArrayList<Integer> Qty = new ArrayList();
-                    ArrayList <Integer> ids = new ArrayList();
-                    
-                    productNames = cart.getProductNames();
-                    productPrices = cart.getPrices();
-                    Qty = cart.getQty();
-                    ids = cart.getId();
-                    
-                    cart.removeProduct(intId);
-                    
-                    out.println("<a href='/MyCartApplication/addToCart.jsp'>Goto Cart</a>");
-            /*if (Cart.removeProduct(intId)){
-                out.println("Ok Removed!!");
-                //response.sendRedirect("/MyCartApplication/");
-            }
-            else {
-                out.println("Not removed!!");
-            }*/
-        } catch (SQLException ex) {
-            Logger.getLogger(removeCartProduct.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(removeCartProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //processRequest(request, response);
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.sendRedirect("/index.jsp");
     }
 
     /**
@@ -119,7 +87,8 @@ public class removeCartProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

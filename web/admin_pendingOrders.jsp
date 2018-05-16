@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <title>Easnat</title>
+        <jsp:useBean class="product.ProductBean" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -41,7 +41,7 @@
         <%
             }
             if (session.getAttribute("admin") == null) {
-                response.sendRedirect("admin_.jsp");
+                response.sendRedirect("/admin");
             }
         %>
 
@@ -103,36 +103,17 @@
                             <div class="clear"></div>
 
                             <%
-                                /*
-                                 SELECT  `sales_id` ,  `order_id` ,  `product_name` ,  
-                                 `product_price` ,  `product_quantity` ,  `sold_on` , `status`
-                                 FROM  `order` o
-                                 INNER JOIN  `sales` s
-                                 USING (  `order_id` ) 
-                                 WHERE o.`user_id` =4
-                                 * 
-                                 * 
-                                 * 
-
-                                 SELECT  `order_id` ,  `product_name` , 
-                                 `product_price` ,  `product_quantity` , 
-                                 `sold_on` ,  `mobile_number` , 
-                                 `address` ,  `shippers_name` 
-                                 FROM  `order` o
-                                 INNER JOIN  `sales` s
-                                 USING (  `order_id` ) 
-                                 ORDER BY  `order_id` DESC 
-                                 */
+                        
                                 String sql = "\n"
-                                        + "SELECT `order_id` , `product_name` , \n"
-                                        + " `product_price` , `product_quantity` , \n"
-                                        + " `sold_on` , `mobile_number` , \n"
-                                        + " `address` , `shippers_name` \n"
-                                        + "FROM `order` o\n"
-                                        + "INNER JOIN `sales` s\n"
-                                        + "USING ( `order_id` )"
-                                        + " WHERE `status` = 'pending' \n"
-                                        + "ORDER BY `order_id` ";
+                                        + "SELECT o.id , s.product_name ,"
+                                        + " s.product_price , s.product_quantity ,"
+                                        + " s.sold_on , o.mobile_number ,"
+                                        + " o.address , o.shippers_name "
+                                        + " FROM orders o"
+                                        + " INNER JOIN sales s "
+                                        + " ON o.id=s.order_id "
+                                        + " WHERE status = 'pending' "
+                                        + " ORDER BY o.id DESC";
 
                                 Connection c = new database.DB_Conn().getConnection();
 

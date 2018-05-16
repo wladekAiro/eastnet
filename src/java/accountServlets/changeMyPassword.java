@@ -2,26 +2,29 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package product;
+package accountServlets;
 
-import service.CartServlet;
+import database.DB_Conn;
+import utils.SecureSHA1;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Chirag
+ * @author chirag
  */
-public class removeCartProduct extends HttpServlet {
+public class changeMyPassword extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -38,15 +41,13 @@ public class removeCartProduct extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /*
-             * TODO output your page here. You may use following sample code.
-             */
+            /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet removeCartProduct</title>");            
+            out.println("<title>Servlet changeMyPassword</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet removeCartProduct at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet changeMyPassword at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         } finally {            
@@ -67,44 +68,7 @@ public class removeCartProduct extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            //processRequest(request, response);
-            response.setContentType("text/html");
-            String id =  request.getParameter("id");
-            int intId = Integer.parseInt(id);
-            PrintWriter out = response.getWriter();
-            out.println ("Id of the product "+id );
-            HttpSession session = request.getSession();
-            CartServlet cart;
-            cart = (CartServlet) session.getAttribute("cart");
-            
-            response.setContentType("text/html;charset=UTF-8");
-                    out.println("<br/>Total value price of the cart " + cart.getTotalPriceOfCart());
-                    ArrayList<String> productNames = new ArrayList();
-                    ArrayList<Double> productPrices = new ArrayList();
-                    ArrayList<Integer> Qty = new ArrayList();
-                    ArrayList <Integer> ids = new ArrayList();
-                    
-                    productNames = cart.getProductNames();
-                    productPrices = cart.getPrices();
-                    Qty = cart.getQty();
-                    ids = cart.getId();
-                    
-                    cart.removeProduct(intId);
-                    
-                    out.println("<a href='/MyCartApplication/addToCart.jsp'>Goto Cart</a>");
-            /*if (Cart.removeProduct(intId)){
-                out.println("Ok Removed!!");
-                //response.sendRedirect("/MyCartApplication/");
-            }
-            else {
-                out.println("Not removed!!");
-            }*/
-        } catch (SQLException ex) {
-            Logger.getLogger(removeCartProduct.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(removeCartProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -119,7 +83,39 @@ public class removeCartProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {        
+            //processRequest(request, response);
+            String email = request.getParameter("email");
+            String pass = request.getParameter("pass");
+            
+            String changePassword = "UPDATE  `saikiran enterprises`.`user` SET  `pass` = SHA1(  ? ) WHERE  `user`.`email` =?;";
+            
+            DB_Conn con = new DB_Conn();
+            Connection c  = con.getConnection();
+            PreparedStatement psmt = c.prepareStatement(changePassword);
+            psmt.setString(1, pass);
+            psmt.setString(2, email);
+            int i = psmt.executeUpdate();
+            PrintWriter out =response.getWriter();
+            if(i==1){
+                out.println("Password Updated... Try to login now!!");
+            }
+            if (i==0){
+                out.println("Password Updated... Try to login now!!");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(changeMyPassword.class.getName()).log(Level.SEVERE, null, ex);
+            PrintWriter out =response.getWriter();
+            out.println("Eror in Process "+ex);
+            response.sendError(404);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(changeMyPassword.class.getName()).log(Level.SEVERE, null, ex);
+            PrintWriter out =response.getWriter();
+            out.println("Eror in Process "+ex);
+            response.sendError(404);
+        }
+            
     }
 
     /**

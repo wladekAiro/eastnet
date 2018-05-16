@@ -114,7 +114,7 @@
                         <%
                             if (request.getAttribute("fileName") != null) {
                         %>
-                        <a href="admin_manageProduct.jsp?pid=<%= (String)session.getAttribute("productId") %>" style="float: left;" id="buy" >Edit Product</a>
+                        <a href="admin_manageProduct.jsp?pid=<%= session.getAttribute("productId") %>" style="float: left;" id="buy" >Edit Product</a>
                         <div class="clear"></div><br/>
                         <h1>Result : <%= request.getAttribute("result")%><br/></h1>
                         File Name : <%= request.getAttribute("fileName")%><br/>

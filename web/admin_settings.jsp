@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <title>Eastnat</title>
+        <jsp:useBean class="product.ProductBean" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -35,13 +35,13 @@
         <jsp:include page="includesPage/_logout.jsp"></jsp:include>
         <%            }
             if (session.getAttribute("admin") == null) {
-                response.sendRedirect("admin_.jsp");
+                response.sendRedirect("/admin");
             }
         %>
 
         <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
         <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
-        <jsp:useBean class="admin.administrator" scope="session" id="admins"></jsp:useBean>
+        <jsp:useBean class="service.admin.AdminService" scope="session" id="admins"></jsp:useBean>
             <div class="container_16">
 
                 <div class="grid_16" style="padding: 10px;" id="whiteBox">
@@ -63,7 +63,7 @@
             <div class="grid_13" id="whiteBox" style="padding:10px 0px 10px 0px;">
 
                 <br/>    
-                <div class="grid_13 ">
+<!--                <div class="grid_13 ">
                     <h1>Add an Administrator</h1>
                 </div>
                 <hr/>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="clear"></div><br/>
                     </form>
-                </div>
+                </div>-->
 
                 <script type="text/javascript">
                     $(document).ready(function () {
@@ -113,9 +113,9 @@
                 <%
                     Connection c = new DB_Conn().getConnection();
                     Statement st = c.createStatement();
-                    String sqlFetchCompany = "SELECT * FROM  `product-company` ";
-                    String sqlFetchCategory = "SELECT * FROM  `category` ";
-                    String sqlFetchSubCategory = "SELECT * FROM  `sub-category` ORDER BY `category_name` ";
+                    String sqlFetchCompany = "SELECT * FROM  product_company ";
+                    String sqlFetchCategory = "SELECT * FROM category ";
+                    String sqlFetchSubCategory = "SELECT * FROM sub_category ORDER BY category_name ";
                     ResultSet rs;
 
 
@@ -134,8 +134,8 @@
                         <br/><div class="clear"></div>
                         <%                        rs = st.executeQuery(sqlFetchCompany);
                             while (rs.next()) {
-                                String companyId = rs.getString("company-id");
-                                String company = rs.getString("company-name");
+                                String companyId = rs.getString("id");
+                                String company = rs.getString("company_name");
                         %>
                         <div class="grid_4">
                             <a  style="display:inline;"><%= company%></a> 
@@ -165,7 +165,7 @@
                         <%
                             rs = st.executeQuery(sqlFetchCategory);
                             while (rs.next()) {
-                                String categoryId = rs.getString("category_id");
+                                String categoryId = rs.getString("id");
                                 String categoryName = rs.getString("category_name");
                         %>
                         <div class="grid_4">
@@ -196,9 +196,9 @@
                             rs = st.executeQuery(sqlFetchSubCategory);
                             while (rs.next()) {
                                 /*subcategory_id	sub-category_name category_name*/
-                                String subCatId = rs.getString("subcategory_id");
+                                String subCatId = rs.getString("id");
                                 String category_name = rs.getString("category_name");
-                                String subCatName = rs.getString("sub-category_name");
+                                String subCatName = rs.getString("sub_category_name");
                         %>
                         <div class="grid_4">
                             <a  style="display:inline;"><%= subCatName%></a> >>
