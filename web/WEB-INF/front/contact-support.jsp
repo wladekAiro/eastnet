@@ -78,17 +78,17 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
         %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%
         } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%
             }
 
         %>
-        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
-        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_search_navigationbar.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_facebookJoin.jsp"></jsp:include>
 
         <div class="container_16">
             <div id="whiteBox" style="padding: 10px;">
@@ -130,7 +130,7 @@
                             </div>
                         </div>
                     </div>
-                    <img src="images/textures/linen.png" style="width: 388px;
+                    <img src="/images/textures/linen.png" style="width: 388px;
                          height: 218px;
                          margin: 38px 0px;"/>
 

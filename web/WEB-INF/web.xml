@@ -100,6 +100,14 @@
         <servlet-name>AddUserDetailsServlet</servlet-name>
         <servlet-class>user.AddUserDetailsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ContactUsServlet</servlet-name>
+        <servlet-class>servlets.ContactUsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FaqServlet</servlet-name>
+        <servlet-class>servlets.FaqServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminPerfomanceServlet</servlet-name>
         <url-pattern>/admin_perfomance</url-pattern>
@@ -247,6 +255,14 @@
     <servlet-mapping>
         <servlet-name>AddUserDetailsServlet</servlet-name>
         <url-pattern>/add_user_details</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContactUsServlet</servlet-name>
+        <url-pattern>/contact_us</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FaqServlet</servlet-name>
+        <url-pattern>/faq</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

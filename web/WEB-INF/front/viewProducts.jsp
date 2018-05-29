@@ -28,17 +28,17 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
         %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%
         } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%
             }
         %>
 
-        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
-        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_search_navigationbar.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_facebookJoin.jsp"></jsp:include>
 
             <div class="container_16">
                 <div id = "contents">
@@ -93,7 +93,7 @@
                             <li><a href="#"><strong>Sub-Categories</strong></a></li>
                                 <%                                for (int i = 0; i < subCat.size(); i++) {
                                 %>
-                            <li><a href="addProductFilters.jsp?scat=<%= subCat.get(i)%>"><%= subCat.get(i)%></a></li>      
+                            <li><a href="/products?scat=<%= subCat.get(i)%>"><%= subCat.get(i)%></a></li>      
                                 <%
                                     }
                                     subCat.clear(); %>
@@ -107,18 +107,18 @@
                         }
                     } else {
                         //Show Category
-                        ArrayList Cat = product.getCategory();
+                        ArrayList cat = product.getCategory();
                     %>
                     <div>
                         <ul id="leftsideNav">
                             <li><a href="#"><strong>Categories</strong></a></li>
                                 <%
-                                    for (int i = 0; i < Cat.size(); i++) {
+                                    for (int i = 0; i < cat.size(); i++) {
                                 %>
-                            <li><a href="addProductFilters.jsp?cat=<%= Cat.get(i)%>"><%= Cat.get(i)%></a></li>      
+                            <li><a href="addProductFilters.jsp?cat=<%= cat.get(i)%>"><%= cat.get(i)%></a></li>      
                                 <%
                                     }
-                                    Cat.clear();
+                                    cat.clear();
                                 %>
                         </ul>
                     </div>
@@ -194,7 +194,7 @@ GROUP BY  `product-name` */
                                 sql.append(" WHERE  p.category_name =  '" + category + "' ");
                         %>
                         <div class="grid_4 ">
-                            <a id="greenBtn" href="removeProductFilter.jsp?cat=<%= category%>">Category : <%= category%> [x]</a>
+                            <a id="greenBtn" href="/products?cat=<%= category%>">Category : <%= category%> [x]</a>
                         </div>
                         <%
 
@@ -283,7 +283,7 @@ product-name	product_id	sub-category-name	category-name	company-name	price	summa
                         </div>
                         <div class="grid_9">
                             <div class="grid_5">
-                                <p id="info"><a href="product.jsp?id=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Kshs. <%= price%></span></p>
+                                <p id="info"><a href="products?id=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Kshs. <%= price%></span></p>
                             </div>
                             <div class="grid_3 push_2">
                                 <p><%=sub_category_name%>  <a href="addToCart.jsp?id=<%= product_id%>" id="greenBtn">Add to cart</a></p><p>Will Be delivered in 3 Working days</p>
@@ -300,13 +300,13 @@ product-name	product_id	sub-category-name	category-name	company-name	price	summa
                     </div>
                 </div>
 
-                <jsp:include page="includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
+                <jsp:include page="/includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
 
                 </div>
                 <!--The Middle Content Div Closing -->
             </div>
             <!--The Center Content Div Closing -->
-        <jsp:include page="includesPage/_footer.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_footer.jsp"></jsp:include>
 
     </body>
 </html>

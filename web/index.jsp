@@ -73,7 +73,7 @@
                         </li>  
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/b2.png" width="900" height="300" /> 
+                            <img src="images/banner/dripping_on_lemon.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -91,11 +91,11 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/b5.png" width="900" height="300" /> 
+                            <img src="images/banner/kienyeji_eggs.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
-                                <strong>Kids Colors...</strong>				
+                                <strong>Kienyeji eggs...</strong>				
 
                                 <br>Collection of Non-Toxic childrens colors available
 
@@ -109,11 +109,11 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/b7.jpg" width="900" height="300" /> 
+                            <img src="images/banner/chia_seeds.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
-                                <strong>Graphic Novels...</strong>				
+                                <strong>Chia seeds...</strong>				
 
                                 <br>The most amazing titles that you always wanted to get your hands onn.. 
 
@@ -129,11 +129,11 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/b6.png" width="900" height="300" /> 
+                            <img src="images/banner/peanut_butter_group.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
-                                <strong>Color World...</strong>				
+                                <strong>Peanut butter...</strong>				
 
                                 <br>A vast variety of different sets of colors including Oil-Pastels,
 
@@ -173,7 +173,7 @@
                             <%                            while (rs.next()) {
                                     String category = rs.getString("category_name");
                             %>
-                            <li><a href="viewProducts_.jsp"><%= category%></a></li>
+                            <li><a href="/products"><%= category%></a></li>
                                 <%
                                     }
 

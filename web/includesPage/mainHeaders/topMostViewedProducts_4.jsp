@@ -57,7 +57,7 @@
             company = rs.getString("company_name");
     %>
     <div id="productList" class="grid_3 prodGrid"> 
-        <a href="product.jsp?id=<%= productId%>"><img src="<%= imageName%>" /></a>
+        <a href="products?id=<%= productId%>"><img src="<%= imageName%>" /></a>
         <p id="info">
             <a href="product.jsp?id="><span class="blue"><%= name%></span></a><br/>
             By <%= company%> <%= category%><br/>

@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Saikiran BookStores FAQ</title>        
+        <title>Eastnat food store FAQ</title>        
         <!-- Default Stylesheets -->
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
 
@@ -29,16 +29,16 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
 %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%        } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%            }
         %>
         
-        <%@include file="includesPage/_search_navigationbar.jsp" %>
+        <%@include file="/includesPage/_search_navigationbar.jsp" %>
 
-        <%@include file="includesPage/_facebookJoin.jsp" %>
+        <%@include file="/includesPage/_facebookJoin.jsp" %>
 
         <div class="container_16">
             <div id="whiteBox" style="padding: 10px;">
@@ -177,6 +177,6 @@
             
                     </div>
                 </div>
-        <jsp:include page="includesPage/_footer.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_footer.jsp"></jsp:include>
     </body>
 </html>

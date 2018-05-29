@@ -11,10 +11,10 @@
             </div>
             <div class="grid_6" id="topNav">
                 <ul>
-                    <li><a href="index.jsp">HOME</a></li>
-                    <li><a href="viewProducts_.jsp">PRODUCTS</a></li>
-                    <li><a href="contact-support.jsp">CONTACT</a></li>
-                    <li><a href="faq.jsp">FAQ</a></li>
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="/products">PRODUCTS</a></li>
+                    <li><a href="/contact_us">CONTACT</a></li>
+                    <li><a href="/faq">FAQ</a></li>
                 </ul>
             </div>
         </div>

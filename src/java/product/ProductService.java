@@ -69,7 +69,7 @@ public class ProductService {
         con = c.getConnection();
         String getCategorySQL = "SELECT  sub_category_name " +
                                 "FROM  sub_category " +
-                                "WHERE  category_name =  ?;";
+                                "WHERE  category_name = ?;";
         
         PreparedStatement psmt = con.prepareStatement(getCategorySQL);
         psmt.setString(1, category);

@@ -26,16 +26,16 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
         %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%
         } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%
             }
         %>
-        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
-        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_search_navigationbar.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_facebookJoin.jsp"></jsp:include>
 
         <%
             String id = request.getParameter("id");
@@ -193,11 +193,11 @@
 
             </div>
 
-            <jsp:include page="includesPage/mainHeaders/topMostViewedProducts_5_1.jsp"></jsp:include>
+            <jsp:include page="/includesPage/mainHeaders/topMostViewedProducts_5_1.jsp"></jsp:include>
 
             </div>
 
-        <jsp:include page="includesPage/_footer.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_footer.jsp"></jsp:include>
 
     </body>
 </html>

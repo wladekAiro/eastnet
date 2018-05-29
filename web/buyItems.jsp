@@ -91,7 +91,7 @@
                             City
                         </div>
                         <div class="grid_5">
-                            <input  type="text" value="Mumbai" disabled/> We Do not accept any orders outside Mumbai
+                            <input  type="text" />
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_5" >
