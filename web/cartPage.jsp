@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="java.util.ArrayList"%>
-<%@page import="user.user"%>
+<%@page import="user.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -27,7 +27,7 @@
 
     </head>
     <body>
-        <jsp:useBean id="cart" scope="session" class="cart.cart"/>
+        <jsp:useBean id="cart" scope="session" class="service.CartServlce"/>
 
         <%
         if (session.getAttribute("user") == null ){// THen new user, show join now
@@ -41,9 +41,9 @@
         }
         %>
 
-    <%@include file="includesPage/_search_navigationbar.jsp" %>
+    <%@include file="/includesPage/_search_navigationbar.jsp" %>
 
-    <%@include file="includesPage/_facebookJoin.jsp" %>
+    <%@include file="/includesPage/_facebookJoin.jsp" %>
 
     <div class="container_16">
         <div class="grid_16" id="whiteBox">

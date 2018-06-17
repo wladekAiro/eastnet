@@ -21,9 +21,9 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css"/>
         <link rel="stylesheet" type="text/css" href="css/product.css"  />
 
-        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript" src="/js/jquery.js"></script>
 
-        <script type="text/javascript" src="js/myScript.js"></script>
+        <script type="text/javascript" src="/js/myScript.js"></script>
 
         <style type="text/css">
             #loginBtn {
@@ -58,16 +58,16 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
 %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%        } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%            }
         %>
 
-        <%@include file="includesPage/_search_navigationbar.jsp" %>
+        <%@include file="/includesPage/_search_navigationbar.jsp" %>
 
-        <%@include file="includesPage/_facebookJoin.jsp" %>
+        <%@include file="/includesPage/_facebookJoin.jsp" %>
 
         <div class="container_16">
             <div class="grid_16" id="whiteBox">
@@ -124,13 +124,13 @@
                             <%=productNames.get(i)%>
                         </div>
                         <div class="grid_2">
-                            Rs. <%=productPrices.get(i)%>
+                            Ksh. <%=productPrices.get(i)%>
                         </div>
                         <div class="grid_1">
                             x<%=Qty.get(i)%>
                         </div>
                         <div class="grid_2">
-                            Rs. <%= Qty.get(i) * productPrices.get(i)%>
+                            Ksh. <%= Qty.get(i) * productPrices.get(i)%>
                         </div>
 
                         <%
@@ -146,7 +146,7 @@
                         </div>
 
                         <div class="grid_3 push_3">
-                            Rs <%= Math.ceil(cart.getTotalPriceOfCart()) %>
+                            Kshs. <%= Math.ceil(cart.getTotalPriceOfCart()) %>
                         </div>
                         <div class="clear"></div>
 
@@ -157,7 +157,7 @@
                                 Buy These Items
                             </div>
                         </a>
-                        <a href="viewProducts_.jsp">
+                        <a href="/products">
                             <div class="grid_3" id="greenBtn">
                                 Continue Shopping
                             </div>

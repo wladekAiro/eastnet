@@ -83,8 +83,8 @@
 
                         category = "";
                         subcategory = "";
-                        if (session.getAttribute("cat") != null) {
-                            category = (String) session.getAttribute("cat");
+                        if (request.getParameter("cat") != null) {
+                            category = (String) request.getParameter("cat");
                             ArrayList subCat = product.getSubcategory(category);
 
                     %>
@@ -93,7 +93,7 @@
                             <li><a href="#"><strong>Sub-Categories</strong></a></li>
                                 <%                                for (int i = 0; i < subCat.size(); i++) {
                                 %>
-                            <li><a href="/products?scat=<%= subCat.get(i)%>"><%= subCat.get(i)%></a></li>      
+                            <li><a href="/products?cat=<%= category%>&scat=<%= subCat.get(i)%>"><%= subCat.get(i)%></a></li>      
                                 <%
                                     }
                                     subCat.clear(); %>
@@ -101,9 +101,8 @@
                     </div>
 
                     <%
-                        if (session.getAttribute("scat") != null) {
-                            subcategory = (String) session.getAttribute("scat");
-
+                        if (request.getParameter("scat") != null) {
+                            subcategory = (String) request.getParameter("scat");
                         }
                     } else {
                         //Show Category
@@ -115,7 +114,7 @@
                                 <%
                                     for (int i = 0; i < cat.size(); i++) {
                                 %>
-                            <li><a href="addProductFilters.jsp?cat=<%= cat.get(i)%>"><%= cat.get(i)%></a></li>      
+                            <li><a href="/products?cat=<%= cat.get(i)%>"><%= cat.get(i)%></a></li>      
                                 <%
                                     }
                                     cat.clear();
@@ -125,41 +124,6 @@
                     <%
                         }
                     %>
-                    <!--
-                    <div>
-                        <ul id="leftsideNav">
-                            <li><a href="#"><strong>Categories</strong></a></li>
-                            <li><a href="#">Books</a></li>
-                            <li><a href="#">Calculators</a></li>
-                            <li><a href="#">Art Supplies</a></li>
-                            <li><a href="#">Office Supplies</a></li>
-                            <li><a href="#">School Supplies</a></li>
-                            <li><a href="#">Games</a></li>
-                            <li><a href="#">Movies</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <ul id="leftsideNav">
-                            <li><a href="#"><strong>Sub-Categories</strong></a></li>
-                            <li><a href="#">Books</a></li>
-                            <li><a href="#">Calculators</a></li>
-                            <li><a href="#">Art Supplies</a></li>
-                            <li><a href="#">Office Supplies</a></li>
-                            <li><a href="#">School Supplies</a></li>
-                            <li><a href="#">Games</a></li>
-                            <li><a href="#">Movies</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <ul id="leftsideNav">
-                            <li><a href="#"><strong>Pricing</strong></a></li>
-                            <li><a href="#">Low to High</a></li>
-                            <li><a href="#">High to Low</a></li>
-                        </ul>
-                    </div>
-                    -->
 
                     <div class="adv">
                         <!--                        <h2><br/>This is The Header of an Advertisement</h2>
@@ -174,7 +138,7 @@
                     <div class="ProductHeading">
                         <div class="grid_12">
                             <h2 class="heading">Products >
-                                <%= category%> 
+                                <%= category%>  >
                                 <%= subcategory%>
                             </h2>
                         </div>
@@ -184,8 +148,8 @@
 
                         <div class="clear"></div>
                         <%
-                            if (session.getAttribute("cat") != null) {
-                                category = (String) session.getAttribute("cat");
+                            if (request.getParameter("cat") != null) {
+                                category = (String) request.getParameter("cat");
                                 /*
 WHERE  `category-name` =  'Games'
 AND  `sub-category-name` =  'Action-Adventure-Game'
@@ -194,18 +158,18 @@ GROUP BY  `product-name` */
                                 sql.append(" WHERE  p.category_name =  '" + category + "' ");
                         %>
                         <div class="grid_4 ">
-                            <a id="greenBtn" href="/products?cat=<%= category%>">Category : <%= category%> [x]</a>
+                            <a id="greenBtn" href="/products">Category : <%= category%> [x]</a>
                         </div>
                         <%
 
                         %>
 
-                        <%                                        if (session.getAttribute("scat") != null) {
-                                subcategory = (String) session.getAttribute("scat");
+                        <%                            if (request.getParameter("scat") != null) {
+                                subcategory = (String) request.getParameter("scat");
                                 sql.append(" AND p.sub_category_name =  '" + subcategory + "' ");
                         %>
                         <div class="grid_4 ">
-                            <a id="greenBtn" href="removeProductFilter.jsp?scat=<%= subcategory%>">Sub-Category : <%= subcategory%> [x]</a>
+                            <a id="greenBtn" href="/products?cat=<%= category%>">Sub-Category : <%= subcategory%> [x]</a>
                         </div>
                         <%
                             }

@@ -163,16 +163,16 @@ public class buyItems extends HttpServlet {
                     //******* Starting a Transaction
                     c.setAutoCommit(false);
                     String insertOrder;
-                    insertOrder = "    INSERT INTO  `saikiran enterprises`.`order` ("
-                            + "    `order_id` ,"
-                            + "    `user_id` ,"
-                            + "    `status` ,"
-                            + "    `shippers_name` ,"
-                            + "    `address` ,"
-                            + "    `mobile_number` ,"
-                            + "    `shippers_email` ,"
-                            + "    `ordered_On` ,"
-                            + "    `total_order_price`"
+                    insertOrder = "    INSERT INTO  order ("
+                            + "    order_id ,"
+                            + "    user_id ,"
+                            + "    status ,"
+                            + "    shippers_name ,"
+                            + "    address ,"
+                            + "    mobile_number ,"
+                            + "    shippers_email ,"
+                            + "    ordered_On ,"
+                            + "    total_order_price"
                             + "    )"
                             + "    VALUES ("
                             + "    NULL ,  ?,  'pending',  ?,  ?,  ?, ?, NOW( ) ,  ?"
@@ -199,10 +199,10 @@ public class buyItems extends HttpServlet {
                         //get the latest order id of the recent update
 
                         //out.println("Ok here we are onr order updted");
-                        String getLatestOrderId = "SELECT  `order_id` "
-                                + "FROM  `order` "
-                                + "WHERE  `user_id` = " + User.getUserId() + " "
-                                + "ORDER BY  `ordered_On` DESC; "
+                        String getLatestOrderId = "SELECT  order_id "
+                                + "FROM  order "
+                                + "WHERE user_id = '" + User.getUserId() + "'"
+                                + "ORDER BY  ordered_On DESC; "
                                 + "";
                         
                         preparedSQL1.close();
@@ -225,19 +225,16 @@ public class buyItems extends HttpServlet {
                         ArrayList<Integer> id = Cart.getId();
                         
                         String insertIntoSalesSQL3 = ""
-                                + "INSERT INTO  `saikiran enterprises`.`sales` ("
-                                + "`sales_id` ,"
-                                + "`order_id` ,"
-                                + "`product_id` ,"
-                                + "`product_name` ,"
-                                + "`product_price` ,"
-                                + "`product_quantity` ,"
-                                + "`sold_on` ,"
-                                + "`user_id`"
+                                + "INSERT INTO  sales ("
+                                + "order_id ,"
+                                + "product_id ,"
+                                + "product_name ,"
+                                + "product_price ,"
+                                + "product_quantity ,"
+                                + "sold_on ,"
+                                + "user_id"
                                 + ")"
-                                + "VALUES ("
-                                + "    NULL ,  ?,  ?,  ?,  ?,  ?, NOW( ) ,  ? "
-                                + "       );";
+                                + "VALUES (?,  ?,  ?,  ?,  ?, NOW( ) ,  ? );";
                         
                         PreparedStatement insertIntoSalesTable = c.prepareStatement(insertIntoSalesSQL3);
                         

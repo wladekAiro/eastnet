@@ -107,7 +107,7 @@
                         %>
 
 
-                        <a href="addToCart.jsp?id=<%= product_id%>">
+                        <a href="/products?id=<%= product_id%>">
                             <div class="grid_3" id="buy">
                                 Buy This Product Now
                             </div>
@@ -118,7 +118,6 @@
                         <p>Summary of <%= product_name%>
 
                             <%= summary%>
-
 
                         <h1>Brief Description</h1>
                         <br/>
@@ -192,12 +191,8 @@
                 </div>
 
             </div>
-
             <jsp:include page="/includesPage/mainHeaders/topMostViewedProducts_5_1.jsp"></jsp:include>
-
             </div>
-
         <jsp:include page="/includesPage/_footer.jsp"></jsp:include>
-
     </body>
 </html>

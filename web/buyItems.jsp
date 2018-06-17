@@ -58,7 +58,7 @@
             User user;
             String email=null;
            if ((session.getAttribute("user")==null)){
-               //response.sendRedirect("index.jsp");
+               response.sendRedirect("/");
            }else {
                user = (User)session.getAttribute("user");
                email = user.getUserEmail();

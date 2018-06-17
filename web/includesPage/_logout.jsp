@@ -45,11 +45,11 @@
                                 <%
                                     if (session.getAttribute("admin") != null){
                                 %>
-                                <a href="admin_Performance.jsp"><li class ="Btn showForm">Administrator: </li></a>
+                                <a href="/admin"><li class ="Btn showForm">Administrator: </li></a>
                                 <%
                                     }
                                 %>
-                                <a href="addToCart_view.jsp"><li class ="Btn showForm"><span class="backRed"><%= totalQty %></span> in My Cart </li></a>
+                                <a href="/cart"><li class ="Btn showForm"><span class="backRed"><%= totalQty %></span> in My Cart </li></a>
                             </ul>
                         </div>
                 </div>

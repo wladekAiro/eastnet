@@ -108,6 +108,10 @@
         <servlet-name>FaqServlet</servlet-name>
         <servlet-class>servlets.FaqServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>servlets.CartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminPerfomanceServlet</servlet-name>
         <url-pattern>/admin_perfomance</url-pattern>
@@ -263,6 +267,10 @@
     <servlet-mapping>
         <servlet-name>FaqServlet</servlet-name>
         <url-pattern>/faq</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -42,28 +42,35 @@ public class CartServlce {
     public void listItemsOfCart() throws SQLException, ClassNotFoundException {
 
         c = new DB_Conn().getConnection();
-        PreparedStatement st = null;
-        for (int i = 0; i < id.size(); i++) {
-            Integer getItemId = id.get(i);
-            String getItemName = "SELECT  product_name ,  category_name ,  price FROM  products WHERE  id = ?";
-            /*
+
+        try {
+            PreparedStatement st = null;
+            for (int i = 0; i < id.size(); i++) {
+                Integer getItemId = id.get(i);
+                String getItemName = "SELECT  product_name ,  category_name ,  price FROM  products WHERE  id = ?";
+                /*
              SELECT  `product-name` ,  `category-name` ,  `price` 
              FROM  `products` 
              WHERE  `product_id` =1
-             */
-            st = c.prepareStatement(getItemName);
-            st.setInt(1, getItemId);
-            ResultSet rs = st.executeQuery();
-            
-            rs.next();
-            
-            String p_name = rs.getString("product_name");
-            Double p_price = rs.getDouble("price");
-            String p_Category = rs.getString("category_name");
+                 */
+                st = c.prepareStatement(getItemName);
+                st.setInt(1, getItemId);
+                ResultSet rs = st.executeQuery();
 
-            productName.add(p_name);
-            productCategory.add(p_Category);
-            prices.add(p_price);
+                rs.next();
+
+                String p_name = rs.getString("product_name");
+                Double p_price = rs.getDouble("price");
+                String p_Category = rs.getString("category_name");
+
+                productName.add(p_name);
+                productCategory.add(p_Category);
+                prices.add(p_price);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            c.close();
         }
     }
 
@@ -92,12 +99,21 @@ public class CartServlce {
         //String p_name = productName.get(id);
         //return p_name;
         c = new DB_Conn().getConnection();
-        String getProductName = "SELECT  product_name FROM  products WHERE  id =" + id + "";
-        Statement st = c.createStatement();
 
-        ResultSet rs = st.executeQuery(getProductName);
-        rs.next();
-        String name = rs.getString("product_name");
+        String name = null;
+
+        try {
+            String getProductName = "SELECT  product_name FROM  products WHERE  id =" + id + "";
+            Statement st = c.createStatement();
+
+            ResultSet rs = st.executeQuery(getProductName);
+            rs.next();
+            name = rs.getString("product_name");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
+        }
         return name;
     }
 
@@ -132,27 +148,31 @@ public class CartServlce {
         //Step 1: GET THE "ids" inside the arraylist, 
         //Step 2:  find the corresponding matching price
         //Step 3:  multiply with the "qty"
-
         // ids (Product name) => retrieve price (Store it) => Multiply by *qty
-
         c = new DB_Conn().getConnection();
-        Statement st = c.createStatement();
-        for (int i = 0; i < id.size(); i++) {
-            String sqlGetPrice = "SELECT price FROM  products WHERE id =" + id.get(i);
-            ResultSet rs = st.executeQuery(sqlGetPrice);
-            rs.next();
-            //theres only one value in resultset so go one step further and get the value
-            double f = rs.getFloat("price");
-            // Multiply by the quantity 
-            f *= qty.get(i);
-            // Add that multiplied value to prices list
-            t_prices.add(f);
-        }
-
         double sum = 0;
-        for (int i = 0; i < t_prices.size(); i++) {
-            double p = t_prices.get(i);
-            sum += p;
+        try {
+            Statement st = c.createStatement();
+            for (int i = 0; i < id.size(); i++) {
+                String sqlGetPrice = "SELECT price FROM  products WHERE id =" + id.get(i);
+                ResultSet rs = st.executeQuery(sqlGetPrice);
+                rs.next();
+                //theres only one value in resultset so go one step further and get the value
+                double f = rs.getFloat("price");
+                // Multiply by the quantity 
+                f *= qty.get(i);
+                // Add that multiplied value to prices list
+                t_prices.add(f);
+            }
+
+            for (int i = 0; i < t_prices.size(); i++) {
+                double p = t_prices.get(i);
+                sum += p;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
         }
         //System.out.println("Sum of your CartServlce is "+ sum);
         return sum;
@@ -167,71 +187,79 @@ public class CartServlce {
     }
 
     public boolean addProduct(int id) throws SQLException, ClassNotFoundException {
-        boolean added, matches;
+        boolean added = false;
+        boolean matches = false;
         //Step 1 : check for ids in DATABASE
         //Step 2 : Match the given id with database
         //          Matched -> break and mtches = 1
 
         c = new DB_Conn().getConnection();
-        Statement st = c.createStatement();
 
-        String sqlGetValidIds = "SELECT  id FROM  products;";
-        ResultSet rs = st.executeQuery(sqlGetValidIds);
+        try {
+            Statement st = c.createStatement();
 
-        while (rs.next()) {
-            int id_db = rs.getInt("id");
-            if (id_db == id) {
-                // id matches in the database 
-                matches = true;
-                break;
+            String sqlGetValidIds = "SELECT  id FROM  products;";
+            ResultSet rs = st.executeQuery(sqlGetValidIds);
+
+            while (rs.next()) {
+                int id_db = rs.getInt("id");
+                if (id_db == id) {
+                    // id matches in the database 
+                    matches = true;
+                    break;
+                }
             }
-        }
 
-        // here we get is a valid id
-
-        // STEP 3 : if arraylist contains the same id Do not insert
-        //          increment the qty, else insert into id & qty
-        if (matches = true) {
-            //inserti nto arraylist
-            if (this.id.contains(id)) {
-                //increment the quantity at where the product id resides
-                int index = this.id.indexOf(id);
-                this.qty.set(index, this.qty.get(index) + 1);
+            // here we get is a valid id
+            // STEP 3 : if arraylist contains the same id Do not insert
+            //          increment the qty, else insert into id & qty
+            if (matches = true) {
+                //inserti nto arraylist
+                if (this.id.contains(id)) {
+                    //increment the quantity at where the product id resides
+                    int index = this.id.indexOf(id);
+                    this.qty.set(index, this.qty.get(index) + 1);
+                } else {
+                    //Add one qty
+                    this.qty.add(1);
+                    //Add productID
+                    this.id.add(id);
+                }
+                added = true;
             } else {
-                //Add one qty
-                this.qty.add(1);
-                //Add productID
-                this.id.add(id);
+                //get out the function
+                //Because no product in in the db with that id
+                System.out.println("No product with that id exist in database");
+                added = false;
             }
-            added = true;
-        } else {
-            //get out the function
-            //Because no product in in the db with that id
-            System.out.println("No product with that id exist in database");
-            added = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
         }
+
         return added;
     }
 
     public boolean removeProduct(int productId) {
         boolean removed;
-        
+
         if (this.id.contains(productId)) {
             //where is the id's position
             //this.id.indexOf(productId);
             int index = this.id.indexOf(productId);
             int quantity = this.qty.get(index);
-                //remove the entire stack from all the ArrayLists 
-                this.productCategory.remove(index);
-                this.productName.remove(index);
-                this.prices.remove(index);
-                this.qty.remove(index);
-                this.id.remove(index);
-                removed = true;
-        }else {
+            //remove the entire stack from all the ArrayLists 
+            this.productCategory.remove(index);
+            this.productName.remove(index);
+            this.prices.remove(index);
+            this.qty.remove(index);
+            this.id.remove(index);
+            removed = true;
+        } else {
             removed = false;
         }
-        
+
         return removed;
     }
 
@@ -276,15 +304,14 @@ public class CartServlce {
                 System.out.println("Give Product id to remove");
                 int id = sc.nextInt();
                 boolean removeProduct = c.removeProduct(id);
-                if (removeProduct){
+                if (removeProduct) {
                     for (int i = 0; i < productNames.size(); i++) {
                         System.out.println(p_Category.get(i) + " " + productNames.get(i) + "              \t\t" + prices1.get(i) + " \t\t" + qty1.get(i) + " \t\t" + prices1.get(i) * qty1.get(i));
-                        
+
                         System.out.println("Total Price of the cart is :" + c.getTotalPriceOfCart());
 
                     }
-                }
-                else {
+                } else {
                     System.out.println("No Product to remove!!");
                 }
             }

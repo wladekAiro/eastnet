@@ -173,7 +173,7 @@
                             <%                            while (rs.next()) {
                                     String category = rs.getString("category_name");
                             %>
-                            <li><a href="/products"><%= category%></a></li>
+                            <li><a href="/products?cat=<%= category%>"><%= category%></a></li>
                                 <%
                                     }
 

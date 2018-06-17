@@ -171,7 +171,7 @@
                                 Buy These Items
                             </div>
                         </a>
-                        <a href="viewProducts_.jsp">
+                        <a href="/products">
                             <div class="grid_3" id="greenBtn">
                                 Continue Shopping
                             </div>
@@ -181,14 +181,12 @@
                     <br/>
                     <br/>
                     
-                    
                     <br/>
                     <%
                             }
                         }
                     %>
                 </div>
-
             </div>
         </div>
     </body>

@@ -35,6 +35,7 @@ public class ProductService {
         ResultSet executeQuery = st.executeQuery(getIdSQL);
         executeQuery.next();
         id = executeQuery.getInt("id");
+        con.close();
         return id;
     }
     public ArrayList<String> getCategory() throws SQLException, ClassNotFoundException {
@@ -47,6 +48,7 @@ public class ProductService {
             String category1 = executeQuery.getString ("category_name");
             this.category.add(category1);
         }
+        con.close();
         return category;
     }
 
@@ -61,6 +63,7 @@ public class ProductService {
             String subcategory1 = executeQuery.getString ("sub_category_name");
             this.subcategory.add(subcategory1);
         }
+        con.close();
         return subcategory;
     }
     
@@ -96,6 +99,7 @@ public class ProductService {
             String company_name = executeQuery.getString ("company_name");
             this.company.add(company_name);
         }
+        con.close();
         return company;
     }
     
@@ -114,6 +118,7 @@ public class ProductService {
             String company_name = executeQuery.getString ("company_name");
             this.company.add(company_name);
         }
+        con.close();
         return company;
     }
     
