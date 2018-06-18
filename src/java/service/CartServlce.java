@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
+import orders.Location;
 
 /**
  *
@@ -25,6 +26,8 @@ public class CartServlce {
     public ArrayList<Double> prices = new ArrayList();
     public ArrayList<Integer> qty = new ArrayList();
     public ArrayList<String> res = new ArrayList();
+    private String shippingLocation;
+    private Double shippingCost;
     Connection c;
     //this method will genarate "res" with colons
 
@@ -67,7 +70,7 @@ public class CartServlce {
                 productCategory.add(p_Category);
                 prices.add(p_price);
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
             c.close();
@@ -76,6 +79,22 @@ public class CartServlce {
 
     public ArrayList<String> getProductCategorys() {
         return productCategory;
+    }
+
+    public String getShippingLocation() {
+        return shippingLocation;
+    }
+
+    public void setShippingLocation(String shippingLocation) {
+        this.shippingLocation = shippingLocation;
+    }
+
+    public Double getShippingCost() {
+        return shippingCost;
+    }
+
+    public void setShippingCost(Double shippingCost) {
+        this.shippingCost = shippingCost;
     }
 
     //getters for product names, prices 
@@ -134,7 +153,7 @@ public class CartServlce {
 
     public double getProductPrice(int id) throws SQLException, ClassNotFoundException {
         c = new DB_Conn().getConnection();
-        String getProductName = "SELECT  price FROM  products WHERE  id =" + id + "";
+        String getProductName = "SELECT price FROM  products WHERE  id =" + id + "";
         Statement st = c.createStatement();
         ResultSet rs = st.executeQuery(getProductName);
         rs.next();
@@ -198,7 +217,7 @@ public class CartServlce {
         try {
             Statement st = c.createStatement();
 
-            String sqlGetValidIds = "SELECT  id FROM  products;";
+            String sqlGetValidIds = "SELECT id FROM  products;";
             ResultSet rs = st.executeQuery(sqlGetValidIds);
 
             while (rs.next()) {
@@ -239,6 +258,60 @@ public class CartServlce {
         }
 
         return added;
+    }
+
+    public ArrayList<Location> getLocations() throws SQLException, ClassNotFoundException {
+        ArrayList<Location> locations = new ArrayList(); //this will hold the prices
+
+        c = new DB_Conn().getConnection();
+        try {
+            Statement st = c.createStatement();
+            String sqlGetPrice = "SELECT id,location_name,location_charge FROM  locations";
+            ResultSet rs = st.executeQuery(sqlGetPrice);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("location_name");
+                Double cost = rs.getDouble("location_charge");
+                locations.add(new Location(id, name, cost));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
+        }
+
+        System.out.println(" ### Locations found ### " + locations.size());
+
+        return locations;
+    }
+
+    public Location getLocation(int locationId) throws SQLException, ClassNotFoundException {
+
+        Location location = null;
+
+        c = new DB_Conn().getConnection();
+        try {
+
+            String shippingLocation = "SELECT id,location_name,location_charge FROM  locations where id = ?";
+            PreparedStatement st = c.prepareStatement(shippingLocation);
+            st.setInt(1, locationId);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("location_name");
+                Double cost = rs.getDouble("location_charge");
+                location = new Location(id, name, cost);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            c.close();
+        }
+        return location;
     }
 
     public boolean removeProduct(int productId) {

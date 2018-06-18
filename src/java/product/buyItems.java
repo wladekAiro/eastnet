@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.enums.Status;
+import orders.Location;
 import user.User;
 
 /**
@@ -33,9 +35,8 @@ import user.User;
 public class buyItems extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -63,8 +64,7 @@ public class buyItems extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -78,16 +78,16 @@ public class buyItems extends HttpServlet {
         doPost(request, response);
         /*
          HttpSession session = request.getSession();
-         if (!(session.getAttribute("User") == null) && !(session.getAttribute("CartServlce") == null)) {
+         if (!(session.getAttribute("user") == null) && !(session.getAttribute("CartServlce") == null)) {
 
-         User User;
-         User = (User) session.getAttribute("User");
-         CartServlce Cart;
-         Cart = (CartServlce) session.getAttribute("CartServlce");
+         user user;
+         user = (user) session.getAttribute("user");
+         CartServlce cart;
+         cart = (CartServlce) session.getAttribute("CartServlce");
 
          PrintWriter out = response.getWriter();
          try {
-         out.println("you User :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart());
+         out.println("you user :" + user.getUserEmail() + " has bought items worth " + cart.getTotalPriceOfCart());
 
 
          } catch (SQLException ex) {
@@ -102,8 +102,7 @@ public class buyItems extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -113,242 +112,191 @@ public class buyItems extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        PrintWriter out = response.getWriter();
-        //processRequest(request, response);
+        try {
+            PrintWriter out = response.getWriter();
+            //processRequest(request, response);
+            String name, age, address, mobile;
+            int order_id, location_id;
+            Connection c = null;
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            CartServlce cart = (CartServlce) session.getAttribute("cart");
+            name = request.getParameter("name");
+            age = request.getParameter("age");
+            address = request.getParameter("address");
+            mobile = request.getParameter("mobile");
+            location_id = Integer.parseInt(request.getParameter("location_id"));
+            Location location = cart.getLocation(location_id);
+            if (name.trim().length() > 1
+                    && address.trim().length() >= 5
+                    && mobile.trim().length() >= 5
+                    && mobile.trim().length() <= 12) {
 
-        // THIS IS BUY SERVLET DOING THE FOLLOWING TASKS
-        /*
-         1. CREATE AN ORDER FOR THE CURRENT USER LOGGED IN
-         * GOT ALL THE INFORMATION ABOUT THE USER TO FINALLY FILL IN TH INDFORMATION
-         * 2. FIRE ON ORDER sql QUERY AND GET LATEST ORDER ID OF THE CURRENT USER
-         * 3. CREATE SALES TABLE ENTRIES AND FILL IN THE TABLE WITH SAME ORDER ID
-         * 4  FIRE SALES sql QUERY AND LIST THE APPROVAL AS PENDING
-         * 5  DECREMENT THE QUANTITY in the CART FROM products TABLE 
-                    
-         *  DONE REDIRECT BACK TO USER INFO
-         */
+                if (!(session.getAttribute("user") == null)
+                        && !(session.getAttribute("cart") == null)) {
 
+                    try {
+                        response.setContentType("text/html;charset=UTF-8");
 
+                        c = new DB_Conn().getConnection();
 
-        // GETTING ALL THE VALUES FROM THE USER
-        String name, age, address, mobile;
-        int order_id;
-        Connection c = null;
-        HttpSession session = request.getSession();
-        User User;
-        User = (User) session.getAttribute("user");
-        CartServlce Cart;
-        Cart = (CartServlce) session.getAttribute("cart");
-        
-        name = request.getParameter("name");
-        age = request.getParameter("age");
-        address = request.getParameter("address");
-        mobile = request.getParameter("mobile");
-        
-        
-        if (name.trim().length() > 1
-                && address.trim().length() >= 5
-                && mobile.trim().length() >= 5
-                && mobile.trim().length() <= 12) {
-            
-            if (!(session.getAttribute("user") == null)
-                    && !(session.getAttribute("cart") == null)) {
-                
-                try {
-                    response.setContentType("text/html;charset=UTF-8");
-                    
-                    c = new DB_Conn().getConnection();
-                    
-                    //******* Starting a Transaction
-                    c.setAutoCommit(false);
-                    String insertOrder;
-                    insertOrder = "    INSERT INTO  order ("
-                            + "    order_id ,"
-                            + "    user_id ,"
-                            + "    status ,"
-                            + "    shippers_name ,"
-                            + "    address ,"
-                            + "    mobile_number ,"
-                            + "    shippers_email ,"
-                            + "    ordered_On ,"
-                            + "    total_order_price"
-                            + "    )"
-                            + "    VALUES ("
-                            + "    NULL ,  ?,  'pending',  ?,  ?,  ?, ?, NOW( ) ,  ?"
-                            + "    );";
-                    
-                    PreparedStatement preparedSQL1 =
-                            c.prepareStatement(insertOrder);
-                    
-                    preparedSQL1.setInt(1, User.getUserId()); // User iD
+                        //******* Starting a Transaction
+                        c.setAutoCommit(false);
+                        String insertOrder;
+                        insertOrder = "INSERT INTO  orders ("
+                                + "    user_id ,"
+                                + "    status ,"
+                                + "    shippers_name ,"
+                                + "    address ,"
+                                + "    mobile_number ,"
+                                + "    shippers_email ,"
+                                + "    ordered_On ,"
+                                + "    total_order_price,"
+                                + "    location,"
+                                + "    location_charge)"
+                                + "    VALUES (?, ?, ?, ?, ?, ?, NOW( ) ,? , ? , ?)";
 
-                    preparedSQL1.setString(2, name); //`shippers_name` 
+                        PreparedStatement preparedSQL1
+                                = c.prepareStatement(insertOrder);
 
-                    preparedSQL1.setString(3, address); //`address` 
-
-                    preparedSQL1.setString(4, mobile); //`mobile` 
-
-                    preparedSQL1.setString(5, User.getUserEmail()); //`shippers_email` 
-
-                    preparedSQL1.setDouble(6, Cart.getTotalPriceOfCart()); //`total_order_price`` 
-
-                    int executeUpdatePreparedSQL1 = preparedSQL1.executeUpdate();
-                    
-                    if (executeUpdatePreparedSQL1 == 1) {
-                        //get the latest order id of the recent update
-
-                        //out.println("Ok here we are onr order updted");
-                        String getLatestOrderId = "SELECT  order_id "
-                                + "FROM  order "
-                                + "WHERE user_id = '" + User.getUserId() + "'"
-                                + "ORDER BY  ordered_On DESC; "
-                                + "";
+                        preparedSQL1.setInt(1, user.getUserId()); // user iD
+                        preparedSQL1.setString(2, Status.PENDING.name().toLowerCase());
                         
-                        preparedSQL1.close();
-                        
-                        Statement st = c.createStatement();
-                        ResultSet executeQueryGetOrderId = st.executeQuery(getLatestOrderId);
-                        executeQueryGetOrderId.next();
+                        preparedSQL1.setString(3, name); //`shippers_name`
 
-                        //Here we get the latest order id for the current User
-                        order_id = executeQueryGetOrderId.getInt("order_id");
-                        
-                        executeQueryGetOrderId.close();
+                        preparedSQL1.setString(4, address); //`address`
 
-                        //out.println("you User :" + User.getUserEmail() + " has bought items worth " + Cart.getTotalPriceOfCart() + "gffdgfgvgedfrggfdre and order id of " + order_id);
+                        preparedSQL1.setString(5, mobile); //`mobile`
 
-                        ArrayList<String> productCategorys = Cart.getProductCategorys();
-                        ArrayList<String> productNames = Cart.getProductNames();
-                        ArrayList<Double> prices = Cart.getPrices();
-                        ArrayList<Integer> qty = Cart.getQty();
-                        ArrayList<Integer> id = Cart.getId();
-                        
-                        String insertIntoSalesSQL3 = ""
-                                + "INSERT INTO  sales ("
-                                + "order_id ,"
-                                + "product_id ,"
-                                + "product_name ,"
-                                + "product_price ,"
-                                + "product_quantity ,"
-                                + "sold_on ,"
-                                + "user_id"
-                                + ")"
-                                + "VALUES (?,  ?,  ?,  ?,  ?, NOW( ) ,  ? );";
-                        
-                        PreparedStatement insertIntoSalesTable = c.prepareStatement(insertIntoSalesSQL3);
-                        
-                        for (int i = 0; i < productNames.size(); i++) {
-                            
-                            insertIntoSalesTable.setInt(1, order_id);
-                            
-                            insertIntoSalesTable.setInt(2, id.get(i));
-                            
-                            insertIntoSalesTable.setString(3, productNames.get(i));
-                            
-                            insertIntoSalesTable.setDouble(4, prices.get(i));
-                            
-                            insertIntoSalesTable.setInt(5, qty.get(i));
-                            
-                            insertIntoSalesTable.setInt(6, User.getUserId());
-                            
-                            int executeUpdateSalesTable = insertIntoSalesTable.executeUpdate();
-                            
-                            if (executeUpdateSalesTable == 1) {
-                                out.println("Success");
-                                
-                            } else {
-                                out.println("Failed for now Product name " + productNames.get(i));
+                        preparedSQL1.setString(6, user.getUserEmail()); //`shippers_email`
+
+                        preparedSQL1.setDouble(7, cart.getTotalPriceOfCart()); //`total_order_price``
+                        preparedSQL1.setString(8, location.getName());
+                        preparedSQL1.setDouble(9, location.getCost());
+
+                        int executeUpdatePreparedSQL1 = preparedSQL1.executeUpdate();
+
+                        if (executeUpdatePreparedSQL1 == 1) {
+                            //get the latest order id of the recent update
+
+                            //out.println("Ok here we are onr order updted");
+                            String getLatestOrderId = "SELECT id "
+                                    + "FROM  orders "
+                                    + "WHERE user_id = '" + user.getUserId() + "'"
+                                    + "ORDER BY id DESC";
+
+                            preparedSQL1.close();
+
+                            Statement st = c.createStatement();
+                            ResultSet executeQueryGetOrderId = st.executeQuery(getLatestOrderId);
+                            executeQueryGetOrderId.next();
+
+                            //Here we get the latest order id for the current user
+                            order_id = executeQueryGetOrderId.getInt("id");
+
+                            executeQueryGetOrderId.close();
+
+                            //out.println("you user :" + user.getUserEmail() + " has bought items worth " + cart.getTotalPriceOfCart() + "gffdgfgvgedfrggfdre and order id of " + order_id);
+                            ArrayList<String> productCategorys = cart.getProductCategorys();
+                            ArrayList<String> productNames = cart.getProductNames();
+                            ArrayList<Double> prices = cart.getPrices();
+                            ArrayList<Integer> qty = cart.getQty();
+                            ArrayList<Integer> id = cart.getId();
+
+                            String insertIntoSalesSQL3 = ""
+                                    + "INSERT INTO  sales ("
+                                    + "order_id ,"
+                                    + "product_id ,"
+                                    + "product_name ,"
+                                    + "product_price ,"
+                                    + "product_quantity ,"
+                                    + "sold_on ,"
+                                    + "user_id"
+                                    + ")"
+                                    + "VALUES (?,  ?,  ?,  ?,  ?, NOW( ) ,  ? );";
+
+                            PreparedStatement insertIntoSalesTable = c.prepareStatement(insertIntoSalesSQL3);
+
+                            for (int i = 0; i < productNames.size(); i++) {
+
+                                insertIntoSalesTable.setInt(1, order_id);
+
+                                insertIntoSalesTable.setInt(2, id.get(i));
+
+                                insertIntoSalesTable.setString(3, productNames.get(i));
+
+                                insertIntoSalesTable.setDouble(4, prices.get(i));
+
+                                insertIntoSalesTable.setInt(5, qty.get(i));
+
+                                insertIntoSalesTable.setInt(6, user.getUserId());
+
+                                int executeUpdateSalesTable = insertIntoSalesTable.executeUpdate();
+
+                                if (executeUpdateSalesTable == 1) {
+                                    out.println("Success");
+
+                                } else {
+                                    out.println("Failed for now Product name " + productNames.get(i));
+                                }
                             }
+                            //DECREMENT THE QUANTITY in the CART FROM products TABLE
+
+                            for (int i = 0; i < productNames.size(); i++) {
+                                st.addBatch(
+                                        " UPDATE  products "
+                                        + " SET "
+                                        + " product_qty = product_qty - " + qty.get(i) + ""
+                                        + " WHERE id = " + id.get(i) + " "
+                                        + " AND "
+                                        + " product_name = '" + productNames.get(i) + "' ");
+                            }
+                            int[] executeBatch = st.executeBatch();
+                            int i = 0;
+                            while (i < executeBatch.length) {
+                                out.print("? --> " + executeBatch[i]);
+                                i++;
+                            }
+                            c.commit();
+                            response.sendRedirect(request.getContextPath() + "/userinfo.jsp");
+                        } else {
+                            //not updated
+                            response.sendRedirect(request.getContextPath());
                         }
-                        //DECREMENT THE QUANTITY in the CART FROM products TABLE 
-                    /*
 
-
-                         UPDATE  `products` 
-                         SET 
-                         `product_qty` =  `product_qty` - 3
-                         WHERE  `products`.`product_id` = 1 
-
-                         UPDATE  `products` 
-                         SET 
-                         `product_qty` =  `product_qty` - 3
-                         WHERE  `products`.`product_id` = 1 
-                         AND
-                         `product-name` = 'Assassins Creed'
-
-                         */
-                        
-                        for (int i = 0; i < productNames.size(); i++) {
-                            st.addBatch(
-                                    " UPDATE  `products` "
-                                    + " SET "
-                                    + "`product_qty` =  `product_qty` - " + qty.get(i) + ""
-                                    + " WHERE  `products`.`product_id` = " + id.get(i) + " "
-                                    + " AND "
-                                    + " `product-name` = '" + productNames.get(i) + "' ");
-                            
-                        }
-                        int[] executeBatch = st.executeBatch();
-                        int i = 0;
-                        while (i < executeBatch.length) {
-                            out.print("? --> " + executeBatch[i]);
-                            i++;
-                        }
-                        c.commit();
-                        response.sendRedirect(request.getContextPath()+"/userinfo.jsp");
-                        
-                    } else {
-                        //not updated
-        response.sendRedirect(request.getContextPath());
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+                        c.rollback();
+                        String message, messageDetail;
+                        String messageUrl = "/message.jsp";
+                        RequestDispatcher dispatchMessage
+                                = request.getServletContext().getRequestDispatcher(messageUrl);
+                        message = "Oops, Less Product Stock...!";
+                        messageDetail = "We see that your demand for the product was critically higher than what we had in our inventory, We respect your purchase but your purchase was cancelled, We are sorry, but please in a urgent requirement do order less stock right now!!";
+                        request.setAttribute("message", message);
+                        request.setAttribute("messageDetail", messageDetail);
+                        dispatchMessage.forward(request, response);
+                    } catch (ClassNotFoundException ex) {
+                        out.println("you user " + ex);
                     }
-                    
-                } catch (SQLException ex) {
-                            try {
-                            Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
-                            c.rollback();  
-                            String message, messageDetail;
-                            String messageUrl = "/message.jsp";
-                            RequestDispatcher dispatchMessage =
-                                 request.getServletContext().getRequestDispatcher(messageUrl);
-                            message = "Oops, Less Product Stock...!";
-                            messageDetail = "We see that your demand for the product was critically higher than what we had in our inventory, We respect your purchase but your purchase was cancelled, We are sorry, but please in a urgent requirement do order less stock right now!!";
-                            request.setAttribute("message", message);
-                            request.setAttribute("messageDetail", messageDetail);
-                            dispatchMessage.forward(request, response);
-                                            //response.sendError(500);
-                            
-                                //response.sendRedirect("/saikiranBookstoreApp/buyItems.jsp");
-                            } catch (SQLException ex1) {
-                                //Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex1);
-                                
-                            String message, messageDetail;
-                            String messageUrl = "/message.jsp";
-                            RequestDispatcher dispatchMessage =
-                                 request.getServletContext().getRequestDispatcher(messageUrl);
-                            message = "Oops, Less Product Stock...!";
-                            messageDetail = "We see that your demand for the product was critically higher than what we had in our inventory, We respect your purchase but your purchase was cancelled, We are sorry, but please in a urgent requirement do order less stock right now!!";
-                            request.setAttribute("message", message);
-                            request.setAttribute("messageDetail", messageDetail);
-                            dispatchMessage.forward(request, response);
-                                            //response.sendError(500);
-                            }
-                } catch (ClassNotFoundException ex) {
-                    out.println("you user " + ex);
-                    //response.sendRedirect("/saikiranBookstoreApp/buyItems.jsp");
-                    
+                    session.removeAttribute("cart");
+                } else {
+                    out.println("No items in cart");
                 }
-                session.removeAttribute("cart");
+
             } else {
-                //response.sendRedirect("/saikiranBookstoreApp/index.jsp");
-                out.println ("No items in cart");
+                //response.sendRedirect("/saikiranBookstoreApp/buyItems.jsp");
+                out.println("NOt validated");
             }
-            
-        } else {
-            //response.sendRedirect("/saikiranBookstoreApp/buyItems.jsp");
-            out.println ("NOt validated");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
 
     /**

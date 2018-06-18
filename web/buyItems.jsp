@@ -10,7 +10,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Eastnat</title>
+        <%@page import="java.util.ArrayList"%>
+        <%@page import="orders.Location"%>
         <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="service.CartServlce" id="cartService" scope="session"></jsp:useBean>
+        <jsp:useBean class="orders.Location" id="location" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -37,18 +41,18 @@
         </style>
     </head>
     <body>
-        
-        
+
+
         <%
-        if (session.getAttribute("user") == null ){// THen new user, show join now
-            %>
-            <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+            if (session.getAttribute("user") == null) {// THen new user, show join now
+        %>
+        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
         <%
-        }else {
-            %>
-            <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        } else {
+        %>
+        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
         <%
-        }
+            }
         %>
 
         <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
@@ -56,12 +60,13 @@
 
         <%
             User user;
-            String email=null;
-           if ((session.getAttribute("user")==null)){
-               response.sendRedirect("/");
-           }else {
-               user = (User)session.getAttribute("user");
-               email = user.getUserEmail();
+            String email = null;
+             ArrayList<Location> locations = cartService.getLocations();
+            if ((session.getAttribute("user") == null)) {
+                response.sendRedirect("/");
+            } else {
+                user = (User) session.getAttribute("user");
+                email = user.getUserEmail();
         %>
         <div class="container_16">
             <div class="grid_16" id="whiteBox" style="padding: 10px;">
@@ -87,11 +92,21 @@
                         <div class="grid_5">
                             <textarea class="address"  name="address" required></textarea>    
                         </div>
+                        <div></div>
                         <div class="grid_2">
-                            City
+                            Delivery location
                         </div>
                         <div class="grid_5">
-                            <input  type="text" />
+                            <select id="location_id" class="location_id" name="location_id">
+                                <option></option>
+                                <%
+                                for (Location l : locations) {
+                                %>
+                                <option value="<%=l.getId()%>"><%= l.getName()%> &nbsp;(Kshs. <%=l.getCost()%>)</option>
+                                <%
+                                    }
+                                %>
+                            </select>
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_5" >
@@ -100,58 +115,74 @@
                     </form>
                 </div>
                 <%
-               if (user.getAddress() != null && user.getMobileNum() != null && user.getUserEmail() != null && user.getUsername() != null){
-                   %>
-                   <div class="grid_7 shippingAddress" id="useInfo">
+                    if (user.getAddress() != null && user.getMobileNum() != null && user.getUserEmail() != null && user.getUsername() != null) {
+                %>
+                <div class="grid_7 shippingAddress" id="useInfo">
                     <h1> <strong></strong>This is my Shipping Address</h1> <br/>
-                        <div class="grid_1">
-                            Name
-                        </div>
-                        <div class="grid_5">
-                            <span id ="userName"><%= user.getUsername() %></span>
-                        </div>
-                        <div class="clear"></div>
-                        <div class="grid_1">
-                            Mobile
-                        </div>
-                        <div class="grid_5">
-                            <span id ="mobile"><%= user.getMobileNum() %></span>
-                        </div>
-                        <div class="grid_1">
-                            Address
-                        </div>
-                        <div class="grid_5">
-                            <span id ="useAddress"><%= user.getAddress() %></span> 
-                        </div>
-                        <div class="clear"></div>
+                    <div class="grid_1">
+                        Name
                     </div>
-                   <script type="text/javascript" src="js/jquery.js"></script>
-                   <script type="text/javascript">
-                       $(document).ready(function (){
-                           $('#useInfo').click(function (){
-                           var userName = $('#userName').text();
-                           var mobile = $('#mobile').text();
-                           var address = $('#useAddress').text();
-                           
-                            //alert (userName +" "+mobile+" "+address);
-                               $('.name').attr('value', userName);
-                               $('.address').attr('value', address);
-                               $('.mobile').attr('value', mobile);
-                           });
-                       });
-                   </script>
-        <%
-               }else {
-               %>
-                    <a href="userinfo.jsp">
-                        <div class="grid_7 shippingAddress">
-                            <h1> <strong></strong>Add your Details for quick Checkout</h1>
+                    <div class="grid_5">
+                        <span id ="userName"><%= user.getUsername()%></span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="grid_1">
+                        Mobile
+                    </div>
+                    <div class="grid_5">
+                        <span id ="mobile"><%= user.getMobileNum()%></span>
+                    </div>
+                    <div class="grid_1">
+                        Address
+                    </div>
+                    <div class="grid_5">
+                        <span id ="useAddress"><%= user.getAddress()%></span> 
+                    </div>
+                    <div class="grid_2">
+                            Delivery location
                         </div>
-                    </a>
+                        <div class="grid_5">
+                            <select id="location_id" class="location_id" name="location_id">
+                                <option></option>
+                                <%
+                                for (Location l : locations) {
+                                %>
+                                <option value="<%=l.getId()%>"><%= l.getName()%> &nbsp;(Kshs. <%=l.getCost()%>)</option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                        </div>
+                    <div class="clear"></div>
+                </div>
+                <script type="text/javascript" src="js/jquery.js"></script>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $('#useInfo').click(function () {
+                            var userName = $('#userName').text();
+                            var mobile = $('#mobile').text();
+                            var address = $('#useAddress').text();
+                            var locationId = $('#location_id').text();
+                            //alert (userName +" "+mobile+" "+address);
+                            $('.name').attr('value', userName);
+                            $('.address').attr('value', address);
+                            $('.mobile').attr('value', mobile);
+                            $('.location_id').attr('value', locationId);
+                        });
+                    });
+                </script>
                 <%
-               }
-          }
-         %>
+                } else {
+                %>
+                <a href="userinfo.jsp">
+                    <div class="grid_7 shippingAddress">
+                        <h1> <strong></strong>Add your Details for quick Checkout</h1>
+                    </div>
+                </a>
+                <%
+                        }
+                    }
+                %>
             </div>
         </div>
     </body>

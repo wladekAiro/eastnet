@@ -107,7 +107,7 @@
                         %>
 
 
-                        <a href="/products?id=<%= product_id%>">
+                        <a href="/addToCart.jsp?id=<%= product_id%>">
                             <div class="grid_3" id="buy">
                                 Buy This Product Now
                             </div>

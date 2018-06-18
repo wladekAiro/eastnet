@@ -243,11 +243,11 @@ product-name	product_id	sub-category-name	category-name	company-name	price	summa
                         %>
                         <div class="clear"></div>
                         <div class="grid_2">
-                            <a href="product.jsp?id=<%=product_id%>"><img src="<%= image_name%>" /></a>
+                            <a href="/products?id=<%=product_id%>"><img src="<%= image_name%>" /></a>
                         </div>
                         <div class="grid_9">
                             <div class="grid_5">
-                                <p id="info"><a href="products?id=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Kshs. <%= price%></span></p>
+                                <p id="info"><a href="/products?id=<%=product_id%>"><h3><span class="blue"> <%=product_name%></span></h3></a>By <%= company_name + " " + category_name%><br/><span class="red">Kshs. <%= price%></span></p>
                             </div>
                             <div class="grid_3 push_2">
                                 <p><%=sub_category_name%>  <a href="addToCart.jsp?id=<%= product_id%>" id="greenBtn">Add to cart</a></p><p>Will Be delivered in 3 Working days</p>

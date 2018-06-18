@@ -134,7 +134,7 @@
 
                                 while (rs.next()) {
 
-                                    newOrder = rs.getInt("order_id");
+                                    newOrder = rs.getInt("id");
                                     product_name = rs.getString("product_name");
                                     product_price = rs.getDouble("product_price");
                                     product_quantity = rs.getInt("product_quantity");
