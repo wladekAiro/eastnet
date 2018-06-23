@@ -9,15 +9,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Saikiran BookStores 404</title>        
+        <title>Eastnat 404</title>        
         <!-- Default Stylesheets -->
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
 
-        <link rel="stylesheet" type="text/css" href="css/reset.css"/>
-        <link rel="stylesheet" type="text/css" href="css/text.css"/>
-        <link rel="stylesheet" type="text/css" href="css/960_16.css"/>
-        <link rel="stylesheet" type="text/css" href="css/styles.css"/>
-        <link rel="stylesheet" type="text/css" href="css/product.css"  />
+        <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/text.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/960_16.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/product.css"  />
 
         <script type="text/javascript" src="js/jquery.js"></script>
 
@@ -29,16 +29,16 @@
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
 %>
-        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_joinNow.jsp"></jsp:include>
         <%        } else {
         %>
-        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <jsp:include page="/includesPage/_logout.jsp"></jsp:include>
         <%            }
         %>
         
-        <%@include file="includesPage/_search_navigationbar.jsp" %>
+        <%@include file="/includesPage/_search_navigationbar.jsp" %>
 
-        <%@include file="includesPage/_facebookJoin.jsp" %>
+        <%@include file="/includesPage/_facebookJoin.jsp" %>
 
         <div class="container_16">
             <div class="grid_14 push_1" id="whiteBox" style="padding: 10px;">

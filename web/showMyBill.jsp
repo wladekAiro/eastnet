@@ -8,8 +8,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <title>Eastnat Foods</title>
+        <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>

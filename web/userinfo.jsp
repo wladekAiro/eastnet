@@ -6,13 +6,16 @@
 
 <%@page import="service.CartServlce"%>
 <%@page import="user.User"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="orders.Location"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Eastnat</title>
+        <title>Eastnat Foods</title>
         <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
+        <jsp:useBean class="service.CartServlce" id="cart" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -88,7 +91,7 @@
             User user;
             String printName = null;
             if ((session.getAttribute("user") == null)) {
-                response.sendRedirect("index.jsp");
+                response.sendRedirect("/");
             } else {
                 user = (User) session.getAttribute("user");
                 String email = user.getUserEmail();
@@ -153,13 +156,8 @@
                         <div class="clear"></div>
 
                         <%
-                            /*
-SELECT  `sales_id` ,  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` 
-FROM  `order` o
-INNER JOIN  `sales` s
-USING (  `order_id` ) 
-WHERE o.`user_id` =4
-                             */
+                            ArrayList<Location> locations = cart.getLocations();
+
                             String sql = "SELECT  o.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
                                     + " FROM  orders o "
                                     + " INNER JOIN  sales s "
@@ -198,8 +196,8 @@ WHERE o.`user_id` =4
                                 }
                                 billNo += newOrder;
                                 if (oldOrder == newOrder) {
-                                                // Dont Draw border Type II order Div
-%>
+                                    // Dont Draw border Type II order Div
+                        %>
 
                         <!-- Type II Order -->
                         <div class="grid_12">
@@ -210,7 +208,7 @@ WHERE o.`user_id` =4
                                         <%= product_name%>
                                     </div>
                                     <div class="grid_2">
-                                        Rs. <%= product_price%> x<%= product_quantity%>
+                                        Kshs. <%= product_price%> x<%= product_quantity%>
                                     </div>
                                 </div>
                                 <div class="grid_3">
@@ -220,9 +218,9 @@ WHERE o.`user_id` =4
                         </div>
 
                         <%
-                                            } else {
-                                                // Draw New Order Type I order Div
-%>
+                        } else {
+                            // Draw New Order Type I order Div
+                        %>
 
                         <!-- Type I Order -->
                         <div class="grid_12"  style="border-top: 2px #444 solid;">
@@ -234,7 +232,7 @@ WHERE o.`user_id` =4
                                     <%= product_name%> 
                                 </div>
                                 <div class="grid_2">
-                                    Rs. <%= product_price%> x<%= product_quantity%>
+                                    Kshs. <%= product_price%> x<%= product_quantity%>
                                 </div>
                             </div>
                             <div class="grid_3">
@@ -249,47 +247,6 @@ WHERE o.`user_id` =4
                             }
                             c.close();
                         %>
-
-
-                        <!-- Type I Order -->
-                        <!--   <div class="grid_12"  style="border-top: 2px #444 solid;">
-                              <div  class="grid_1">
-                                   124
-                              </div>  
-                              <div class="grid_7">
-                                      <div class="grid_4 ">
-                                          Assassins Creed II 
-                                      </div>
-                                      <div class="grid_2">
-                                          Rs. 98205689 x5
-                                      </div>
-                              </div>
-                              <div class="grid_3">
-                                  12-15-2003 : 15:06
-                              </div>
-                          </div>
-                          <div class="clear"></div>
-                        -->
-
-                        <!-- Type II Order -->
-                        <!--   <div class="grid_12">
-                              <div class="push_1">
-                                  <div class="grid_7">
-                                          <div class="grid_4 ">
-                                              Assassins Creed II 
-                                          </div>
-                                          <div class="grid_2">
-                                              Rs. 999 x1
-                                          </div>
-                                  </div>
-                                  <div class="grid_3">
-                                      12-15-2003 : 15:06
-                                  </div>
-                              </div>
-                          </div>
-                        -->
-
-
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -299,7 +256,7 @@ WHERE o.`user_id` =4
                     <%
                         if (user.getUsername() == null) {
                     %>
-                    <form method="post" action="addUserDetalsServlet">
+                    <form method="post" action="/add_user_details">
                         <div class="grid_3">
                             Name
                         </div>
@@ -332,10 +289,19 @@ WHERE o.`user_id` =4
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
-                            City
+                            Location
                         </div>
                         <div class="grid_5">
-                            <input type="text"/><br/>
+                            <select name="location_id" required>
+                                <option></option>
+                                <%
+                                    for (Location location : locations) {
+                                %>
+                                <option value="<%=location.getId()%>"><%=location.getName()%></option>
+                                <%
+                                    }
+                                %>
+                            </select></br></br>
                             <input type="submit" id="greenBtn" value="Add Details"/>
                         </div>
                         <div class="clear"></div><br/>
@@ -343,7 +309,7 @@ WHERE o.`user_id` =4
                     <%
                     } else {
                     %>
-                    <form method="post" action="addUserDetalsServlet">
+                    <form method="post" action="/add_user_details">
                         <div class="grid_3">
                             Name
                         </div>
@@ -387,10 +353,21 @@ WHERE o.`user_id` =4
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
-                            City
+                            Location
                         </div>
                         <div class="grid_5">
-                            <input type="text"/><br/><br/>
+                            <select name="location_id" required>
+                                <option></option>
+                                <%
+                                    for (Location location : locations) {
+                                %>
+                                <option value="<%=location.getId()%>"><%=location.getName()%></option>
+                                <%
+                                    }
+                                %>
+                            </select>
+                        </div>
+                        <div class="grid_5"></br>
                             <input type="submit" id="greenBtn" value="Change Account Info"/>
                         </div>
                         <div class="clear"></div><br/>
@@ -401,11 +378,6 @@ WHERE o.`user_id` =4
 
                 </div>
                 <div class="clear"></div>
-
-
-
-
-
                 <div  style ="text-align: center; border-top: 20px #444 solid; padding: 10px 0px 10px 0px;" class="grid_9 push_1 Settings">
 
                     <h1 style ="padding: 10px 0px 10px 0px;">Settings</h1>  
@@ -419,10 +391,22 @@ WHERE o.`user_id` =4
                         </div>
                         <div class="clear"></div><br/>
                         <div class="grid_3">
-                            Password
+                            Old Password
                         </div>
                         <div class="grid_5">
-                            <input type="password" name="pass" /><br/><br/> 
+                            <input type="password" name="old_pass" /><br/>
+                        </div></br></br>
+                          <div class="grid_3">
+                            New Password
+                        </div>
+                        <div class="grid_5">
+                            <input type="password" name="new_pass" /><br/><br/>
+                        </div>
+                          <div class="grid_3">
+                            Confirm new Password
+                        </div>
+                        <div class="grid_5">
+                            <input type="password" name="confirm_pass" /><br/><br/>
                             <input id="greenBtn" type="submit" value="Change My Password"/>
                         </div>
                         <div class="clear"></div><br/>
