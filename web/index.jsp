@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Eastnat</title>
+        <title>Eastnat Foods</title>
         <!-- Default Stylesheets -->
         <%@include file="includesPage/_stylesheets.jsp" %>
 
@@ -193,7 +193,7 @@
 
             <!-- Middle -->
             <div id="middle"class="grid_13">
-                <jsp:include page="includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
+                <jsp:include page="/includesPage/mainHeaders/topMostViewedProducts_4.jsp"></jsp:include>
                 </div>
                 <!--The Middle Content Div Closing -->
             </div>

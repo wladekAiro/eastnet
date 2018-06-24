@@ -18,7 +18,7 @@
     }
 </style>
 <div class="grid_13" id="productStrip"> 
-    <a href="viewProducts_.jsp">
+    <a href="/products">
         <div class="ProductHeading">
             <div class="grid_12">
                 <h2 class="heading">Top Most Viewed Products Currently</h2>
