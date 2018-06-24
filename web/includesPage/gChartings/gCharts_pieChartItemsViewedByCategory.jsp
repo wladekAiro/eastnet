@@ -36,38 +36,43 @@
             data.addColumn('number', 'Views');
 
         <%
-String getPie = "SELECT  category_name , SUM(hits) as hits"
-+ " FROM  products "
-+ " GROUP BY category_name "
-+ " ORDER BY hits DESC ";
-Connection c = new DB_Conn().getConnection();
-Statement st = c.createStatement();
-ResultSet rs = st.executeQuery(getPie);
+            String getPie = "SELECT  category_name , SUM(hits) as hits"
+                    + " FROM  products "
+                    + " GROUP BY category_name "
+                    + " ORDER BY hits DESC ";
+            Connection c = new DB_Conn().getConnection();
 
-ArrayList<Integer> salesArr = new ArrayList<Integer>();
-salesArr.clear();
-ArrayList<String> categoryArr = new ArrayList<String>();
-categoryArr.clear();
+            try {
+                Statement st = c.createStatement();
+                ResultSet rs = st.executeQuery(getPie);
+
+                ArrayList<Integer> salesArr = new ArrayList<Integer>();
+                salesArr.clear();
+                ArrayList<String> categoryArr = new ArrayList<String>();
+                categoryArr.clear();
 //out.print("data.addRows([");
-while (rs.next()) {
-String category = rs.getString("category_name");
-int sales = rs.getInt("hits");
-categoryArr.add(category);
-salesArr.add(sales);
-}
+                while (rs.next()) {
+                    String category = rs.getString("category_name");
+                    int sales = rs.getInt("hits");
+                    categoryArr.add(category);
+                    salesArr.add(sales);
+                }
 //out.print("]);");
 
-int i = 0;
-out.print("data.addRows([");
-while (i <= (categoryArr.size() - 1)) {
-if (i <= categoryArr.size() - 1) {
-out.println("['" + categoryArr.get(i) + "',  " + salesArr.get(i) + "],");
-} else {
-out.println("['" + categoryArr.get(i) + "',  " + salesArr.get(i) + "]");
-}
-i++;
-}
-out.print("]);");
+                int i = 0;
+                out.print("data.addRows([");
+                while (i <= (categoryArr.size() - 1)) {
+                    if (i <= categoryArr.size() - 1) {
+                        out.println("['" + categoryArr.get(i) + "',  " + salesArr.get(i) + "],");
+                    } else {
+                        out.println("['" + categoryArr.get(i) + "',  " + salesArr.get(i) + "]");
+                    }
+                    i++;
+                }
+                out.print("]);");
+            } finally {
+                c.close();
+            }
         %>
 
             /*
@@ -92,43 +97,4 @@ out.print("]);");
 
     </script>
     <div id="chart_div_pieChart1"></div>                  
-</div>
-
-<%--   
-<div class="grid_16"  style="padding: 10px 0px 10px 0px;" id="whiteBox">
-<script type="text/javascript">
-google.setOnLoadCallback(drawChart);
-   function drawChart() {
- var data 
-     = google.visualization.arrayToDataTable([
-   ['Year', 'Sales', 'Expenses'],
-   ['1',  1000,      400],
-   ['2',  1170,      460],
-   ['3',  660,       1120],
-   ['4',  1030,      540],
-   ['5',  600,      650],
-   ['6',  780,      890],
-   ['7',  555,      457],
-   ['8',  456,      125],
-   ['9',  500,      756],
-   ['10',  1030,      630],
-   ['11',  660,      780],
-   ['12',  478,      445],
-   ['13',  50,      540],
-   ['14',  450,      235],
-   ['15',  1234,      667]
- ]);
-
-                    var options = {
-                      title: 'Company Performance',
-                        vAxis: {title: "Items Sold"},
-                        hAxis: {title: "Days of November"}
-                    };
-
-                    var chart = new google.visualization.LineChart(document.getElementById('chart_div_line'));
-                    chart.draw(data, options);
-                  }
-                </script>
-                <div id="chart_div_line" style="width: 900px; height: 300px;"></div>
-            </div> 
---%>  
+</div> 

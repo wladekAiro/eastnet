@@ -13,10 +13,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<%/*SELECT COUNT(  `product_name` *  `product_quantity` ) AS solds,  `product_name` 
-FROM  `sales` 
-GROUP BY  `product_name` 
-ORDER BY solds DESC */
+<%
     String top10products = "SELECT  product_name , hits "
             + " FROM products "
             + " ORDER BY hits DESC "
@@ -24,18 +21,19 @@ ORDER BY solds DESC */
             + " LIMIT 10 ;";
 
     Connection c = new DB_Conn().getConnection();
-    Statement st = c.createStatement();
+    try {
+        Statement st = c.createStatement();
 
-    ArrayList<String> product = new ArrayList<String>();
-    ArrayList<Integer> hits = new ArrayList<Integer>();
-    product.clear();
-    hits.clear();
+        ArrayList<String> product = new ArrayList<String>();
+        ArrayList<Integer> hits = new ArrayList<Integer>();
+        product.clear();
+        hits.clear();
 
-    ResultSet rs = st.executeQuery(top10products);
-    while (rs.next()) {
-        product.add(rs.getString("product_name"));
-        hits.add(rs.getInt("hits"));
-    }
+        ResultSet rs = st.executeQuery(top10products);
+        while (rs.next()) {
+            product.add(rs.getString("product_name"));
+            hits.add(rs.getInt("hits"));
+        }
 %>
 
 <!--Loading the AJAX API-->
@@ -84,21 +82,24 @@ ORDER BY solds DESC */
           ['15',  1234,      667]
         ]);--%>
         <% out.print("([ "
-                  + "['Product Name', 'Number of Hits' ], ");
-          int i = 0;
-          while (i <= hits.size() - 1) {
-              if (i < hits.size() - 1) {
-                  out.println(
-                          "['" + product.get(i) + " ',  "
-                          + hits.get(i) + "  ],");
-              } else {
-                  out.println(
-                          "['" + product.get(i) + "',  "
-                          + hits.get(i) + "  ] ");
-              }
-              i++;
-          }
-          out.print("]);");
+                        + "['Product Name', 'Number of Hits' ], ");
+                int i = 0;
+                while (i <= hits.size() - 1) {
+                    if (i < hits.size() - 1) {
+                        out.println(
+                                "['" + product.get(i) + " ',  "
+                                + hits.get(i) + "  ],");
+                    } else {
+                        out.println(
+                                "['" + product.get(i) + "',  "
+                                + hits.get(i) + "  ] ");
+                    }
+                    i++;
+                }
+                out.print("]);");
+            } finally {
+                c.close();
+            }
         %>
             var options = {
                 title: 'Top 10 products viewed currently',

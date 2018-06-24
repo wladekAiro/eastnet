@@ -79,53 +79,7 @@
                     out.print("" + e);
                 }
             };
-
-            /*
-# ITEMS iSSUED BY DAY  ------------SQL1 
-#---> SOLD BUT STATUS = PENDING
-SELECT DAY(  `ordered_On` ) AS pendingOrderDate, SUM(  `total_order_price` ) AS pricePending
-FROM  `order` 
-WHERE (
-`ordered_On` LIKE  '2012-11%'
-)
-AND (
-`status` =  'pending'
-)
-GROUP BY DATE(  `ordered_On` ) 
-#-------------------------------------------
-# ITEMS approved BY DAY --------------SQL2
-#---> SOLD BUT STATUS = approved
-SELECT DAY(  `ordered_On` ) AS approvedOrderDate, SUM(  `total_order_price` ) AS priceApproved
-FROM  `order` 
-WHERE (
-`ordered_On` LIKE  '2012-11%'
-)
-AND (
-`status` =  'approved'
-)
-GROUP BY DATE(  `ordered_On` ) 
-#------------------------------------
-# ITEMS sold BY DAY 
-#---> SOLD BUT STATUS = delivered
-SELECT DAY(  `ordered_On` ) AS deliveredOrderDate, SUM(  `total_order_price` ) AS priceDelivered
-FROM  `order` 
-WHERE (
-`ordered_On` LIKE  '2012-11%'
-)
-AND (
-`status` =  'delivered'
-)
-GROUP BY DATE(  `ordered_On` ) 
-#---------------------------------------
-#EXPENSES 
-SELECT DAY(  `purchase_date` ) AS purchaseDate, SUM(  `price` ) AS expense
-FROM  `expenses` 
-WHERE  `purchase_date` LIKE  '2012-1%'
- 
- 
- 
-* 
-*   */
+            
             String sqlPendingOrders = "SELECT EXTRACT(DAY FROM ordered_On::date) AS OrderDate, SUM(total_order_price) AS price "
                     + " FROM  orders "
                     + " WHERE ("
@@ -176,8 +130,7 @@ WHERE  `purchase_date` LIKE  '2012-1%'
                     + " GROUP BY EXTRACT(DAY FROM purchase_date::date) ";
 
             Connection c = new DB_Conn().getConnection();
-            Statement st = c.createStatement();
-
+            
             ArrayList<Integer> soldOnPendingTemp = new ArrayList<Integer>();
             ArrayList<Integer> pricePendingTemp = new ArrayList<Integer>();
             soldOnPendingTemp.clear();
@@ -210,6 +163,9 @@ WHERE  `purchase_date` LIKE  '2012-1%'
             priceDelivered.clear();
             priceExpense.clear();
 
+            try{
+            Statement st = c.createStatement();
+            
             ResultSet rs = st.executeQuery(sqlPendingOrders);
             while (rs.next()) {
                 soldOnPendingTemp.add(rs.getInt("OrderDate"));
@@ -234,6 +190,9 @@ WHERE  `purchase_date` LIKE  '2012-1%'
             while (rs3.next()) {
                 BoughtOn.add(rs3.getInt("purchaseDate"));
                 expenseTemp.add(rs3.getInt("expense"));
+            }
+            }finally{
+                c.close();
             }
 
             for (int i = 0; i <= 31; i++) {
@@ -267,21 +226,6 @@ WHERE  `purchase_date` LIKE  '2012-1%'
                     }
                 }
             }
-
-            /*
-            for (int i= 0; i< soldOn.size(); i++){
-                out.println("<br/>Sold On :"+soldOn.get(i));
-                out.println("Pending:           "+pricePending.get(i));
-                out.println("Approoved          "+priceApproved.get(i));
-                out.println("Delivered:         "+priceDelivered.get(i));
-                out.println("Expense :          "+priceExpense.get(i));
-            }
-            out.println("<br/><br/><br/>");
-                        
-            for (int i= 0; i< soldOnPendingTemp.size(); i++){
-                out.println("<br/>Sold On :"+soldOnPendingTemp.get(i));
-                out.println("Priced On :"+soldOnPendingTemp.get(i));
-            }*/
         %>
 
         <!--Loading the AJAX API-->
