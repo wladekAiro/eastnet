@@ -90,35 +90,37 @@
                             + " WHERE  product_qty <5";
 
                     Connection c = new DB_Conn().getConnection();
-                    Statement st = c.createStatement();
+                    String qty = "0", pendingOrders = "0", approvedOrders = "0";
 
-                    ResultSet rs = null;
-                    String qty = "0",
-                            pendingOrders = "0",
-                            approvedOrders = "0";
+                    try {
+                        ResultSet rs = null;
+                        Statement st = c.createStatement();
+                        rs = st.executeQuery(sqlQuantity);
+                        while (rs.next()) {
+                            qty = rs.getString("qty");
+                        }
+                        if (qty.equals("0")) {
+                            qty = "No";
+                        }
 
-                    rs = st.executeQuery(sqlQuantity);
-                    while (rs.next()) {
-                        qty = rs.getString("qty");
-                    }
-                    if (qty.equals("0")) {
-                        qty = "No";
-                    }
+                        rs = st.executeQuery(sqlPending);
+                        while (rs.next()) {
+                            pendingOrders = rs.getString("pending");
+                        }
+                        if (pendingOrders.equals("0")) {
+                            pendingOrders = "No";
+                        }
 
-                    rs = st.executeQuery(sqlPending);
-                    while (rs.next()) {
-                        pendingOrders = rs.getString("pending");
-                    }
-                    if (pendingOrders.equals("0")) {
-                        pendingOrders = "No";
-                    }
+                        rs = st.executeQuery(sqlApproved);
+                        while (rs.next()) {
+                            approvedOrders = rs.getString("approved");
+                        }
+                        if (approvedOrders.equals("0")) {
+                            approvedOrders = "No";
+                        }
 
-                    rs = st.executeQuery(sqlApproved);
-                    while (rs.next()) {
-                        approvedOrders = rs.getString("approved");
-                    }
-                    if (approvedOrders.equals("0")) {
-                        approvedOrders = "No";
+                    } finally {
+                        c.close();
                     }
                 %>
                 <h1 class="grid_15">Dashboard Home</h1><hr/>

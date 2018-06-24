@@ -17,7 +17,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Eastnat</title>
+        <title>Eastnat Foods</title>
     </head>
     <body>
 
@@ -55,44 +55,6 @@
                 price = Double.parseDouble(productBean.getPrice());
                 quantity = Integer.parseInt(productBean.getQuantity());
 
-
-        %>
-
-
-        <%                /*
-        INSERT INTO  `saikiran enterprises`.`products` (
-`product_id` ,
-`product-name` ,
-`sub-category-name` ,
-`category-name` ,
-`company-name` ,
-`price` ,
-`summary` ,
-`tags` ,
-`product_qty` ,
-`lastUpdated`
-)
-VALUES (
-NULL ,  'Assassins Cedd',  'Action-Game',  'Games',  'EA, Electronic Arts',  '3', 'dcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdc', 'dcdcdcdcdcdcdcdc',  '2', NOW( )
-);
- 
-//Fetch the product id
-SELECT  `product_id` 
-FROM  `products` 
-WHERE  `product-name` =  'Assassins Creed'
- 
-      //Insert into expenses
- INSERT INTO  `saikiran enterprises`.`expenses` (
-`expenses_id` ,
-`product_id` ,
-`product_name` ,
-`price` ,
-`purchase_date`
-)
-VALUES (
-NULL ,  '2',  'Ayinga Movie ',  '123456', NOW( )
-);  
-                 */
                 String categoryIdQuery = "SELECT id FROM category WHERE category_name = ?";
                 String subCategoryQuery = "SELECT id FROM sub_category WHERE sub_category_name = ?";
 

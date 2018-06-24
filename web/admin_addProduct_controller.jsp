@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Eastnat</title>
+        <title>Eastnat Foods</title>
         <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
@@ -50,33 +50,6 @@
                 font-size: 17px;
                 box-shadow: inset 0px 2px 17px #444;
             }
-            /*
-            #buy {
-                padding: 30px;
-                font-size: 17px;
-                box-shadow: 0px 2px 7px #444;
-                -webkit-transition:.3s all ease-in-out;
-                -moz-transition:.3s all ease-in-out;
-                background: -webkit-linear-gradient(top,#00AAC9, #026A84);
-                background: -moz-linear-gradient(top,#00AAC9, #026A84);
-            }
-            #buy:active {
-                padding: 30px;
-                font-size: 17px;
-                box-shadow: 0px 2px 7px #444;
-                -webkit-box-shadow: inset 0 0 10px #000;
-                -moz-box-shadow: inset 0 0 5px #000;
-                background: -webkit-linear-gradient(top, #026A84,#00AAC9);
-                background: -moz-linear-gradient(top, #026A84,#00AAC9);
-            }
-            #buy:hover {
-                padding: 30px;
-                font-size: 17px;
-                box-shadow: inset 0px 2px 17px #444;
-                background: -webkit-linear-gradient(top, #026A84,#00AAC9);
-                background: -moz-linear-gradient(top, #026A84,#00AAC9);
-            
-            }*/
             .adminMenu {
                 margin-top: 10px;
                 margin-bottom: 10px;

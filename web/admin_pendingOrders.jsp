@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Easnat</title>
+        <title>Easnat Foods</title>
         <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
@@ -103,7 +103,6 @@
                             <div class="clear"></div>
 
                             <%
-                        
                                 String sql = "\n"
                                         + "SELECT o.id , s.product_name ,"
                                         + " s.product_price , s.product_quantity ,"
@@ -116,46 +115,46 @@
                                         + " ORDER BY o.id DESC";
 
                                 Connection c = new database.DB_Conn().getConnection();
+                                try {
+                                    PreparedStatement psmt
+                                            = c.prepareStatement(sql);
 
-                                PreparedStatement psmt
-                                        = c.prepareStatement(sql);
+                                    ResultSet rs = psmt.executeQuery();
 
-                                ResultSet rs = psmt.executeQuery();
+                                    int oldOrder = 0;
+                                    int newOrder;
 
-                                int oldOrder = 0;
-                                int newOrder;
+                                    String product_name,
+                                            name, address, mobile_no;
+                                    double product_price;
+                                    int product_quantity;
+                                    Date sold_on_date;
+                                    Time sold_on_time;
 
-                                String product_name,
-                                        name, address, mobile_no;
-                                double product_price;
-                                int product_quantity;
-                                Date sold_on_date;
-                                Time sold_on_time;
+                                    while (rs.next()) {
 
-                                while (rs.next()) {
+                                        newOrder = rs.getInt("id");
+                                        product_name = rs.getString("product_name");
+                                        product_price = rs.getDouble("product_price");
+                                        product_quantity = rs.getInt("product_quantity");
+                                        sold_on_time = rs.getTime("sold_on");
+                                        sold_on_date = rs.getDate("sold_on");
+                                        String orderDateArr[] = sold_on_date.toString().split("-");
 
-                                    newOrder = rs.getInt("id");
-                                    product_name = rs.getString("product_name");
-                                    product_price = rs.getDouble("product_price");
-                                    product_quantity = rs.getInt("product_quantity");
-                                    sold_on_time = rs.getTime("sold_on");
-                                    sold_on_date = rs.getDate("sold_on");
-                                    String orderDateArr[] = sold_on_date.toString().split("-");
+                                        name = rs.getString("shippers_name");
 
-                                    name = rs.getString("shippers_name");
+                                        address = rs.getString("address");
 
-                                    address = rs.getString("address");
+                                        mobile_no = rs.getString("mobile_number");
 
-                                    mobile_no = rs.getString("mobile_number");
-
-                                    String billNo = "";
-                                    for (int i = orderDateArr.length - 1; i >= 1; i--) {
-                                        billNo += orderDateArr[i];
-                                    }
-                                    billNo += newOrder;
-                                    if (oldOrder == newOrder) {
-                                        // Dont Draw border Type II order Div
-%>
+                                        String billNo = "";
+                                        for (int i = orderDateArr.length - 1; i >= 1; i--) {
+                                            billNo += orderDateArr[i];
+                                        }
+                                        billNo += newOrder;
+                                        if (oldOrder == newOrder) {
+                                            // Dont Draw border Type II order Div
+                            %>
 
                             <!-- Type II Order -->
                             <div class="grid_12">
@@ -178,7 +177,7 @@
                             <%
                             } else {
                                 // Draw New Order Type I order Div
-%>
+                            %>
 
                             <!-- Type I Order -->
                             <div class="grid_16"  >
@@ -212,8 +211,10 @@
                             </div>
 
                             <%
+                                        }
+                                        oldOrder = newOrder;
                                     }
-                                    oldOrder = newOrder;
+                                } finally {
                                     c.close();
                                 }
 

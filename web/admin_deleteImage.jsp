@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Eastnat</title>
+    <title>Eastnat Foods</title>
     <link rel="shortcut icon" href="images/logo/ico.ico"/>
     <link rel="stylesheet" type="text/css" href="css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="css/text.css"/>
@@ -78,12 +78,12 @@
                     DELETE FROM  `images` 
                     WHERE  `image-id` =  '5'
              */
-            String sqlDeleteImg = "DELETE FROM  `images` "
-                    + " WHERE  `image-id` =  '" + imageId + "'; ";
+            String sqlDeleteImg = "DELETE FROM images WHERE id =  '" + imageId + "' ";
 
             Connection c = new DB_Conn().getConnection();
-            Statement st = c.createStatement();
-            if (st.execute(sqlDeleteImg)) {
+            try {
+                Statement st = c.createStatement();
+                if (st.execute(sqlDeleteImg)) {
         %>
         <div class="grid_16" style="padding: 10px;" id="whiteBox">
 
@@ -97,9 +97,10 @@
             </div>
         </div>
         <%
+                }
+            } finally {
+                c.close();
             }
-            c.close();
-
         %>
 
         <div class="grid_16" style="padding: 10px;" id="whiteBox">
@@ -119,8 +120,8 @@
             <img class="push_2" src="images/icons/gnome-dev-trash-full.png"/>
 
         </div>
-        <%            }
-
+        <%
+            }
         %>
 
     </div>

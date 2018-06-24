@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Eastnat</title>
+    <title>Eastnat Foods</title>
     <link rel="shortcut icon" href="images/logo/ico.ico"/>
     <link rel="stylesheet" type="text/css" href="css/reset.css"/>
     <link rel="stylesheet" type="text/css" href="css/text.css"/>
@@ -73,21 +73,23 @@
         --%>
         <%
             Connection c = new DB_Conn().getConnection();
-            Statement st = c.createStatement();
-            
-            ArrayList<ProductBean> products = (ArrayList<ProductBean>) request.getAttribute("products");
 
-            //Fetch the (PID) Product ID 
-            String productId = request.getParameter("pid");
-            if (request.getParameter("pid") == null || request.getParameter("pid") == "" || request.getParameter("pid") == "null") {
+            try {
+                Statement st = c.createStatement();
 
-                String sqlFetchItems = "SELECT * FROM  products p "
-                        + "INNER JOIN  images i ON "
-                        + " p.id=i.product_id "
-                        + " GROUP BY p.id,i.id "
-                        + " ORDER BY p.product_qty ASC ";
-                Statement st1 = c.createStatement();
-                ResultSet rs = st1.executeQuery(sqlFetchItems.toString());
+                ArrayList<ProductBean> products = (ArrayList<ProductBean>) request.getAttribute("products");
+
+                //Fetch the (PID) Product ID 
+                String productId = request.getParameter("pid");
+                if (request.getParameter("pid") == null || request.getParameter("pid") == "" || request.getParameter("pid") == "null") {
+
+                    String sqlFetchItems = "SELECT * FROM  products p "
+                            + "INNER JOIN  images i ON "
+                            + " p.id=i.product_id "
+                            + " GROUP BY p.id,i.id "
+                            + " ORDER BY p.product_qty ASC ";
+                    Statement st1 = c.createStatement();
+                    ResultSet rs = st1.executeQuery(sqlFetchItems.toString());
         %>
         <div id="middle"class="grid_13">
             <div class="grid_13" id="whiteBox">
@@ -161,7 +163,7 @@
                                 String hits = rs.getString("hits");
 
                                 String image_name = rs.getString("image_name");
-                                
+
                                 String alert = "";
                                 if (qty < 5) {
                                     alert = "alert";
@@ -354,30 +356,14 @@
                 <img class="imageGallery" src="<%= productImages.get(i)%>"/>
             </a>
             <%
-                        }
+                            }
 
+                        }
                     }
+                } finally {
+                    c.close();
                 }
             %>
-            <%--
-                <a href="deleteImage.jsp?id=1">
-                    <img class="imageGallery" src="images/productImages/q1.jpeg"/>
-                </a>
-                <a href="deleteImage.jsp?id=1">
-                    <img class="imageGallery" src="images/productImages/q2.jpeg"/>
-                </a>
-                <a href="deleteImage.jsp?id=1">
-                    <img class="imageGallery" src="images/productImages/q3.jpeg"/>
-                </a>
-
-                <a href="deleteImage.jsp?id=1">
-                    <img class="imageGallery" src="images/productImages/q1.jpeg"/>
-                </a>
-                <a href="deleteImage.jsp?id=1">
-                    <img class="imageGallery" src="images/productImages/q3.jpeg"/>
-                </a>
-            --%>
-
         </div>
     </div>
 </body>

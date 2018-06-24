@@ -82,15 +82,15 @@
             }
         </style>
         <script type="text/javascript">
-            $(document).ready (function (){
-                $('#selectMenuCategory').click(function (){
+            $(document).ready(function () {
+                $('#selectMenuCategory').click(function () {
                     var category = $(this).attr('value');
                     //alert ("Aargh " +getCategory);
-                    $.get('getProductSubCategory', 
-                    { category: category}, 
-                    function (data){
-                        $('#selectMenuSubCategory').html(data);
-                    });
+                    $.get('getProductSubCategory',
+                            {category: category},
+                            function (data) {
+                                $('#selectMenuSubCategory').html(data);
+                            });
                 });
             });
         </script>
@@ -99,70 +99,72 @@
 
         <%
             if (session.getAttribute("user") == null) {// THen new user, show join now
-%>
+        %>
         <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
         <%        } else {
         %>
         <jsp:include page="includesPage/_logout.jsp"></jsp:include>
         <%            }
-        
-        if (session.getAttribute("admin")== null){
-            response.sendRedirect("/admin");
-        }
+
+            if (session.getAttribute("admin") == null) {
+                response.sendRedirect("/admin");
+            }
         %>
 
         <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
         <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
 
-        <div class="container_16">
-            <div class="grid_16" style="padding: 10px;" id="whiteBox">
-                <div class="grid_3">
-                    <br/><h1>Add Product</h1><hr/>
-                </div>
-                <div>
-
+            <div class="container_16">
+                <div class="grid_16" style="padding: 10px;" id="whiteBox">
                     <div class="grid_3">
-                        <br/><h1>Step 1. Enter Product Company</h1><hr/>
+                        <br/><h1>Add Product</h1><hr/>
                     </div>
-                    <div class="grid_3 highlight">
-                        <br/><h1>Step 2. Enter Category</h1><hr/>
-                    </div>
-                <div class="grid_3">
-                        <br/><h1>Step 3. Enter in Product Name, Tags</h1><hr/>
-                    </div>
-                <div class="grid_3">
-                        <br/><h1>Step 4. Enter in Pricing & Quantity and Description</h1><hr/>
-                 </div>
+                    <div>
 
+                        <div class="grid_3">
+                            <br/><h1>Step 1. Enter Product Company</h1><hr/>
+                        </div>
+                        <div class="grid_3 highlight">
+                            <br/><h1>Step 2. Enter Category</h1><hr/>
+                        </div>
+                        <div class="grid_3">
+                            <br/><h1>Step 3. Enter in Product Name, Tags</h1><hr/>
+                        </div>
+                        <div class="grid_3">
+                            <br/><h1>Step 4. Enter in Pricing & Quantity and Description</h1><hr/>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-            <div class="clear"></div>
+                <div class="clear"></div>
 
-                <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
-                  
+            <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
 
 
-            <!--Loading the AJAX API-->
-            <script type="text/javascript" src="js/gclibrary/jsapi.js"></script>
-            <script type="text/javascript" src="js/gclibrary/core.js"></script>
-            <script type="text/javascript" src="js/gclibrary/core1.js"></script>
 
-         <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
-         
-         
-<%
-    DB_Conn conn = new DB_Conn();
-    Connection con = conn.getConnection();
-    Statement st = con.createStatement();
-    String sql_getCategory = "SELECT  id,category_name FROM  category; ";
-    String sql_getSubCategory = "SELECT  id,sub_category_name FROM sub_category;";
-    //String sql_getCompany = "SELECT  `company-name` FROM  `product-company`;";
+                <!--Loading the AJAX API-->
+                <script type="text/javascript" src="js/gclibrary/jsapi.js"></script>
+                <script type="text/javascript" src="js/gclibrary/core.js"></script>
+                <script type="text/javascript" src="js/gclibrary/core1.js"></script>
 
-    if (productBean.getCompany() == null || productBean.getCompany()  == ""){
-        response.sendRedirect("admin_addProduct_1.jsp");
-    }
-%>
-            
+            <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
+
+
+            <%
+                DB_Conn conn = new DB_Conn();
+                Connection con = conn.getConnection();
+
+                try {
+                    Statement st = con.createStatement();
+                    String sql_getCategory = "SELECT  id,category_name FROM  category; ";
+                    String sql_getSubCategory = "SELECT  id,sub_category_name FROM sub_category;";
+                    //String sql_getCompany = "SELECT  `company-name` FROM  `product-company`;";
+
+                    if (productBean.getCompany() == null || productBean.getCompany() == "") {
+                        response.sendRedirect("admin_addProduct_1.jsp");
+                    }
+            %>
+
 
             <div class="grid_13"  style="padding: 10px 0px;" id="whiteBox">
                 <div class="grid_13">
@@ -170,7 +172,7 @@
                 </div>
                 <div class="clear"></div>
                 <form method="post" action="admin_addProduct_controller.jsp">
-                    <input type="hidden" name="company" value="<%= productBean.getCompany() %>">
+                    <input type="hidden" name="company" value="<%= productBean.getCompany()%>">
                     <input type="hidden" name="page" value="admin_addProduct_3.jsp">
                     <div class="grid_2">
                         <h3>Select Category</h3>
@@ -178,15 +180,15 @@
                     <div class="grid_5">
                         <select id="selectMenuCategory" name="category">
                             <option value="" selected="">Select Category</option>
-                                        <% 
-                                            ResultSet rs = st.executeQuery(sql_getCategory);
-                                            while (rs.next()) {
-                                                String category = rs.getString("category_name");
-                                        %>
-                                        <option value="<%= category%>"><%= category%></option>
-                                        <%
-                                            }
-                                        %>
+                            <%
+                                ResultSet rs = st.executeQuery(sql_getCategory);
+                                while (rs.next()) {
+                                    String category = rs.getString("category_name");
+                            %>
+                            <option value="<%= category%>"><%= category%></option>
+                            <%
+                                }
+                            %>
                         </select>
                     </div>
                     <div class="clear"></div><br/>
@@ -218,20 +220,22 @@
                     <div class="grid_5">
                         <select id="selectMenuSubCategory" name="subCategory">
                             <option value="" selected="">Select Sub-Category</option>
-                                            <%
+                            <%
+                                ResultSet subCategory = st.executeQuery(sql_getSubCategory);
 
-                                                ResultSet subCategory = st.executeQuery(sql_getSubCategory);
+                                while (subCategory.next()) {
+                                    String subCat = subCategory.getString("sub_category_name");
+                            %>
 
-                                                while (subCategory.next()) {
-                                                    String subCat = subCategory.getString("sub_category_name");
-                                            %>
+                            <option value="<%= subCat%>"><%= subCat%></option>
 
-                                            <option value="<%= subCat%>"><%= subCat%></option>
-
-                                            <%
-                                                }
-                                                st.close();
-                                            %>
+                            <%
+                                    }
+                                    st.close();
+                                } finally {
+                                    con.close();
+                                }
+                            %>
                         </select>
                     </div>
                     <div class="clear"></div><br/>

@@ -94,10 +94,10 @@
         %>
         <jsp:include page="includesPage/_logout.jsp"></jsp:include>
         <%            }
-        
-        if (session.getAttribute("admin")== null){
-            response.sendRedirect("/admin");
-        }
+
+            if (session.getAttribute("admin") == null) {
+                response.sendRedirect("/admin");
+            }
         %>
 
         <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
@@ -126,35 +126,37 @@
                     </div>
                 </div>
                 <div class="clear"></div>
-                
-                <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
-                  
+
+            <jsp:include page="includesPage/hesders_sidebars/admin_menuSideBar.jsp"></jsp:include>
+
             <%
                 DB_Conn conn = new DB_Conn();
                 Connection con = conn.getConnection();
-                Statement st = con.createStatement();
-                //String sql_getCategory = "SELECT  `category_name` FROM  `category`; ";
-                //String sql_getSubCategory = "SELECT  `sub-category_name` FROM  `sub-category`;";
-                String sql_getCompany = "SELECT  id,company_name FROM  product_company";
-            %>
-            
-            
-                <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
-                
-            <div class="grid_13"  style="padding: 10px 0px;" id="whiteBox">
-                <div class="grid_13">
-                    <br/><h1>Step 1. Start selecting Product Company Or, Enter a one...</h1><hr/>
-                </div>
-                <div class="clear"></div>
-                <form method="post" action="admin_addProduct_controller.jsp">
-                    <input type="hidden" name="page" value="admin_addProduct_2.jsp"/>
-                    <div class="grid_2">
-                        <h3>Select Company</h3>
-                    </div>
-                    <div class="grid_5">
-                        <select name="company" id="company">
 
-                            <option value="" selected>Select a Company</option>
+                try {
+                    Statement st = con.createStatement();
+                    //String sql_getCategory = "SELECT  `category_name` FROM  `category`; ";
+                    //String sql_getSubCategory = "SELECT  `sub-category_name` FROM  `sub-category`;";
+                    String sql_getCompany = "SELECT  id,company_name FROM  product_company";
+            %>
+
+
+            <jsp:useBean class="product.ProductBean" scope="session" id="productBean"></jsp:useBean>
+
+                <div class="grid_13"  style="padding: 10px 0px;" id="whiteBox">
+                    <div class="grid_13">
+                        <br/><h1>Step 1. Start selecting Product Company Or, Enter a one...</h1><hr/>
+                    </div>
+                    <div class="clear"></div>
+                    <form method="post" action="admin_addProduct_controller.jsp">
+                        <input type="hidden" name="page" value="admin_addProduct_2.jsp"/>
+                        <div class="grid_2">
+                            <h3>Select Company</h3>
+                        </div>
+                        <div class="grid_5">
+                            <select name="company" id="company">
+
+                                <option value="" selected>Select a Company</option>
 
                             <%
                                 ResultSet company = st.executeQuery(sql_getCompany);
@@ -166,6 +168,10 @@
                             <option value="<%= companyId%>"><%= companyName%></option>
 
                             <%
+                                        }
+                                    } finally {
+                                        con.close();
+                                    }
                                 }
                             %>
 
