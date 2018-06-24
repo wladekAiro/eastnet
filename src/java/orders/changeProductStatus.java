@@ -24,9 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 public class changeProductStatus extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -41,21 +40,20 @@ public class changeProductStatus extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet changeProductStatus</title>");            
+            out.println("<title>Servlet changeProductStatus</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet changeProductStatus at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        } finally {            
+        } finally {
             out.close();
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -69,8 +67,7 @@ public class changeProductStatus extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -81,52 +78,49 @@ public class changeProductStatus extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        String ChangeStatus = request.getParameter ("ChangeStatus");
-        String order [] = request.getParameterValues("order");
+        String ChangeStatus = request.getParameter("ChangeStatus");
+        String order[] = request.getParameterValues("order");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        out.println ("So you wanna "+ChangeStatus+" For the Item nos of, ");
-        
-        if (order !=  null){
-            for (int i=0; i<order.length; i++){
-                out.println (" <br/>"+order[i]);
+        out.println("So you wanna " + ChangeStatus + " For the Item nos of, ");
+
+        if (order != null) {
+            for (int i = 0; i < order.length; i++) {
+                out.println(" <br/>" + order[i]);
             }
-            
-            if (ChangeStatus.equals("approved")){
+
+            if (ChangeStatus.equals("approved")) {
                 try {
                     //Approve the pending oreders
                     /*
         UPDATE  `order` SET 
     `status` =  'approved' WHERE  `order`.`order_id` =16 */
                     StringBuffer sqlBuffer = new StringBuffer();
-                    
-                    
+
                     Connection c = new DB_Conn().getConnection();
                     Statement st = c.createStatement();
-                    for (int i=0; i<order.length; i++){
-                    String sqlUpdatePending = "UPDATE  `order` SET " +
-    " `status` =  'approved' WHERE  `order`.`order_id` ='"+order[i]+"' ; ";
+                    for (int i = 0; i < order.length; i++) {
+                        String sqlUpdatePending = "UPDATE orders SET "
+                                + " status =  'approved' WHERE id ='" + order[i] + "' ; ";
                         //sqlBuffer.append(sqlUpdatePending);
                         st.addBatch(sqlUpdatePending);
                     }
-                    
-                    out.print(" "+sqlBuffer.toString());
+
+                    out.print(" " + sqlBuffer.toString());
                     int[] executeBatch = st.executeBatch();
-                    out.println (executeBatch.length +" Products Approved");
-                    
-                    
+                    out.println(executeBatch.length + " Products Approved");
+
                 } catch (SQLException ex) {
-                    out.print(" " +ex);
+                    out.print(" " + ex);
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    out.print(" " +ex);
+                    out.print(" " + ex);
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
-                response.sendRedirect(request.getContextPath()+"/admin_pendingOrders.jsp");
-                
-            }else if (ChangeStatus.equals("delivered")){
+
+                response.sendRedirect(request.getContextPath() + "/admin_pendingOrders.jsp");
+
+            } else if (ChangeStatus.equals("delivered")) {
                 //cancel the pending oreders
                 try {
                     //Approve the pending oreders
@@ -134,72 +128,67 @@ public class changeProductStatus extends HttpServlet {
         UPDATE  `order` SET 
     `status` =  'approved' WHERE  `order`.`order_id` =16 */
                     StringBuffer sqlBuffer = new StringBuffer();
-                    
-                    
+
                     Connection c = new DB_Conn().getConnection();
                     Statement st = c.createStatement();
-                    for (int i=0; i<order.length; i++){
-                    String sqlUpdatePending = "UPDATE  `order` SET " +
-    " `status` =  'delivered' WHERE  `order`.`order_id` ='"+order[i]+"' ; ";
+                    for (int i = 0; i < order.length; i++) {
+                        String sqlUpdatePending = "UPDATE  orders SET "
+                                + " status =  'delivered' WHERE  id ='" + order[i] + "' ; ";
                         //sqlBuffer.append(sqlUpdatePending);
                         st.addBatch(sqlUpdatePending);
                     }
-                    
-                    out.print(" "+sqlBuffer.toString());
+
+                    out.print(" " + sqlBuffer.toString());
                     int[] executeBatch = st.executeBatch();
-                    out.println (executeBatch.length +" Products Approved");
-                    
-                    
+                    out.println(executeBatch.length + " Products Approved");
+
                 } catch (SQLException ex) {
-                    out.print(" " +ex);
+                    out.print(" " + ex);
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    out.print(" " +ex);
+                    out.print(" " + ex);
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                response.sendRedirect("/saikiranBookstoreApp/admin_approvedOrders.jsp");
-            }
-            else if (ChangeStatus.equals("cancel")){
+
+                response.sendRedirect("/admin_approvedOrders.jsp");
+            } else if (ChangeStatus.equals("cancel")) {
                 //cancel the pending oreders
-                
+
                 try {
                     //Approve the pending oreders
                     /*
         UPDATE  `order` SET 
     `status` =  'approved' WHERE  `order`.`order_id` =16 */
                     StringBuffer sqlBuffer = new StringBuffer();
-                    
+
                     Connection c = new DB_Conn().getConnection();
                     Statement st = c.createStatement();
-                    for (int i=0; i<order.length; i++){
-                    
-                    String sqlDeleteOrder, sqlDeleteSales;
-                    sqlDeleteOrder = " DELETE FROM `order` WHERE `order_id` = "+order[i]+";";
-                    sqlDeleteSales = " DELETE FROM `sales` WHERE `order_id` = "+order[i]+";";
-                    
-                    st.addBatch(sqlDeleteOrder);
-                    st.addBatch(sqlDeleteSales);
+                    for (int i = 0; i < order.length; i++) {
+
+                        String sqlDeleteOrder, sqlDeleteSales;
+                        sqlDeleteOrder = " DELETE FROM orders WHERE id = " + order[i] + ";";
+                        sqlDeleteSales = " DELETE FROM saless WHERE order_id = " + order[i] + ";";
+
+                        st.addBatch(sqlDeleteOrder);
+                        st.addBatch(sqlDeleteSales);
                     }
-                    
-                    out.print(" "+sqlBuffer.toString());
+
+                    out.print(" " + sqlBuffer.toString());
                     int[] executeBatch = st.executeBatch();
-                    out.println (executeBatch.length +" Products Deleted");
-                    
-                    
+                    out.println(executeBatch.length + " Products Deleted");
+
                 } catch (SQLException ex) {
-                    out.print(" " +ex);
-                    
+                    out.print(" " + ex);
+
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
-                    out.print(" " +ex);
+                    out.print(" " + ex);
                     Logger.getLogger(changeProductStatus.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                response.sendRedirect("/saikiranBookstoreApp/admin_Performance.jsp");
-            
+
+                response.sendRedirect("/admin_perfomance");
             }
-       }
+        }
     }
 
     /**
