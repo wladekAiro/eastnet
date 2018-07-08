@@ -142,6 +142,7 @@ CREATE TABLE IF NOT EXISTS locations(
 
 ALTER TABLE orders add column location varchar(120) NOT NULL;
 ALTER TABLE orders add column location_charge numeric(10,2) NOT NULL;
+ALTER TABLE orders add column order_number bigint NOT NULL UNIQUE;
 -- DUMPING DATA
 --
 -- Dumping data for table `administrators`
