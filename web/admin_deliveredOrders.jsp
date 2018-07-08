@@ -166,7 +166,7 @@
                                             <%= product_name%>
                                         </div>
                                         <div class="grid_2">
-                                            Rs. <%= product_price%> x<%= product_quantity%>
+                                            Kshs. <%= product_price%> x<%= product_quantity%>
                                         </div>
                                     </div>
                                     <div class="grid_2 ">
@@ -191,7 +191,7 @@
                                         <%= product_name%>
                                     </div>
                                     <div class="grid_2">
-                                        Rs. <%= product_price%> x<%= product_quantity%>
+                                        Kshs. <%= product_price%> x<%= product_quantity%>
                                     </div>
                                 </div>
                                 <div class="grid_2" style="border-top: 2px #444 solid; ">

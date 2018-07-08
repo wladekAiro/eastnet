@@ -81,6 +81,23 @@
         </style>
     </head>
     <body>
+         <%
+            if (session.getAttribute("user") == null) {// THen new user, show join now
+        %>
+        <jsp:include page="includesPage/_joinNow.jsp"></jsp:include>
+        <%
+        } else {
+        %>
+        <jsp:include page="includesPage/_logout.jsp"></jsp:include>
+        <%
+            }
+            if ((session.getAttribute("user") == null)) {
+                response.sendRedirect("/");
+            }
+        %>
+
+        <jsp:include page="includesPage/_search_navigationbar.jsp"></jsp:include>
+        <jsp:include page="includesPage/_facebookJoin.jsp"></jsp:include>
         <%--
  <div id = "" style="background: #AAA; padding: 10px; box-shadow: 0px 10px 10px #555;">
      <div class="container_16"  style="background: #AAA; ">
@@ -107,15 +124,6 @@
      </div>
  </div>
         --%> 
-        <div id = "topWrapper" style="box-shadow: 0px 10px 10px #555;">
-            <div class="container_16">
-                <div class="grid_16">
-                    <div id="logo" class="grid_6"> <a href="index.jsp"><img src="images/logo/eastnat_logo.png" /></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="container_16">
             <!--
             <div class="grid_3" id="whiteBox">
@@ -130,24 +138,25 @@
             <%
                 if (request.getParameter("oid") != null) {
 
-                    String OrderId = request.getParameter("oid");
-                    String fetchInfoSQL = "SELECT * FROM  orders WHERE id =  '" + OrderId + "' ; ";
                     Connection c = new DB_Conn().getConnection();
-                    Statement st = c.createStatement();
-                    ResultSet rs1 = st.executeQuery(fetchInfoSQL);
-                    while (rs1.next()) {
-                        String name,
-                                email, address, mobileNum, status;
-                        Date ordered_on_date;
-                        Time ordered_on_time;
+                    try {
+                        String OrderId = request.getParameter("oid");
+                        String fetchInfoSQL = "SELECT * FROM  orders WHERE id =  '" + OrderId + "' ; ";
+                        Statement st = c.createStatement();
+                        ResultSet rs1 = st.executeQuery(fetchInfoSQL);
+                        while (rs1.next()) {
+                            String name,
+                                    email, address, mobileNum, status;
+                            Date ordered_on_date;
+                            Time ordered_on_time;
 
-                        name = rs1.getString("shippers_name");
-                        email = rs1.getString("shippers_email");
-                        address = rs1.getString("address");
-                        mobileNum = rs1.getString("mobile_number");
-                        ordered_on_date = rs1.getDate("ordered_On");
-                        ordered_on_time = rs1.getTime("ordered_On");
-                        status = rs1.getString("status");
+                            name = rs1.getString("shippers_name");
+                            email = rs1.getString("shippers_email");
+                            address = rs1.getString("address");
+                            mobileNum = rs1.getString("mobile_number");
+                            ordered_on_date = rs1.getDate("ordered_On");
+                            ordered_on_time = rs1.getTime("ordered_On");
+                            status = rs1.getString("status");
             %>
             <div class="grid_12 push_2" id="whiteBox" style="margin-top: 30px;">
                 <div class="grid_6">
@@ -274,10 +283,10 @@
                             billNo = rs.getInt("order_number");
                             totalValue = product_quantity * product_price;
                             totalPrice += totalValue;
-                         
+
                             if (oldOrder == newOrder) {
                                 // Dont Draw border Type II order Div
-                    %>
+%>
 
                     <!-- Type II Order -->
                     <div class="grid_12">
@@ -301,7 +310,7 @@
                     <%
                     } else {
                         // Draw New Order Type I order Div
-                    %>
+%>
 
                     <!-- Type I Order -->
                     <div class="grid_12">
@@ -347,6 +356,9 @@
         </div>
 
         <%
+            } finally {
+                c.close();
+            }
         } else {
         %>
         <div class="container_16">
