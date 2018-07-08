@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.enums.Status;
 import orders.Location;
+import orders.OrderNumberGenerator;
 import user.User;
 
 /**
@@ -32,7 +33,7 @@ import user.User;
  * @author chirag
  */
 @WebServlet(name = "buyItems", urlPatterns = {"/buyItems"})
-public class buyItems extends HttpServlet {
+public class BuyItemsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -91,9 +92,9 @@ public class buyItems extends HttpServlet {
 
 
          } catch (SQLException ex) {
-         Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+         Logger.getLogger(BuyItemsServlet.class.getName()).log(Level.SEVERE, null, ex);
          } catch (ClassNotFoundException ex) {
-         Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+         Logger.getLogger(BuyItemsServlet.class.getName()).log(Level.SEVERE, null, ex);
          }
          } else {
          response.sendRedirect("/MyCartApplication/index.jsp");
@@ -153,15 +154,16 @@ public class buyItems extends HttpServlet {
                                 + "    ordered_On ,"
                                 + "    total_order_price,"
                                 + "    location,"
-                                + "    location_charge)"
-                                + "    VALUES (?, ?, ?, ?, ?, ?, NOW( ) ,? , ? , ?)";
+                                + "    location_charge,"
+                                + "    order_number)"
+                                + "    VALUES (?, ?, ?, ?, ?, ?, NOW( ) ,? , ? , ? ,?)";
 
                         PreparedStatement preparedSQL1
                                 = c.prepareStatement(insertOrder);
 
                         preparedSQL1.setInt(1, user.getUserId()); // user iD
                         preparedSQL1.setString(2, Status.PENDING.name().toLowerCase());
-                        
+
                         preparedSQL1.setString(3, name); //`shippers_name`
 
                         preparedSQL1.setString(4, address); //`address`
@@ -173,6 +175,7 @@ public class buyItems extends HttpServlet {
                         preparedSQL1.setDouble(7, cart.getTotalPriceOfCart()); //`total_order_price``
                         preparedSQL1.setString(8, location.getName());
                         preparedSQL1.setDouble(9, location.getCost());
+                        preparedSQL1.setInt(10, OrderNumberGenerator.generateOrderNumber().intValueExact());
 
                         int executeUpdatePreparedSQL1 = preparedSQL1.executeUpdate();
 
@@ -183,7 +186,8 @@ public class buyItems extends HttpServlet {
                             String getLatestOrderId = "SELECT id "
                                     + "FROM  orders "
                                     + "WHERE user_id = '" + user.getUserId() + "'"
-                                    + "ORDER BY id DESC";
+                                    + "ORDER BY id DESC "
+                                    + "LIMIT 1";
 
                             preparedSQL1.close();
 
@@ -266,7 +270,7 @@ public class buyItems extends HttpServlet {
 
                     } catch (SQLException ex) {
                         ex.printStackTrace();
-                        Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(BuyItemsServlet.class.getName()).log(Level.SEVERE, null, ex);
                         c.rollback();
                         String message, messageDetail;
                         String messageUrl = "/message.jsp";
@@ -291,10 +295,10 @@ public class buyItems extends HttpServlet {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BuyItemsServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-            Logger.getLogger(buyItems.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BuyItemsServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

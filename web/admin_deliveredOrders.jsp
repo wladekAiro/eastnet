@@ -108,7 +108,7 @@
 
                             <%
                                 String sql = "\n"
-                                        + "SELECT o.id AS order_id, s.product_name ,"
+                                        + "SELECT o.id AS order_id, o.order_number, s.product_name ,"
                                         + " s.product_price , s.product_quantity, "
                                         + " s.sold_on , o.mobile_number ,"
                                         + " o.address , o.shippers_name "
@@ -127,6 +127,7 @@
 
                                     int oldOrder = 0;
                                     int newOrder;
+                                    int billNo;
 
                                     String product_name,
                                             name, address, mobile_no;
@@ -143,6 +144,7 @@
                                         product_quantity = rs.getInt("product_quantity");
                                         sold_on_time = rs.getTime("sold_on");
                                         sold_on_date = rs.getDate("sold_on");
+                                        billNo = rs.getInt("order_number");
                                         String orderDateArr[] = sold_on_date.toString().split("-");
 
                                         name = rs.getString("shippers_name");
@@ -150,12 +152,7 @@
                                         address = rs.getString("address");
 
                                         mobile_no = rs.getString("mobile_number");
-
-                                        String billNo = "";
-                                        for (int i = orderDateArr.length - 1; i >= 1; i--) {
-                                            billNo += orderDateArr[i];
-                                        }
-                                        billNo += newOrder;
+                                        
                                         if (oldOrder == newOrder) {
                                             // Dont Draw border Type II order Div
 %>

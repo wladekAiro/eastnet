@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Eastnat</title>
+        <title>Eastnat Foods</title>
         <%@page import="java.util.ArrayList"%>
         <%@page import="orders.Location"%>
         <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>

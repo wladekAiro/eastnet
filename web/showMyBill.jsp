@@ -206,14 +206,12 @@
                                     <div class="clear"></div>
                                     
                 <%
-                                    String sql = "SELECT  o.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
+                                    String sql = "SELECT  o.id , o.order_number,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
                                                 +" FROM  orders o "
                                                 +" INNER JOIN  sales s "
                                                 +" ON o.id=s.order_id "
                                                 +" WHERE o.id = "+OrderId+" "
                                                 +" ORDER BY o.id DESC ";
-                                    
-                                    
                                     
                                     PreparedStatement psmt = 
                                             c.prepareStatement(sql);
@@ -222,6 +220,7 @@
                                     
                                     int oldOrder = 0;
                                     int newOrder;
+                                    int billNo;
                                     
                                     String product_name;
                                     double product_price;
@@ -237,14 +236,11 @@
                                         product_quantity = rs.getInt("product_quantity");
                                         sold_on_time = rs.getTime("sold_on");
                                         sold_on_date = rs.getDate("sold_on");
+                                        billNo = rs.getInt("order_number");
                                         String orderDateArr [] = sold_on_date.toString().split("-");
                                         totalValue = product_quantity*product_price;
                                         totalPrice += totalValue;
-                                        String billNo = "";
-                                        for (int i= orderDateArr.length-1; i>= 1; i--){
-                                            billNo += orderDateArr[i];
-                                        }
-                                        billNo+= newOrder;
+                                      
                                         if (oldOrder == newOrder){
                                             // Dont Draw border Type II order Div
                                             %>

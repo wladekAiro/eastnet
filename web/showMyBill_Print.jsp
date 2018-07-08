@@ -241,7 +241,7 @@
                     <div class="clear"></div>
 
                     <%
-                        String sql = "SELECT 0.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
+                        String sql = "SELECT 0.id , o.order_number ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
                                 + " FROM  orders o "
                                 + " INNER JOIN  sales s "
                                 + " ON o.id = s.order_id "
@@ -255,6 +255,7 @@
 
                         int oldOrder = 0;
                         int newOrder;
+                        int billNo;
 
                         String product_name;
                         double product_price;
@@ -270,14 +271,10 @@
                             product_quantity = rs.getInt("product_quantity");
                             sold_on_time = rs.getTime("sold_on");
                             sold_on_date = rs.getDate("sold_on");
-                            String orderDateArr[] = sold_on_date.toString().split("-");
+                            billNo = rs.getInt("order_number");
                             totalValue = product_quantity * product_price;
                             totalPrice += totalValue;
-                            String billNo = "";
-                            for (int i = orderDateArr.length - 1; i >= 1; i--) {
-                                billNo += orderDateArr[i];
-                            }
-                            billNo += newOrder;
+                         
                             if (oldOrder == newOrder) {
                                 // Dont Draw border Type II order Div
                     %>
