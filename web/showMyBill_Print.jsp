@@ -8,8 +8,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>SaiKiran BookStores</title>
-        <jsp:useBean class="product.product" id="product" scope="session"></jsp:useBean>
+        <title>Eastnat Foods</title>
+        <jsp:useBean class="product.ProductService" id="product" scope="session"></jsp:useBean>
 
         <%@page import="java.sql.*, database.*" %>
         <link rel="shortcut icon" href="images/logo/ico.ico"/>
@@ -131,7 +131,7 @@
                 if (request.getParameter("oid") != null) {
 
                     String OrderId = request.getParameter("oid");
-                    String fetchInfoSQL = "SELECT * FROM  `order` WHERE  `order_id` =  '" + OrderId + "' ; ";
+                    String fetchInfoSQL = "SELECT * FROM  orders WHERE id =  '" + OrderId + "' ; ";
                     Connection c = new DB_Conn().getConnection();
                     Statement st = c.createStatement();
                     ResultSet rs1 = st.executeQuery(fetchInfoSQL);
@@ -187,34 +187,34 @@
                         <%= ordered_on_date + ":" + ordered_on_time%>
                     </div>
                 </div>
-            <div class="grid_5" id="whiteBox" style="margin-top: 30px;">
-                <div class="grid_5">
-                    <div class="grid_1">
-                        From;
-                    </div>
-                    <div class="grid_3">
-                        Saikiran BookStores
-                    </div>
-                    <div class="grid_1">
-                        Email:
-                    </div>
-                    <div class="grid_3">
-                        support@sai_books.com
-                    </div>
-                    <div class="grid_1">
-                        Address:
-                    </div>
-                    <div class="grid_3">
-                        B-3/Shop No 18, Silver Park, Mira Bhyendar Road, Mira Road East
-                    </div>
-                    <div class="grid_1">
-                        Mobile:
-                    </div>
-                    <div class="grid_3">
-                        +91-9004300630
+                <div class="grid_5" id="whiteBox" style="margin-top: 30px;">
+                    <div class="grid_5">
+                        <div class="grid_1">
+                            From;
+                        </div>
+                        <div class="grid_3">
+                            Eastnat Foods
+                        </div>
+                        <div class="grid_1">
+                            Email:
+                        </div>
+                        <div class="grid_3">
+                            support@eastnatfoods.com
+                        </div>
+                        <div class="grid_1">
+                            Address:
+                        </div>
+                        <div class="grid_3">
+                            Nairobi
+                        </div>
+                        <div class="grid_1">
+                            Mobile:
+                        </div>
+                        <div class="grid_3">
+                            +254711109431
+                        </div>
                     </div>
                 </div>
-            </div>
             </div>
             <%
                 }
@@ -241,25 +241,15 @@
                     <div class="clear"></div>
 
                     <%
-                        /*
-                         SELECT  `sales_id` ,  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` 
-                         FROM  `order` o
-                         INNER JOIN  `sales` s
-                         USING (  `order_id` ) 
-                         WHERE o.`user_id` =4
-                         * 
-                         */
-                        String sql = "SELECT  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` "
-                                + " FROM  `order` o "
-                                + " INNER JOIN  `sales` s "
-                                + " USING (  `order_id` ) "
-                                + " WHERE o.`order_id` = " + OrderId + " "
-                                + " ORDER BY `order_id` DESC ";
+                        String sql = "SELECT 0.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
+                                + " FROM  orders o "
+                                + " INNER JOIN  sales s "
+                                + " ON o.id = s.order_id "
+                                + " WHERE o.id = " + OrderId + " "
+                                + " ORDER BY id DESC ";
 
-
-
-                        PreparedStatement psmt =
-                                c.prepareStatement(sql);
+                        PreparedStatement psmt
+                                = c.prepareStatement(sql);
 
                         ResultSet rs = psmt.executeQuery();
 
@@ -274,7 +264,7 @@
                         double totalPrice = 0;
                         double totalValue = 0;
                         while (rs.next()) {
-                            newOrder = rs.getInt("order_id");
+                            newOrder = rs.getInt("id");
                             product_name = rs.getString("product_name");
                             product_price = rs.getDouble("product_price");
                             product_quantity = rs.getInt("product_quantity");
@@ -289,31 +279,32 @@
                             }
                             billNo += newOrder;
                             if (oldOrder == newOrder) {
-                            // Dont Draw border Type II order Div
-%>
+                                // Dont Draw border Type II order Div
+                    %>
 
                     <!-- Type II Order -->
                     <div class="grid_12">
-                        <div class="push_1">
-                            <div class="grid_7">
-                                <div class="grid_4 ">
-                                    <a href="product.jsp?id="></a>
-                                    <%= product_name%>
-                                </div>
-                                <div class="grid_2">
-                                    Rs. <%= product_price%> x<%= product_quantity%>
-                                </div>
+                        <div  class="grid_1">
+                            <a class="blue" href="showMyBill.jsp?oid=<%= newOrder%>"><%= billNo%></a>
+                        </div>
+                        <div class="grid_7">
+                            <div class="grid_4 ">
+                                <a href="product.jsp?id="></a>
+                                <%= product_name%>
                             </div>
-                            <div class="grid_3">
-                                <%= totalValue%> 
+                            <div class="grid_2">
+                                Kshs. <%= product_price%> x<%= product_quantity%>
                             </div>
+                        </div>
+                        <div class="grid_3">
+                            <%= totalValue%> 
                         </div>
                     </div>
 
                     <%
-                                            } else {
-                                                // Draw New Order Type I order Div
-%>
+                    } else {
+                        // Draw New Order Type I order Div
+                    %>
 
                     <!-- Type I Order -->
                     <div class="grid_12">
@@ -325,7 +316,7 @@
                                 <%= product_name%> 
                             </div>
                             <div class="grid_2">
-                                Rs. <%= product_price%> x<%= product_quantity%>
+                                Kshs. <%= product_price%> x<%= product_quantity%>
                             </div>
                         </div>
                         <div class="grid_3">
@@ -350,7 +341,7 @@
                             Total Order Price
                         </div>
                         <div class="grid_4 push_4">
-                            <h1>Rs. <%= totalPrice%></h1> 
+                            <h1>Ksh. <%= totalPrice%></h1> 
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -369,6 +360,6 @@
         <%            }
         %>
 
-        
+
     </body>
 </html>

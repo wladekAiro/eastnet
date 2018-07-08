@@ -86,6 +86,17 @@ CREATE TABLE IF NOT EXISTS orders (
   total_order_price numeric(10,2) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS order_items (
+  id serial primary key,
+  order_id bigint NOT NULL REFERENCES orders(id),
+  product_id bigint NOT NULL REFERENCES products(id),
+  product_name varchar(15) NOT NULL,
+  unit_price numeric(10,2) NOT NULL,
+  quantity bigint NOT NULL,
+  ordered_On timestamp without time zone NOT NULL,
+  total_price numeric(10,2) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS images (
   id serial primary key,
   image_name varchar(255) NOT NULL,
@@ -200,7 +211,7 @@ INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone 
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone F','ZIMMERMAN',300);
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone F','T-MALL',250);
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone F','HURUMA',250);
-INSERT INTO locations(location_zone,location_name,location_charge) VALUES(',Zone G','BURUBURU',300);
+INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone G','BURUBURU',300);
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone G','CSABANAS',250);
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone G','DONHOLM',300);
 INSERT INTO locations(location_zone,location_name,location_charge) VALUES('Zone G','GIGIRI',250);

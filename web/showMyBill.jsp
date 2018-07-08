@@ -113,7 +113,7 @@
             if (request.getParameter("oid") != null){
                 
                String OrderId = request.getParameter("oid");
-               String fetchInfoSQL = "SELECT * FROM  `order` WHERE  `order_id` =  '"+OrderId+"' ; ";
+               String fetchInfoSQL = "SELECT * FROM orders WHERE id =  '"+OrderId+"' ; ";
                Connection c = new DB_Conn().getConnection();
                Statement st = c.createStatement() ;
                ResultSet rs1 = st.executeQuery(fetchInfoSQL);
@@ -206,20 +206,12 @@
                                     <div class="clear"></div>
                                     
                 <%
-                                        /*
-SELECT  `sales_id` ,  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` 
-FROM  `order` o
-INNER JOIN  `sales` s
-USING (  `order_id` ) 
-WHERE o.`user_id` =4
- * 
-                                    */
-                                    String sql = "SELECT  `order_id` ,  `product_name` ,  `product_price` ,  `product_quantity` ,  `sold_on` "
-                                                +" FROM  `order` o "
-                                                +" INNER JOIN  `sales` s "
-                                                +" USING (  `order_id` ) "
-                                                +" WHERE o.`order_id` = "+OrderId+" "
-                                                + " ORDER BY `order_id` DESC ";
+                                    String sql = "SELECT  o.id ,  s.product_name ,  s.product_price ,  s.product_quantity ,  s.sold_on "
+                                                +" FROM  orders o "
+                                                +" INNER JOIN  sales s "
+                                                +" ON o.id=s.order_id "
+                                                +" WHERE o.id = "+OrderId+" "
+                                                +" ORDER BY o.id DESC ";
                                     
                                     
                                     
@@ -239,7 +231,7 @@ WHERE o.`user_id` =4
                                     double totalPrice = 0;
                                     double totalValue = 0;
                                     while (rs.next()){
-                                        newOrder = rs.getInt("order_id");
+                                        newOrder = rs.getInt("id");
                                         product_name = rs.getString("product_name");
                                         product_price = rs.getDouble("product_price");
                                         product_quantity = rs.getInt("product_quantity");
@@ -266,7 +258,7 @@ WHERE o.`user_id` =4
                                                                 <%= product_name %>
                                                             </div>
                                                             <div class="grid_2">
-                                                                Rs. <%= product_price %> x<%= product_quantity %>
+                                                                Kshs. <%= product_price %> x<%= product_quantity %>
                                                             </div>
                                                     </div>
                                                     <div class="grid_3">
@@ -290,7 +282,7 @@ WHERE o.`user_id` =4
                                                             <%= product_name %> 
                                                         </div>
                                                         <div class="grid_2">
-                                                            Rs. <%= product_price %> x<%= product_quantity %>
+                                                            Kshs. <%= product_price %> x<%= product_quantity %>
                                                         </div>
                                                 </div>
                                                 <div class="grid_3">
