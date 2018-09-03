@@ -59,7 +59,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/b1.jpg" width="900" height="300" /> 
+                            <img src="images/banner/peanuts.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -73,7 +73,7 @@
                         </li>  
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/dripping_on_lemon.png" width="900" height="300" /> 
+                            <img src="images/banner/honey_gift_pack.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -91,7 +91,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/kienyeji_eggs.png" width="900" height="300" /> 
+                            <img src="images/banner/chili_oil.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -109,7 +109,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/chia_seeds.png" width="900" height="300" /> 
+                            <img src="images/banner/yel_apilo.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -129,7 +129,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/peanut_butter_group.png" width="900" height="300" /> 
+                            <img src="images/banner/peanut_butters.png" width="900" height="300" /> 
 
                             <span class="top" style="display: none; ">
 
