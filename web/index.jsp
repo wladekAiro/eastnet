@@ -59,7 +59,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/peanuts.png" width="900" height="300" /> 
+                            <img src="images/banner/peanuts.png" class="image-reposnive" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -73,7 +73,7 @@
                         </li>  
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/honey_gift_pack.png" width="900" height="300" /> 
+                            <img src="images/banner/honey_gift_pack.png" class="image-reposnive" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -91,7 +91,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/chili_oil.png" width="900" height="300" /> 
+                            <img src="images/banner/chili_oil.png" class="image-reposnive" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -109,7 +109,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/yel_apilo.png" width="900" height="300" /> 
+                            <img src="images/banner/yel_apilo.png" class="image-reposnive" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -129,7 +129,7 @@
 
                         <li class="sliderImage" style="display: none; ">
 
-                            <img src="images/banner/peanut_butters.png" width="900" height="300" /> 
+                            <img src="images/banner/peanut_butters.png" class="image-reposnive" /> 
 
                             <span class="top" style="display: none; ">
 
@@ -144,13 +144,10 @@
                         </li>   
 
                         <div class="clear sliderImage"></div>  
-
                     </ul>
                 </div>
             </div>
         </div>
-
-
 
         <div class="container_16">
             <div id = "contents">
@@ -200,13 +197,5 @@
             <!--The Center Content Div Closing -->
 
         <jsp:include page="includesPage/_footer.jsp"></jsp:include>
-
-
-
-
-
     </body>
 </html>
-
-
-
